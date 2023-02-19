@@ -1,0 +1,54 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Language Name="English">
+  <FormMain Text="AoS/Hod Warp Searcher">
+    <ToolStripMenuItemFile>&amp;File</ToolStripMenuItemFile>
+    <ToolStripMenuItemOpenRom>Open ROM...</ToolStripMenuItemOpenRom>
+    <toolStripMenuItemAosLast>Open Last &amp;AoS ROM</toolStripMenuItemAosLast>
+    <toolStripMenuItemHodLast>Open Last &amp;HoD ROM</toolStripMenuItemHodLast>
+    <ToolStripMenuItemExit>E&amp;xit</ToolStripMenuItemExit>
+    <ToolStripMenuItemSetting>&amp;Setting</ToolStripMenuItemSetting>
+    <ToolStripMenuItemHackSupport>Use &amp;Hack Supporting</ToolStripMenuItemHackSupport>
+    <ToolStripMenuItemLanguage>&amp;Language</ToolStripMenuItemLanguage>
+    <labelRoomPointer>Room Pointer: </labelRoomPointer>
+    <radioButtonFindDest>Where do I warp to from here</radioButtonFindDest>
+    <labelFindDestTip>Right click to select a room, left click to choose a position to warp</labelFindDestTip>
+    <radioButtonFindSource>Where can I warp from to here</radioButtonFindSource>
+    <labelFindSourceTip>Right click to select the target room, left click to select a room warp from</labelFindSourceTip>
+    <labelSearchLevel>Level: </labelSearchLevel>
+    <labelSearchLevel5>Search for glitched inside-room exits</labelSearchLevel5>
+    <labelSearchLevel4>Search for far-away exits</labelSearchLevel4>
+    <labelSearchLevel3>Search for exits 2 block away right to the 1-block-width room (HoD only)</labelSearchLevel3>
+    <labelSearchLevel2>Search for diagonal exits</labelSearchLevel2>
+    <labelSearchLevel1>Search for door warp (HoD only)</labelSearchLevel1>
+    <labelScale>Zoom: </labelScale>
+    <labelSelectedRoom>Room Info: </labelSelectedRoom>
+    <labelRoomPointerInfo>Room Pointer: </labelRoomPointerInfo>
+    <labelArea>Area: </labelArea>
+    <labelNumber>No.: </labelNumber>
+    <labelExitInfo>Exit Info: </labelExitInfo>
+    <labelSourcePointerInfo>Source Room Pointer: </labelSourcePointerInfo>
+    <labelDestPointerInfo>Target Room Pointer: </labelDestPointerInfo>
+    <labelDestRoomFlag>Target Room Flag: </labelDestRoomFlag>
+    <labelRequiredFlag>Required Flag: </labelRequiredFlag>
+  </FormMain>
+  <FormCustomGame Text="Open Custom ROM">
+    <labelRomIs>This ROM is: </labelRomIs>
+    <radioButtonHoDU>HoD (U)</radioButtonHoDU>
+    <radioButtonHoDJ>HoD (J)</radioButtonHoDJ>
+    <radioButtonAoSU>AoS (U)</radioButtonAoSU>
+    <radioButtonAoSJ>AoS (J)</radioButtonAoSJ>
+    <labelCustomizeTip>Some hacks have modified addresses. You can edit these addresses if you know.</labelCustomizeTip>
+    <groupBoxCustomize>Custom Parameters</groupBoxCustomize>
+    <labelRoomPointerAddr>Pointer to Room List: </labelRoomPointerAddr>
+    <labelMapGridAddr>Map Grids Address: </labelMapGridAddr>
+    <labelMapLineAddr>Map Lines Address:</labelMapLineAddr>
+    <buttonOK>OK</buttonOK>
+    <buttonCancel>Cancel</buttonCancel>
+  </FormCustomGame>
+  <Text>
+    <FileTooLarge>File is too large (>32M), does not seems to be a GBA ROM.</FileTooLarge>
+    <UnknownRom>Can not detect game type, do you want to specify it manually?</UnknownRom>
+    <NoMark>✖</NoMark>
+    <YesMark>✔</YesMark>
+  </Text>
+</Language>

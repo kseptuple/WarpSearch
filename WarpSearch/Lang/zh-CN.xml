@@ -1,0 +1,54 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Language Name="简体中文">
+  <FormMain Text="晓月/白夜出城搜索器">
+    <ToolStripMenuItemFile>文件(&amp;F)</ToolStripMenuItemFile>
+    <ToolStripMenuItemOpenRom>打开ROM...</ToolStripMenuItemOpenRom>
+    <toolStripMenuItemAosLast>打开上次的晓月ROM(&amp;A)</toolStripMenuItemAosLast>
+    <toolStripMenuItemHodLast>打开上次的白夜ROM(&amp;H)</toolStripMenuItemHodLast>
+    <ToolStripMenuItemExit>退出(&amp;X)</ToolStripMenuItemExit>
+    <ToolStripMenuItemSetting>设置(&amp;S)</ToolStripMenuItemSetting>
+    <ToolStripMenuItemHackSupport>启用Hack支持(&amp;H)</ToolStripMenuItemHackSupport>
+    <ToolStripMenuItemLanguage>语言(&amp;L)</ToolStripMenuItemLanguage>
+    <labelRoomPointer>房间指针：</labelRoomPointer>
+    <radioButtonFindDest>从这里出城可以到哪里</radioButtonFindDest>
+    <labelFindDestTip>右键点击选择房间，左键点击选择换版位置</labelFindDestTip>
+    <radioButtonFindSource>从哪里出城可以到这里</radioButtonFindSource>
+    <labelFindSourceTip>右键点击选择目标房间，左键点击选择起始房间</labelFindSourceTip>
+    <labelSearchLevel>搜索等级：</labelSearchLevel>
+    <labelSearchLevel5>搜索非正常房间内换版</labelSearchLevel5>
+    <labelSearchLevel4>搜索远距离换版</labelSearchLevel4>
+    <labelSearchLevel3>搜索一格宽房间右边第二格（仅白夜）</labelSearchLevel3>
+    <labelSearchLevel2>搜索斜角换版</labelSearchLevel2>
+    <labelSearchLevel1>搜索红门传送（仅白夜）</labelSearchLevel1>
+    <labelScale>缩放：</labelScale>
+    <labelSelectedRoom>选中房间信息：</labelSelectedRoom>
+    <labelRoomPointerInfo>房间指针：</labelRoomPointerInfo>
+    <labelArea>区域：</labelArea>
+    <labelNumber>序号：</labelNumber>
+    <labelExitInfo>换版信息：</labelExitInfo>
+    <labelSourcePointerInfo>源房间指针：</labelSourcePointerInfo>
+    <labelDestPointerInfo>目标房间指针：</labelDestPointerInfo>
+    <labelDestRoomFlag>目标房间的flag：</labelDestRoomFlag>
+    <labelRequiredFlag>需要的flag：</labelRequiredFlag>
+  </FormMain>
+  <FormCustomGame Text="打开自定义ROM">
+    <labelRomIs>这个ROM是：</labelRomIs>
+    <radioButtonHoDU>白夜美版</radioButtonHoDU>
+    <radioButtonHoDJ>白夜日版</radioButtonHoDJ>
+    <radioButtonAoSU>晓月美版</radioButtonAoSU>
+    <radioButtonAoSJ>晓月日版</radioButtonAoSJ>
+    <labelCustomizeTip>部分Hack修改了指针地址，如果你知道的话，可以手动修改：</labelCustomizeTip>
+    <groupBoxCustomize>自定义参数</groupBoxCustomize>
+    <labelRoomPointerAddr>房间列表的指针地址：</labelRoomPointerAddr>
+    <labelMapGridAddr>地图格子地址：</labelMapGridAddr>
+    <labelMapLineAddr>地图框线地址：</labelMapLineAddr>
+    <buttonOK>确定</buttonOK>
+    <buttonCancel>取消</buttonCancel>
+  </FormCustomGame>
+  <Text>
+    <FileTooLarge>文件太大（> 32M），不是GBA ROM。</FileTooLarge>
+    <UnknownRom>无法识别该ROM的游戏，是否手动指定？</UnknownRom>
+    <NoMark>✖</NoMark>
+    <YesMark>✔</YesMark>
+  </Text>
+</Language>
