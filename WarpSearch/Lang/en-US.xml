@@ -35,8 +35,10 @@
     <labelRomIs>This ROM is: </labelRomIs>
     <radioButtonHoDU>HoD (U)</radioButtonHoDU>
     <radioButtonHoDJ>HoD (J)</radioButtonHoDJ>
+    <radioButtonHoDE>HoD (E)</radioButtonHoDE>
     <radioButtonAoSU>AoS (U)</radioButtonAoSU>
     <radioButtonAoSJ>AoS (J)</radioButtonAoSJ>
+    <radioButtonAoSE>AoS (E)</radioButtonAoSE>
     <labelCustomizeTip>Some hacks have modified addresses. You can edit these addresses if you know.</labelCustomizeTip>
     <groupBoxCustomize>Custom Parameters</groupBoxCustomize>
     <labelRoomPointerAddr>Pointer to Room List: </labelRoomPointerAddr>

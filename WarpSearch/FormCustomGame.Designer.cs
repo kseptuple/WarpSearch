@@ -45,6 +45,8 @@
             this.buttonOK = new System.Windows.Forms.Button();
             this.buttonCancel = new System.Windows.Forms.Button();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
+            this.radioButtonHoDE = new System.Windows.Forms.RadioButton();
+            this.radioButtonAoSE = new System.Windows.Forms.RadioButton();
             this.groupBoxCustomize.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
@@ -53,9 +55,10 @@
             // radioButtonHoDU
             // 
             this.radioButtonHoDU.AutoSize = true;
+            this.radioButtonHoDU.Dock = System.Windows.Forms.DockStyle.Left;
             this.radioButtonHoDU.Location = new System.Drawing.Point(3, 3);
             this.radioButtonHoDU.Name = "radioButtonHoDU";
-            this.radioButtonHoDU.Size = new System.Drawing.Size(88, 19);
+            this.radioButtonHoDU.Size = new System.Drawing.Size(88, 22);
             this.radioButtonHoDU.TabIndex = 0;
             this.radioButtonHoDU.TabStop = true;
             this.radioButtonHoDU.Text = "白夜美版";
@@ -65,9 +68,10 @@
             // radioButtonHoDJ
             // 
             this.radioButtonHoDJ.AutoSize = true;
-            this.radioButtonHoDJ.Location = new System.Drawing.Point(198, 3);
+            this.radioButtonHoDJ.Dock = System.Windows.Forms.DockStyle.Left;
+            this.radioButtonHoDJ.Location = new System.Drawing.Point(263, 3);
             this.radioButtonHoDJ.Name = "radioButtonHoDJ";
-            this.radioButtonHoDJ.Size = new System.Drawing.Size(88, 19);
+            this.radioButtonHoDJ.Size = new System.Drawing.Size(88, 22);
             this.radioButtonHoDJ.TabIndex = 1;
             this.radioButtonHoDJ.TabStop = true;
             this.radioButtonHoDJ.Text = "白夜日版";
@@ -77,9 +81,10 @@
             // radioButtonAoSU
             // 
             this.radioButtonAoSU.AutoSize = true;
-            this.radioButtonAoSU.Location = new System.Drawing.Point(393, 3);
+            this.radioButtonAoSU.Dock = System.Windows.Forms.DockStyle.Left;
+            this.radioButtonAoSU.Location = new System.Drawing.Point(3, 31);
             this.radioButtonAoSU.Name = "radioButtonAoSU";
-            this.radioButtonAoSU.Size = new System.Drawing.Size(88, 19);
+            this.radioButtonAoSU.Size = new System.Drawing.Size(88, 22);
             this.radioButtonAoSU.TabIndex = 2;
             this.radioButtonAoSU.TabStop = true;
             this.radioButtonAoSU.Text = "晓月美版";
@@ -89,9 +94,10 @@
             // radioButtonAoSJ
             // 
             this.radioButtonAoSJ.AutoSize = true;
-            this.radioButtonAoSJ.Location = new System.Drawing.Point(588, 3);
+            this.radioButtonAoSJ.Dock = System.Windows.Forms.DockStyle.Left;
+            this.radioButtonAoSJ.Location = new System.Drawing.Point(263, 31);
             this.radioButtonAoSJ.Name = "radioButtonAoSJ";
-            this.radioButtonAoSJ.Size = new System.Drawing.Size(88, 19);
+            this.radioButtonAoSJ.Size = new System.Drawing.Size(88, 22);
             this.radioButtonAoSJ.TabIndex = 3;
             this.radioButtonAoSJ.TabStop = true;
             this.radioButtonAoSJ.Text = "晓月日版";
@@ -159,7 +165,7 @@
             this.groupBoxCustomize.Controls.Add(this.labelRoomPointerAddr);
             this.groupBoxCustomize.Controls.Add(this.textBoxMapPointer);
             this.groupBoxCustomize.Controls.Add(this.textBoxLinePointer);
-            this.groupBoxCustomize.Location = new System.Drawing.Point(12, 78);
+            this.groupBoxCustomize.Location = new System.Drawing.Point(12, 104);
             this.groupBoxCustomize.Name = "groupBoxCustomize";
             this.groupBoxCustomize.Size = new System.Drawing.Size(781, 114);
             this.groupBoxCustomize.TabIndex = 13;
@@ -168,20 +174,22 @@
             // 
             // tableLayoutPanel1
             // 
-            this.tableLayoutPanel1.ColumnCount = 4;
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this.tableLayoutPanel1.ColumnCount = 3;
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
             this.tableLayoutPanel1.Controls.Add(this.radioButtonHoDU, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.radioButtonHoDJ, 1, 0);
-            this.tableLayoutPanel1.Controls.Add(this.radioButtonAoSU, 2, 0);
-            this.tableLayoutPanel1.Controls.Add(this.radioButtonAoSJ, 3, 0);
+            this.tableLayoutPanel1.Controls.Add(this.radioButtonAoSU, 0, 1);
+            this.tableLayoutPanel1.Controls.Add(this.radioButtonHoDE, 2, 0);
+            this.tableLayoutPanel1.Controls.Add(this.radioButtonAoSE, 2, 1);
+            this.tableLayoutPanel1.Controls.Add(this.radioButtonAoSJ, 1, 1);
             this.tableLayoutPanel1.Location = new System.Drawing.Point(12, 27);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-            this.tableLayoutPanel1.RowCount = 1;
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(781, 30);
+            this.tableLayoutPanel1.RowCount = 2;
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(781, 56);
             this.tableLayoutPanel1.TabIndex = 4;
             // 
             // labelRomIs
@@ -196,7 +204,7 @@
             // labelCustomizeTip
             // 
             this.labelCustomizeTip.AutoSize = true;
-            this.labelCustomizeTip.Location = new System.Drawing.Point(12, 60);
+            this.labelCustomizeTip.Location = new System.Drawing.Point(12, 86);
             this.labelCustomizeTip.Name = "labelCustomizeTip";
             this.labelCustomizeTip.Size = new System.Drawing.Size(414, 15);
             this.labelCustomizeTip.TabIndex = 15;
@@ -231,18 +239,44 @@
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel2.Controls.Add(this.buttonOK, 0, 0);
             this.tableLayoutPanel2.Controls.Add(this.buttonCancel, 1, 0);
-            this.tableLayoutPanel2.Location = new System.Drawing.Point(12, 198);
+            this.tableLayoutPanel2.Location = new System.Drawing.Point(12, 224);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
             this.tableLayoutPanel2.RowCount = 1;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel2.Size = new System.Drawing.Size(781, 40);
             this.tableLayoutPanel2.TabIndex = 18;
             // 
+            // radioButtonHoDE
+            // 
+            this.radioButtonHoDE.AutoSize = true;
+            this.radioButtonHoDE.Dock = System.Windows.Forms.DockStyle.Left;
+            this.radioButtonHoDE.Location = new System.Drawing.Point(523, 3);
+            this.radioButtonHoDE.Name = "radioButtonHoDE";
+            this.radioButtonHoDE.Size = new System.Drawing.Size(88, 22);
+            this.radioButtonHoDE.TabIndex = 4;
+            this.radioButtonHoDE.TabStop = true;
+            this.radioButtonHoDE.Text = "白夜欧版";
+            this.radioButtonHoDE.UseVisualStyleBackColor = true;
+            this.radioButtonHoDE.CheckedChanged += new System.EventHandler(this.radioButtonGame_CheckedChanged);
+            // 
+            // radioButtonAoSE
+            // 
+            this.radioButtonAoSE.AutoSize = true;
+            this.radioButtonAoSE.Dock = System.Windows.Forms.DockStyle.Left;
+            this.radioButtonAoSE.Location = new System.Drawing.Point(523, 31);
+            this.radioButtonAoSE.Name = "radioButtonAoSE";
+            this.radioButtonAoSE.Size = new System.Drawing.Size(88, 22);
+            this.radioButtonAoSE.TabIndex = 5;
+            this.radioButtonAoSE.TabStop = true;
+            this.radioButtonAoSE.Text = "晓月欧版";
+            this.radioButtonAoSE.UseVisualStyleBackColor = true;
+            this.radioButtonAoSE.CheckedChanged += new System.EventHandler(this.radioButtonGame_CheckedChanged);
+            // 
             // FormCustomGame
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(805, 246);
+            this.ClientSize = new System.Drawing.Size(805, 271);
             this.Controls.Add(this.tableLayoutPanel2);
             this.Controls.Add(this.labelCustomizeTip);
             this.Controls.Add(this.labelRomIs);
@@ -284,5 +318,7 @@
         private System.Windows.Forms.Button buttonOK;
         private System.Windows.Forms.Button buttonCancel;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
+        private System.Windows.Forms.RadioButton radioButtonAoSE;
+        private System.Windows.Forms.RadioButton radioButtonHoDE;
     }
 }

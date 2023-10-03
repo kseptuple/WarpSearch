@@ -18,7 +18,7 @@ namespace WarpSearch.Games
 
         public Dictionary<uint, List<RoomInfo>> FlagRoomLists { get; set; } = new Dictionary<uint, List<RoomInfo>>();
         protected List<List<ROMPointer>> exitGroups { get; set; } = null;
-        protected ROMPointer RoomRootPointer { get; set; } = 0;
+        //protected ROMPointer RoomRootPointer { get; set; } = 0;
         protected ROMPointer MapPointer { get; set; } = 0;
         protected ROMPointer MapLinePointer { get; set; } = 0;
         protected ROMPointer FirstRoomPointer { get; set; } = 0;

@@ -83,14 +83,8 @@ namespace WarpSearch.Games
                 minExitAddress = 0xA_00_00_00;
             }
             ROMPointer pointer = MapPointer;
-            if (RoomRootPointer != null)
-            {
-                ROMPointer tmpFirstRoomPointer = getROMPointer(RoomRootPointer);
-                if (tmpFirstRoomPointer < fileSize)
-                {
-                    FirstRoomPointer = tmpFirstRoomPointer;
-                }
-            }
+            //不再使用RoomRootPointer加载房间
+
             int tmp = 0;
             mapPositionList.Clear();
             //从地图读取房间
@@ -259,7 +253,7 @@ namespace WarpSearch.Games
 
             foreach (var specialRoomData in specialRoomDataList)
             {
-                DrawLinesUitls(specialRoomData.X, specialRoomData.Y, specialRoomData.TopType, specialRoomData.BottomType, specialRoomData.LeftType, specialRoomData.RightType);
+                DrawLinesUitls(specialRoomData.X, specialRoomData.Y + topOffset, specialRoomData.TopType, specialRoomData.BottomType, specialRoomData.LeftType, specialRoomData.RightType);
             }
 
             if (useHackSupport)

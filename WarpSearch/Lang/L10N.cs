@@ -97,20 +97,23 @@ namespace WarpSearch.Lang
 
         public static void InitLang()
         {
-            var langFiles = Directory.GetFiles(".\\Lang\\", "*.xml");
-            foreach (var langFile in langFiles)
+            if (Directory.Exists(".\\Lang\\"))
             {
-                XmlDocument doc = new XmlDocument();
-                LanguageModel languageModel = new LanguageModel();
-                doc.Load(langFile);
-                XmlNode root = doc.SelectSingleNode("Language");
-                languageModel.Name = root.Attributes["Name"]?.Value?.Trim();
-                languageModel.AreaCode = Path.GetFileNameWithoutExtension(langFile);
-                languageModel.FormData = readNodes(root.ChildNodes);
-
-                if (languageModel.FormData != null)
+                var langFiles = Directory.GetFiles(".\\Lang\\", "*.xml");
+                foreach (var langFile in langFiles)
                 {
-                    LanguageModels.Add(languageModel);
+                    XmlDocument doc = new XmlDocument();
+                    LanguageModel languageModel = new LanguageModel();
+                    doc.Load(langFile);
+                    XmlNode root = doc.SelectSingleNode("Language");
+                    languageModel.Name = root.Attributes["Name"]?.Value?.Trim();
+                    languageModel.AreaCode = Path.GetFileNameWithoutExtension(langFile);
+                    languageModel.FormData = readNodes(root.ChildNodes);
+
+                    if (languageModel.FormData != null)
+                    {
+                        LanguageModels.Add(languageModel);
+                    }
                 }
             }
 
@@ -150,9 +153,8 @@ namespace WarpSearch.Lang
                     }
                     return controlLanguageModelList;
                 }
-                catch (Exception ex)
+                catch
                 {
-
                     return null;
                 }
 

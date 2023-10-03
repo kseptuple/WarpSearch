@@ -99,6 +99,12 @@ namespace WarpSearch
                 textBoxMapPointer.Text = "0x80D24A4";
                 textBoxLinePointer.Text = "0x80D38A4";
             }
+            else if (radioButtonHoDE.Checked)
+            {
+                textBoxRoomPointer.Text = "0x8494D48";
+                textBoxMapPointer.Text = "0x80DAD94";
+                textBoxLinePointer.Text = "0x80DC194";
+            }
             else if (radioButtonAoSU.Checked)
             {
                 textBoxRoomPointer.Text = "0x850EF08";
@@ -110,6 +116,12 @@ namespace WarpSearch
                 textBoxRoomPointer.Text = "0x84E5808";
                 textBoxMapPointer.Text = "0x80F58D8";
                 textBoxLinePointer.Text = "0x80F7058";
+            }
+            else if (radioButtonAoSE.Checked)
+            {
+                textBoxRoomPointer.Text = "0x850EF60";
+                textBoxMapPointer.Text = "0x8116664";
+                textBoxLinePointer.Text = "0x8117DE4";
             }
             isChangingRadio = false;
         }
@@ -139,6 +151,10 @@ namespace WarpSearch
             {
                 game = new HoDCustom(data, formMain, new ROMPointer(firstRoomPointer), new ROMPointer(mapPointer), new ROMPointer(mapLinePointer), GameVersion.JPN);
             }
+            else if (radioButtonHoDE.Checked)
+            {
+                game = new HoDCustom(data, formMain, new ROMPointer(firstRoomPointer), new ROMPointer(mapPointer), new ROMPointer(mapLinePointer), GameVersion.EUR);
+            }
             else if (radioButtonAoSU.Checked)
             {
                 game = new AoSCustom(data, formMain, new ROMPointer(firstRoomPointer), new ROMPointer(mapPointer), new ROMPointer(mapLinePointer), GameVersion.USA);
@@ -146,6 +162,10 @@ namespace WarpSearch
             else if (radioButtonAoSJ.Checked)
             {
                 game = new AoSCustom(data, formMain, new ROMPointer(firstRoomPointer), new ROMPointer(mapPointer), new ROMPointer(mapLinePointer), GameVersion.JPN);
+            }
+            else if (radioButtonAoSE.Checked)
+            {
+                game = new AoSCustom(data, formMain, new ROMPointer(firstRoomPointer), new ROMPointer(mapPointer), new ROMPointer(mapLinePointer), GameVersion.EUR);
             }
 
             formMain.OpenCustomRom(game);

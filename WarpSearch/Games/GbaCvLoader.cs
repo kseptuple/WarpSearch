@@ -39,10 +39,14 @@ namespace WarpSearch.Games
             {
                 case "CASTLEVANIA2A2CEA4":
                     return new AoSUSA(data, formMain);
+                case "CASTLEVANIA2A2CPA4":
+                    return new AoSEUR(data, formMain);
                 case "CASTLEVANIA2A2CJEM":
                     return new AoSJPN(data, formMain);
                 case "CASTLEVANIA1ACHEA4":
                     return new HoDUSA(data, formMain);
+                case "CASTLEVANIA1ACHPA4":
+                    return new HoDEUR(data, formMain);
                 case "CASTLEVANIA1ACHJEM":
                     return new HoDJPN(data, formMain);
                 default:

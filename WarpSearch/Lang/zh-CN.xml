@@ -35,8 +35,10 @@
     <labelRomIs>这个ROM是：</labelRomIs>
     <radioButtonHoDU>白夜美版</radioButtonHoDU>
     <radioButtonHoDJ>白夜日版</radioButtonHoDJ>
+    <radioButtonHoDE>白夜欧版</radioButtonHoDE>
     <radioButtonAoSU>晓月美版</radioButtonAoSU>
     <radioButtonAoSJ>晓月日版</radioButtonAoSJ>
+    <radioButtonAoSE>晓月欧版</radioButtonAoSE>
     <labelCustomizeTip>部分Hack修改了指针地址，如果你知道的话，可以手动修改：</labelCustomizeTip>
     <groupBoxCustomize>自定义参数</groupBoxCustomize>
     <labelRoomPointerAddr>房间列表的指针地址：</labelRoomPointerAddr>

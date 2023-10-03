@@ -161,6 +161,7 @@ namespace WarpSearch
     public enum GameVersion
     {
         USA,
+        EUR,
         JPN
     }
 }

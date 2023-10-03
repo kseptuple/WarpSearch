@@ -69,9 +69,11 @@
       <DependentUpon>FormCustomGame.cs</DependentUpon>
     </Compile>
     <Compile Include="Games\AoSCustom.cs" />
+    <Compile Include="Games\AoSEUR.cs" />
     <Compile Include="Games\HoDJPN.cs" />
     <Compile Include="Games\AoSJPN.cs" />
     <Compile Include="Games\HoDCustom.cs" />
+    <Compile Include="Games\HoDEUR.cs" />
     <Compile Include="Games\HoDUSA.cs" />
     <Compile Include="Games\AoSUSA.cs" />
     <Compile Include="Games\GbaCvLoader.cs" />
