@@ -45,6 +45,8 @@
     <labelRoomPointerAddr>房间列表的指针地址：</labelRoomPointerAddr>
     <labelMapGridAddr>地图格子地址：</labelMapGridAddr>
     <labelMapLineAddr>地图框线地址：</labelMapLineAddr>
+    <checkBoxSaveSetting>记住这个ROM的设置</checkBoxSaveSetting>
+    <labelSaveSettingTip>最多记录1000个ROM的设置</labelSaveSettingTip>
     <buttonOK>确定</buttonOK>
     <buttonCancel>取消</buttonCancel>
   </FormCustomGame>

@@ -40,13 +40,15 @@
             this.labelMapLineAddr = new System.Windows.Forms.Label();
             this.groupBoxCustomize = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.radioButtonHoDE = new System.Windows.Forms.RadioButton();
+            this.radioButtonAoSE = new System.Windows.Forms.RadioButton();
             this.labelRomIs = new System.Windows.Forms.Label();
             this.labelCustomizeTip = new System.Windows.Forms.Label();
             this.buttonOK = new System.Windows.Forms.Button();
             this.buttonCancel = new System.Windows.Forms.Button();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
-            this.radioButtonHoDE = new System.Windows.Forms.RadioButton();
-            this.radioButtonAoSE = new System.Windows.Forms.RadioButton();
+            this.checkBoxSaveSetting = new System.Windows.Forms.CheckBox();
+            this.labelSaveSettingTip = new System.Windows.Forms.Label();
             this.groupBoxCustomize.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
@@ -192,6 +194,32 @@
             this.tableLayoutPanel1.Size = new System.Drawing.Size(781, 56);
             this.tableLayoutPanel1.TabIndex = 4;
             // 
+            // radioButtonHoDE
+            // 
+            this.radioButtonHoDE.AutoSize = true;
+            this.radioButtonHoDE.Dock = System.Windows.Forms.DockStyle.Left;
+            this.radioButtonHoDE.Location = new System.Drawing.Point(523, 3);
+            this.radioButtonHoDE.Name = "radioButtonHoDE";
+            this.radioButtonHoDE.Size = new System.Drawing.Size(88, 22);
+            this.radioButtonHoDE.TabIndex = 4;
+            this.radioButtonHoDE.TabStop = true;
+            this.radioButtonHoDE.Text = "白夜欧版";
+            this.radioButtonHoDE.UseVisualStyleBackColor = true;
+            this.radioButtonHoDE.CheckedChanged += new System.EventHandler(this.radioButtonGame_CheckedChanged);
+            // 
+            // radioButtonAoSE
+            // 
+            this.radioButtonAoSE.AutoSize = true;
+            this.radioButtonAoSE.Dock = System.Windows.Forms.DockStyle.Left;
+            this.radioButtonAoSE.Location = new System.Drawing.Point(523, 31);
+            this.radioButtonAoSE.Name = "radioButtonAoSE";
+            this.radioButtonAoSE.Size = new System.Drawing.Size(88, 22);
+            this.radioButtonAoSE.TabIndex = 5;
+            this.radioButtonAoSE.TabStop = true;
+            this.radioButtonAoSE.Text = "晓月欧版";
+            this.radioButtonAoSE.UseVisualStyleBackColor = true;
+            this.radioButtonAoSE.CheckedChanged += new System.EventHandler(this.radioButtonGame_CheckedChanged);
+            // 
             // labelRomIs
             // 
             this.labelRomIs.AutoSize = true;
@@ -239,44 +267,41 @@
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel2.Controls.Add(this.buttonOK, 0, 0);
             this.tableLayoutPanel2.Controls.Add(this.buttonCancel, 1, 0);
-            this.tableLayoutPanel2.Location = new System.Drawing.Point(12, 224);
+            this.tableLayoutPanel2.Location = new System.Drawing.Point(12, 264);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
             this.tableLayoutPanel2.RowCount = 1;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel2.Size = new System.Drawing.Size(781, 40);
             this.tableLayoutPanel2.TabIndex = 18;
             // 
-            // radioButtonHoDE
+            // checkBoxSaveSetting
             // 
-            this.radioButtonHoDE.AutoSize = true;
-            this.radioButtonHoDE.Dock = System.Windows.Forms.DockStyle.Left;
-            this.radioButtonHoDE.Location = new System.Drawing.Point(523, 3);
-            this.radioButtonHoDE.Name = "radioButtonHoDE";
-            this.radioButtonHoDE.Size = new System.Drawing.Size(88, 22);
-            this.radioButtonHoDE.TabIndex = 4;
-            this.radioButtonHoDE.TabStop = true;
-            this.radioButtonHoDE.Text = "白夜欧版";
-            this.radioButtonHoDE.UseVisualStyleBackColor = true;
-            this.radioButtonHoDE.CheckedChanged += new System.EventHandler(this.radioButtonGame_CheckedChanged);
+            this.checkBoxSaveSetting.AutoSize = true;
+            this.checkBoxSaveSetting.Checked = true;
+            this.checkBoxSaveSetting.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBoxSaveSetting.Location = new System.Drawing.Point(15, 224);
+            this.checkBoxSaveSetting.Name = "checkBoxSaveSetting";
+            this.checkBoxSaveSetting.Size = new System.Drawing.Size(158, 19);
+            this.checkBoxSaveSetting.TabIndex = 19;
+            this.checkBoxSaveSetting.Text = "记住这个ROM的设置";
+            this.checkBoxSaveSetting.UseVisualStyleBackColor = true;
             // 
-            // radioButtonAoSE
+            // labelSaveSettingTip
             // 
-            this.radioButtonAoSE.AutoSize = true;
-            this.radioButtonAoSE.Dock = System.Windows.Forms.DockStyle.Left;
-            this.radioButtonAoSE.Location = new System.Drawing.Point(523, 31);
-            this.radioButtonAoSE.Name = "radioButtonAoSE";
-            this.radioButtonAoSE.Size = new System.Drawing.Size(88, 22);
-            this.radioButtonAoSE.TabIndex = 5;
-            this.radioButtonAoSE.TabStop = true;
-            this.radioButtonAoSE.Text = "晓月欧版";
-            this.radioButtonAoSE.UseVisualStyleBackColor = true;
-            this.radioButtonAoSE.CheckedChanged += new System.EventHandler(this.radioButtonGame_CheckedChanged);
+            this.labelSaveSettingTip.AutoSize = true;
+            this.labelSaveSettingTip.Location = new System.Drawing.Point(12, 246);
+            this.labelSaveSettingTip.Name = "labelSaveSettingTip";
+            this.labelSaveSettingTip.Size = new System.Drawing.Size(183, 15);
+            this.labelSaveSettingTip.TabIndex = 20;
+            this.labelSaveSettingTip.Text = "最多记录1000个ROM的设置";
             // 
             // FormCustomGame
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(805, 271);
+            this.ClientSize = new System.Drawing.Size(805, 314);
+            this.Controls.Add(this.labelSaveSettingTip);
+            this.Controls.Add(this.checkBoxSaveSetting);
             this.Controls.Add(this.tableLayoutPanel2);
             this.Controls.Add(this.labelCustomizeTip);
             this.Controls.Add(this.labelRomIs);
@@ -320,5 +345,7 @@
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
         private System.Windows.Forms.RadioButton radioButtonAoSE;
         private System.Windows.Forms.RadioButton radioButtonHoDE;
+        private System.Windows.Forms.CheckBox checkBoxSaveSetting;
+        private System.Windows.Forms.Label labelSaveSettingTip;
     }
 }

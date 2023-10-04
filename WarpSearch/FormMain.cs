@@ -16,6 +16,7 @@ using System.Globalization;
 using System.Xml.Serialization;
 using System.Xml;
 using WarpSearch.Lang;
+using System.Collections.Specialized;
 
 namespace WarpSearch
 {
@@ -79,6 +80,9 @@ namespace WarpSearch
         private Dictionary<ROMPointer, Dictionary<uint, byte>> flagListForRoom = new Dictionary<ROMPointer, Dictionary<uint, byte>>();
 
         public string Language { get; set; }
+
+        private List<RomSettings> romSettings = new List<RomSettings>();
+        private const int maxRomSettings = 1000;
 
         public FormMain()
         {
@@ -496,7 +500,7 @@ namespace WarpSearch
                     statusText = L10N.GetText("HoD");
                     break;
             }
-            switch (rom.GameVersion) 
+            switch (rom.GameVersion)
             {
                 case GameVersionEnum.USA:
                     statusText += L10N.GetText("USA");
@@ -639,7 +643,7 @@ namespace WarpSearch
                     brush = transparentGreenBrush;
                 }
             }
-            
+
             if (isUncertain)
             {
                 brush = transparentOrangeBrush;
@@ -695,6 +699,7 @@ namespace WarpSearch
 
         private void FormMain_Load(object sender, EventArgs e)
         {
+            bool settingError = false;
             if (File.Exists("setting.xml"))
             {
                 Settings settings = null;
@@ -702,7 +707,14 @@ namespace WarpSearch
                 using (var fs = new FileStream("setting.xml", FileMode.Open))
                 using (var sr = new StreamReader(fs))
                 {
-                    settings = (Settings)xmlSerializer.Deserialize(sr);
+                    try
+                    {
+                        settings = (Settings)xmlSerializer.Deserialize(sr);
+                    }
+                    catch
+                    {
+                        settingError = true;
+                    }
                 }
                 if (settings != null)
                 {
@@ -714,7 +726,39 @@ namespace WarpSearch
                     ToolStripMenuItemHackSupport.CheckState = useHackSupport ? CheckState.Checked : CheckState.Unchecked;
                     Language = settings.Language;
                 }
+                if (settingError)
+                {
+                    File.Delete("setting.xml");
+                }
             }
+
+            settingError = false;
+            if (File.Exists("rom.xml"))
+            {
+                List<RomSettings> romSettings = null;
+                XmlSerializer xmlSerializer = new XmlSerializer(typeof(List<RomSettings>));
+                using (var fs = new FileStream("rom.xml", FileMode.Open))
+                using (var sr = new StreamReader(fs))
+                {
+                    try
+                    {
+                        romSettings = (List<RomSettings>)xmlSerializer.Deserialize(sr);
+                    }
+                    catch
+                    {
+                        settingError = true;
+                    }
+                }
+                if (romSettings != null)
+                {
+                    this.romSettings = romSettings;
+                }
+                if (settingError)
+                {
+                    File.Delete("rom.xml");
+                }
+            }
+
             if (L10N.LanguageModels.Count > 1)
             {
                 foreach (var language in L10N.LanguageModels)
@@ -782,6 +826,14 @@ namespace WarpSearch
                 settings.useHackSupport = useHackSupport;
                 settings.Language = Language;
                 xmlSerializer.Serialize(sw, settings);
+                sw.Flush();
+            }
+
+            using (var fs = File.Open("rom.xml", FileMode.Create))
+            using (var sw = new StreamWriter(fs))
+            {
+                XmlSerializer xmlSerializer = new XmlSerializer(typeof(List<RomSettings>));
+                xmlSerializer.Serialize(sw, romSettings);
                 sw.Flush();
             }
         }
@@ -906,6 +958,26 @@ namespace WarpSearch
                 labelOptionSearches[2].Text = L10N.GetText("NoMark");
             }
         }
+
+        public void InsertOrUpdateRomSettings(RomSettings romSetting)
+        {
+            int existingRomSettingIndex = romSettings.FindIndex(r => r.RomPath == romSetting.RomPath);
+            if (existingRomSettingIndex != -1)
+            {
+                romSettings.RemoveAt(existingRomSettingIndex);
+            }
+
+            romSettings.Add(romSetting);
+            if (romSettings.Count > maxRomSettings)
+            {
+                romSettings.RemoveAt(0);
+            }
+        }
+
+        public RomSettings GetRomSettings(string romPath)
+        {
+            return romSettings.FirstOrDefault(r => r.RomPath == romPath);
+        }
     }
 
     public class Settings
@@ -915,7 +987,17 @@ namespace WarpSearch
         public bool useHackSupport { get; set; }
         public string Language { get; set; }
     }
-    
+
+    public class RomSettings
+    {
+        public string RomPath { get; set; }
+        public GameTypeEnum GameType { get; set; }
+        public GameVersionEnum GameVersion { get; set; }
+        public uint RoomPointer { get; set; }
+        public uint MapPointer { get; set; }
+        public uint MapLinePointer { get; set; }
+    }
+
     public class RectangleToDraw
     {
         public Brush Brush { get; set; }

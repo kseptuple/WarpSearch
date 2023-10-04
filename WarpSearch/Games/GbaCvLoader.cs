@@ -41,8 +41,30 @@ namespace WarpSearch.Games
             }
             else
             {
-                string gameSignStr = Encoding.ASCII.GetString(gameSign);
                 GbaCv result = null;
+                //先检查是否有已保存的ROM设置
+                RomSettings romSettings = formMain.GetRomSettings(fileName);
+                if (romSettings != null)
+                {
+                    if (romSettings.GameType == GameTypeEnum.Hod)
+                    {
+                        result = new HoDCustom(data, formMain, romSettings.RoomPointer, romSettings.MapPointer, romSettings.MapLinePointer, romSettings.GameVersion);
+                    }
+                    else if (romSettings.GameType == GameTypeEnum.Aos)
+                    {
+                        result = new AoSCustom(data, formMain, romSettings.RoomPointer, romSettings.MapPointer, romSettings.MapLinePointer, romSettings.GameVersion);
+                    }
+                    if (result != null)
+                    {
+                        result.FileName = fileName;
+                        result.GameVersion = romSettings.GameVersion;
+                        result.IsCustom = true;
+                        //每次打开都重新插入，排到最后
+                        formMain.InsertOrUpdateRomSettings(romSettings);
+                        return result;
+                    }
+                }
+                string gameSignStr = Encoding.ASCII.GetString(gameSign);
                 GameVersionEnum gameVersion = GameVersionEnum.USA;
                 switch (gameSignStr)
                 {

@@ -85,6 +85,8 @@ namespace WarpSearch
     {
         private uint actualAddress = 0;
 
+        public ROMPointer() { }
+
         public ROMPointer(uint Address)
         {
             actualAddress = Address - 0x8_00_00_00;
@@ -111,7 +113,7 @@ namespace WarpSearch
         {
             unchecked
             {
-                return (int)(pointer.actualAddress);
+                return (int)pointer.actualAddress;
             }
         }
 
