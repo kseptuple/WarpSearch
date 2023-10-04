@@ -418,15 +418,18 @@ namespace WarpSearch
             if (openFileDialogMain.ShowDialog() == DialogResult.Cancel) return;
             if (OpenRom(openFileDialogMain.FileName))
             {
-                if (romType == GameTypeEnum.Aos)
+                if (!rom.IsCustom)
                 {
-                    defaultAosPath = openFileDialogMain.FileName;
-                    toolStripMenuItemAosLast.Enabled = true;
-                }
-                else if (romType == GameTypeEnum.Hod)
-                {
-                    defaultHodPath = openFileDialogMain.FileName;
-                    toolStripMenuItemHodLast.Enabled = true;
+                    if (romType == GameTypeEnum.Aos)
+                    {
+                        defaultAosPath = openFileDialogMain.FileName;
+                        toolStripMenuItemAosLast.Enabled = true;
+                    }
+                    else if (romType == GameTypeEnum.Hod)
+                    {
+                        defaultHodPath = openFileDialogMain.FileName;
+                        toolStripMenuItemHodLast.Enabled = true;
+                    }
                 }
             }
         }
