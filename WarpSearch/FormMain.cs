@@ -89,6 +89,7 @@ namespace WarpSearch
             labelOptionSearches.Add(labelSearchOption3);
             labelOptionSearches.Add(labelSearchOption4);
             labelOptionSearches.Add(labelSearchOption5);
+            toolStripStatusRomType.Text = string.Empty;
         }
 
         public void DrawRoom(int x, int y, RoomType type, bool isHodCastleB = false)
@@ -425,6 +426,13 @@ namespace WarpSearch
                 }
             }
         }
+
+        private void ToolStripMenuItemOpenCustom_Click(object sender, EventArgs e)
+        {
+            if (openFileDialogMain.ShowDialog() == DialogResult.Cancel) return;
+            OpenRom(openFileDialogMain.FileName, true);
+        }
+
         private void ToolStripMenuItemAosLast_Click(object sender, EventArgs e)
         {
             OpenRom(defaultAosPath);
@@ -435,28 +443,17 @@ namespace WarpSearch
             OpenRom(defaultHodPath);
         }
 
-        private bool OpenRom(string romPath)
+        private void toolStripStatusRomType_Click(object sender, EventArgs e)
         {
-            GbaCv newRom = GbaCvLoader.LoadGame(romPath, this);
+            GbaCvLoader.ResetCustomRom(rom, this);
+        }
+
+        private bool OpenRom(string romPath, bool forceCustom = false)
+        {
+            GbaCv newRom = GbaCvLoader.LoadGame(romPath, this, forceCustom);
             if (newRom != null)
             {
-                pictureMap.Visible = true;
-                rom?.Dispose();
-                clearAll();
-                GreenRooms.Clear();
-                comboRoomList.Items.Clear();
-                rom = newRom;
-                romType = rom.GameType;
-                rom.UseHackSupport = ToolStripMenuItemHackSupport.CheckState == CheckState.Checked;
-                map = new Bitmap((int)Math.Floor((rom.MapWidth + 4) * gridSize), (int)Math.Floor((rom.MapHeight + 4) * gridSize));
-                bitmapGraphics = Graphics.FromImage(map);
-                rom.LoadRooms();
-                setSearchOptionText();
-                pictureMap.Image = map;
-                pictureMap.Width = map.Width;
-                pictureMap.Height = map.Height;
-                selectedRoom = null;
-                originalSelectedRoom = null;
+                LoadRom(newRom);
                 return true;
             }
             return false;
@@ -466,24 +463,57 @@ namespace WarpSearch
         {
             if (newRom != null)
             {
-                pictureMap.Visible = true;
-                rom?.Dispose();
-                clearAll();
-                GreenRooms.Clear();
-                comboRoomList.Items.Clear();
-                rom = newRom;
-                romType = rom.GameType;
-                rom.UseHackSupport = ToolStripMenuItemHackSupport.CheckState == CheckState.Checked;
-                map = new Bitmap((int)Math.Floor((rom.MapWidth + 4) * gridSize), (int)Math.Floor((rom.MapHeight + 4) * gridSize));
-                bitmapGraphics = Graphics.FromImage(map);
-                rom.LoadRooms();
-                setSearchOptionText();
-                pictureMap.Image = map;
-                pictureMap.Width = map.Width;
-                pictureMap.Height = map.Height;
-                selectedRoom = null;
-                originalSelectedRoom = null;
+                LoadRom(newRom);
             }
+        }
+
+        private void LoadRom(GbaCv newRom)
+        {
+            pictureMap.Visible = true;
+            rom?.Dispose();
+            clearAll();
+            GreenRooms.Clear();
+            comboRoomList.Items.Clear();
+            rom = newRom;
+            romType = rom.GameType;
+            rom.UseHackSupport = ToolStripMenuItemHackSupport.CheckState == CheckState.Checked;
+            map = new Bitmap((int)Math.Floor((rom.MapWidth + 4) * gridSize), (int)Math.Floor((rom.MapHeight + 4) * gridSize));
+            bitmapGraphics = Graphics.FromImage(map);
+            rom.LoadRooms();
+            setSearchOptionText();
+            pictureMap.Image = map;
+            pictureMap.Width = map.Width;
+            pictureMap.Height = map.Height;
+            selectedRoom = null;
+            originalSelectedRoom = null;
+            string statusText = string.Empty;
+            switch (rom.GameType)
+            {
+                case GameTypeEnum.Aos:
+                    statusText = L10N.GetText("AoS");
+                    break;
+                case GameTypeEnum.Hod:
+                    statusText = L10N.GetText("HoD");
+                    break;
+            }
+            switch (rom.GameVersion) 
+            {
+                case GameVersionEnum.USA:
+                    statusText += L10N.GetText("USA");
+                    break;
+                case GameVersionEnum.JPN:
+                    statusText += L10N.GetText("JPN");
+                    break;
+                case GameVersionEnum.EUR:
+                    statusText += L10N.GetText("EUR");
+                    break;
+            }
+            if (rom.IsCustom)
+            {
+                statusText += L10N.GetText("Custom");
+            }
+
+            toolStripStatusRomType.Text = statusText;
         }
 
         private void ReloadRom()

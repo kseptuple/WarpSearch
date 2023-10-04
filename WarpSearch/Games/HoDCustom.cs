@@ -9,21 +9,21 @@ namespace WarpSearch.Games
     public class HoDCustom : HoD
     {
         public HoDCustom(byte[] fileData, FormMain formMain, ROMPointer firstRoomPointer,
-            ROMPointer mapPointer, ROMPointer mapLinePointer, GameVersion gameVersion) : base(fileData, formMain)
+            ROMPointer mapPointer, ROMPointer mapLinePointer, GameVersionEnum gameVersion) : base(fileData, formMain)
         {
             //RoomRootPointer = null;
             FirstRoomPointer = firstRoomPointer;
             MapPointer = mapPointer;
             MapLinePointer = mapLinePointer;
-            if (gameVersion == GameVersion.USA)
+            if (gameVersion == GameVersionEnum.USA)
             {
                 specialRomPointers = HoDUSA.DefaultSpecialRomPointers;
             }
-            else if (gameVersion == GameVersion.EUR)
+            else if (gameVersion == GameVersionEnum.EUR)
             {
                 specialRomPointers = HoDEUR.DefaultSpecialRomPointers;
             }
-            else if (gameVersion == GameVersion.JPN)
+            else if (gameVersion == GameVersionEnum.JPN)
             {
                 specialRomPointers = HoDJPN.DefaultSpecialRomPointers;
             }

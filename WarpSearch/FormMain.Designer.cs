@@ -84,6 +84,9 @@
             this.listFlag = new System.Windows.Forms.ListBox();
             this.panelFlag = new System.Windows.Forms.Panel();
             this.labelRequiredFlag = new System.Windows.Forms.Label();
+            this.statusStripMain = new System.Windows.Forms.StatusStrip();
+            this.toolStripStatusRomType = new System.Windows.Forms.ToolStripStatusLabel();
+            this.ToolStripMenuItemOpenCustom = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.pictureMap)).BeginInit();
             this.menuStripMain.SuspendLayout();
             this.panelMax.SuspendLayout();
@@ -94,6 +97,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.trackBarResize)).BeginInit();
             this.tableLayoutPanel1.SuspendLayout();
             this.panelFlag.SuspendLayout();
+            this.statusStripMain.SuspendLayout();
             this.SuspendLayout();
             // 
             // pictureMap
@@ -120,7 +124,7 @@
             this.menuStripMain.Location = new System.Drawing.Point(0, 0);
             this.menuStripMain.Name = "menuStripMain";
             this.menuStripMain.Padding = new System.Windows.Forms.Padding(5, 2, 0, 2);
-            this.menuStripMain.Size = new System.Drawing.Size(1415, 28);
+            this.menuStripMain.Size = new System.Drawing.Size(1415, 30);
             this.menuStripMain.TabIndex = 2;
             this.menuStripMain.Text = "menuStrip1";
             // 
@@ -130,6 +134,7 @@
             this.toolStripMenuItemAosLast,
             this.toolStripMenuItemHodLast,
             this.ToolStripMenuItemOpenRom,
+            this.ToolStripMenuItemOpenCustom,
             this.toolStripSeaprator1,
             this.ToolStripMenuItemExit});
             this.ToolStripMenuItemFile.Name = "ToolStripMenuItemFile";
@@ -187,20 +192,20 @@
             this.ToolStripMenuItemHackSupport.Checked = true;
             this.ToolStripMenuItemHackSupport.CheckState = System.Windows.Forms.CheckState.Checked;
             this.ToolStripMenuItemHackSupport.Name = "ToolStripMenuItemHackSupport";
-            this.ToolStripMenuItemHackSupport.Size = new System.Drawing.Size(224, 26);
+            this.ToolStripMenuItemHackSupport.Size = new System.Drawing.Size(210, 26);
             this.ToolStripMenuItemHackSupport.Text = "启用Hack支持(&H)";
             this.ToolStripMenuItemHackSupport.Click += new System.EventHandler(this.ToolStripMenuItemHackSupport_Click);
             // 
             // toolStripSeaprator2
             // 
             this.toolStripSeaprator2.Name = "toolStripSeaprator2";
-            this.toolStripSeaprator2.Size = new System.Drawing.Size(221, 6);
+            this.toolStripSeaprator2.Size = new System.Drawing.Size(207, 6);
             this.toolStripSeaprator2.Visible = false;
             // 
             // ToolStripMenuItemLanguage
             // 
             this.ToolStripMenuItemLanguage.Name = "ToolStripMenuItemLanguage";
-            this.ToolStripMenuItemLanguage.Size = new System.Drawing.Size(224, 26);
+            this.ToolStripMenuItemLanguage.Size = new System.Drawing.Size(210, 26);
             this.ToolStripMenuItemLanguage.Text = "语言(&L)";
             // 
             // panelMax
@@ -687,11 +692,40 @@
             this.labelRequiredFlag.Text = "需要的flag：";
             this.labelRequiredFlag.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
+            // statusStripMain
+            // 
+            this.statusStripMain.ImageScalingSize = new System.Drawing.Size(20, 20);
+            this.statusStripMain.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripStatusRomType});
+            this.statusStripMain.Location = new System.Drawing.Point(0, 828);
+            this.statusStripMain.Name = "statusStripMain";
+            this.statusStripMain.Size = new System.Drawing.Size(1415, 26);
+            this.statusStripMain.TabIndex = 25;
+            this.statusStripMain.Text = "statusStrip1";
+            // 
+            // toolStripStatusRomType
+            // 
+            this.toolStripStatusRomType.IsLink = true;
+            this.toolStripStatusRomType.LinkColor = System.Drawing.Color.Blue;
+            this.toolStripStatusRomType.Name = "toolStripStatusRomType";
+            this.toolStripStatusRomType.Size = new System.Drawing.Size(189, 20);
+            this.toolStripStatusRomType.Text = "toolStripStatusRomType";
+            this.toolStripStatusRomType.VisitedLinkColor = System.Drawing.Color.Blue;
+            this.toolStripStatusRomType.Click += new System.EventHandler(this.toolStripStatusRomType_Click);
+            // 
+            // ToolStripMenuItemOpenCustom
+            // 
+            this.ToolStripMenuItemOpenCustom.Name = "ToolStripMenuItemOpenCustom";
+            this.ToolStripMenuItemOpenCustom.Size = new System.Drawing.Size(256, 26);
+            this.ToolStripMenuItemOpenCustom.Text = "打开自定义ROM...";
+            this.ToolStripMenuItemOpenCustom.Click += new System.EventHandler(this.ToolStripMenuItemOpenCustom_Click);
+            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1415, 854);
+            this.Controls.Add(this.statusStripMain);
             this.Controls.Add(this.panelFlag);
             this.Controls.Add(this.tableLayoutPanel1);
             this.Controls.Add(this.labelScale);
@@ -721,6 +755,8 @@
             this.tableLayoutPanel1.PerformLayout();
             this.panelFlag.ResumeLayout(false);
             this.panelFlag.PerformLayout();
+            this.statusStripMain.ResumeLayout(false);
+            this.statusStripMain.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -784,6 +820,9 @@
         private System.Windows.Forms.Label labelArea;
         private System.Windows.Forms.Label labelNumber;
         private System.Windows.Forms.Label labelRequiredFlag;
+        private System.Windows.Forms.StatusStrip statusStripMain;
+        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusRomType;
+        private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItemOpenCustom;
     }
 }
 

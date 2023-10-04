@@ -24,18 +24,71 @@ namespace WarpSearch
 
         private bool isChangingRadio = false;
 
+        private string fileName;
+
+        private bool isChangeCustomParam = false;
+
         public FormCustomGame()
         {
             InitializeComponent();
         }
 
-        public FormCustomGame(byte[] data, FormMain formMain) : this()
+        public FormCustomGame(byte[] data, FormMain formMain, string fileName) : this()
         {
             this.data = data;
             this.game = new GbaCv(data, formMain);
             this.formMain = formMain;
+            this.fileName = fileName;
             L10N.SetLang(this, formMain.Language);
+            isChangeCustomParam = false;
+            radioButtonHoDU.Checked = true;
         }
+
+        public FormCustomGame(GbaCv game,  FormMain formMain) : this()
+        {
+            this.data = game.GetData();
+            this.game = game;
+            this.formMain = formMain;
+            this.fileName = null;
+            L10N.SetLang(this, formMain.Language);
+            isChangeCustomParam = true;
+            Text = L10N.GetText("ChangeCustomRom");
+            if (game.GameType == GameTypeEnum.Hod)
+            {
+                if (game.GameVersion == GameVersionEnum.USA)
+                {
+                    radioButtonHoDU.Checked = true;
+                }
+                else if (game.GameVersion == GameVersionEnum.JPN)
+                {
+                    radioButtonHoDJ.Checked = true;
+                }
+                else if (game.GameVersion == GameVersionEnum.EUR)
+                {
+                    radioButtonHoDE.Checked = true;
+                }
+            }
+            else if (game.GameType == GameTypeEnum.Aos)
+            {
+                if (game.GameVersion == GameVersionEnum.USA)
+                {
+                    radioButtonAoSU.Checked = true;
+                }
+                else if (game.GameVersion == GameVersionEnum.JPN)
+                {
+                    radioButtonAoSJ.Checked = true;
+                }
+                else if (game.GameVersion == GameVersionEnum.EUR)
+                {
+                    radioButtonAoSE.Checked = true;
+                }
+            }
+            textBoxRoomPointer.Text = "0x" + game.GetFirstRoomPointer().Address.ToString("X");
+            textBoxMapPointer.Text = "0x" + game.GetMapPointer().Address.ToString("X");
+            textBoxLinePointer.Text = "0x" + game.GetMapLinePointer().Address.ToString("X");
+        }
+
+        //private void
 
         private void textBoxRoomPointer_TextChanged(object sender, EventArgs e)
         {
@@ -142,30 +195,46 @@ namespace WarpSearch
             {
                 return;
             }
-
+            GameVersionEnum gameVersion = GameVersionEnum.USA;
             if (radioButtonHoDU.Checked)
             {
-                game = new HoDCustom(data, formMain, new ROMPointer(firstRoomPointer), new ROMPointer(mapPointer), new ROMPointer(mapLinePointer), GameVersion.USA);
+                gameVersion = GameVersionEnum.USA;
+                game = new HoDCustom(data, formMain, new ROMPointer(firstRoomPointer), new ROMPointer(mapPointer), new ROMPointer(mapLinePointer), gameVersion);
             }
             else if (radioButtonHoDJ.Checked)
             {
-                game = new HoDCustom(data, formMain, new ROMPointer(firstRoomPointer), new ROMPointer(mapPointer), new ROMPointer(mapLinePointer), GameVersion.JPN);
+                gameVersion = GameVersionEnum.JPN;
+                game = new HoDCustom(data, formMain, new ROMPointer(firstRoomPointer), new ROMPointer(mapPointer), new ROMPointer(mapLinePointer), gameVersion);
             }
             else if (radioButtonHoDE.Checked)
             {
-                game = new HoDCustom(data, formMain, new ROMPointer(firstRoomPointer), new ROMPointer(mapPointer), new ROMPointer(mapLinePointer), GameVersion.EUR);
+                gameVersion = GameVersionEnum.EUR;
+                game = new HoDCustom(data, formMain, new ROMPointer(firstRoomPointer), new ROMPointer(mapPointer), new ROMPointer(mapLinePointer), gameVersion);
             }
             else if (radioButtonAoSU.Checked)
             {
-                game = new AoSCustom(data, formMain, new ROMPointer(firstRoomPointer), new ROMPointer(mapPointer), new ROMPointer(mapLinePointer), GameVersion.USA);
+                gameVersion = GameVersionEnum.USA;
+                game = new AoSCustom(data, formMain, new ROMPointer(firstRoomPointer), new ROMPointer(mapPointer), new ROMPointer(mapLinePointer), gameVersion);
             }
             else if (radioButtonAoSJ.Checked)
             {
-                game = new AoSCustom(data, formMain, new ROMPointer(firstRoomPointer), new ROMPointer(mapPointer), new ROMPointer(mapLinePointer), GameVersion.JPN);
+                gameVersion = GameVersionEnum.JPN;
+                game = new AoSCustom(data, formMain, new ROMPointer(firstRoomPointer), new ROMPointer(mapPointer), new ROMPointer(mapLinePointer), gameVersion);
             }
             else if (radioButtonAoSE.Checked)
             {
-                game = new AoSCustom(data, formMain, new ROMPointer(firstRoomPointer), new ROMPointer(mapPointer), new ROMPointer(mapLinePointer), GameVersion.EUR);
+                gameVersion = GameVersionEnum.EUR;
+                game = new AoSCustom(data, formMain, new ROMPointer(firstRoomPointer), new ROMPointer(mapPointer), new ROMPointer(mapLinePointer), gameVersion);
+            }
+
+            if (game != null)
+            {
+                game.GameVersion = gameVersion;
+                if (!isChangeCustomParam)
+                {
+                    game.FileName = fileName;
+                }
+                game.IsCustom = true;
             }
 
             formMain.OpenCustomRom(game);

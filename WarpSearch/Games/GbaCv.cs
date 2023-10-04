@@ -22,12 +22,18 @@ namespace WarpSearch.Games
         protected ROMPointer MapPointer { get; set; } = 0;
         protected ROMPointer MapLinePointer { get; set; } = 0;
         protected ROMPointer FirstRoomPointer { get; set; } = 0;
+        public ROMPointer GetMapPointer() => MapPointer;
+        public ROMPointer GetMapLinePointer() => MapLinePointer;
+        public ROMPointer GetFirstRoomPointer() => FirstRoomPointer;
+        public byte[] GetData() => data;
+
         protected uint RoomFlagStart { get; set; } = 0;
 
         protected Dictionary<uint, List<uint>> PointerAddresses { get; set; } = new Dictionary<uint, List<uint>>();
         protected bool PointerAddressInitFinished { get; set; }
 
         public GameTypeEnum GameType { get; set; } = GameTypeEnum.Null;
+        public GameVersionEnum GameVersion { get; set; }
 
         public int MapWidth { get; set; } = 0;
         public int MapHeight { get; set; } = 0;
@@ -43,6 +49,10 @@ namespace WarpSearch.Games
         protected List<Point> mapPositionList { get; set; } = new List<Point>();
 
         protected bool useHackSupport = false;
+
+        public string FileName { get; set; }
+        public bool IsCustom { get; set; } = false;
+
         public virtual bool UseHackSupport
         {
             get

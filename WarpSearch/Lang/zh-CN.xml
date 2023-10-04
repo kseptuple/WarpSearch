@@ -3,6 +3,7 @@
   <FormMain Text="晓月/白夜出城搜索器">
     <ToolStripMenuItemFile>文件(&amp;F)</ToolStripMenuItemFile>
     <ToolStripMenuItemOpenRom>打开ROM...</ToolStripMenuItemOpenRom>
+    <ToolStripMenuItemOpenCustom>打开自定义ROM...</ToolStripMenuItemOpenCustom>
     <toolStripMenuItemAosLast>打开上次的晓月ROM(&amp;A)</toolStripMenuItemAosLast>
     <toolStripMenuItemHodLast>打开上次的白夜ROM(&amp;H)</toolStripMenuItemHodLast>
     <ToolStripMenuItemExit>退出(&amp;X)</ToolStripMenuItemExit>
@@ -48,9 +49,16 @@
     <buttonCancel>取消</buttonCancel>
   </FormCustomGame>
   <Text>
-    <FileTooLarge>文件太大（> 32M），不是GBA ROM。</FileTooLarge>
+    <FileTooLarge>文件太大（>32M），不是GBA ROM。</FileTooLarge>
     <UnknownRom>无法识别该ROM的游戏，是否手动指定？</UnknownRom>
     <NoMark>✖</NoMark>
     <YesMark>✔</YesMark>
+    <HoD>白夜协奏曲</HoD>
+    <AoS>晓月圆舞曲</AoS>
+    <USA>（美版）</USA>
+    <JPN>（日版）</JPN>
+    <EUR>（欧版）</EUR>
+    <Custom>（自定义）</Custom>
+    <ChangeCustomRom>修改自定义ROM</ChangeCustomRom>
   </Text>
 </Language>

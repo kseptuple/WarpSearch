@@ -3,6 +3,7 @@
   <FormMain Text="AoS/Hod Warp Searcher">
     <ToolStripMenuItemFile>&amp;File</ToolStripMenuItemFile>
     <ToolStripMenuItemOpenRom>Open ROM...</ToolStripMenuItemOpenRom>
+    <ToolStripMenuItemOpenCustom>Open Custom ROM...</ToolStripMenuItemOpenCustom>
     <toolStripMenuItemAosLast>Open Last &amp;AoS ROM</toolStripMenuItemAosLast>
     <toolStripMenuItemHodLast>Open Last &amp;HoD ROM</toolStripMenuItemHodLast>
     <ToolStripMenuItemExit>E&amp;xit</ToolStripMenuItemExit>
@@ -52,5 +53,12 @@
     <UnknownRom>Can not detect game type, do you want to specify it manually?</UnknownRom>
     <NoMark>✖</NoMark>
     <YesMark>✔</YesMark>
+    <HoD>Harmony of Dissonance</HoD>
+    <AoS>Aria of Sorrow</AoS>
+    <USA> (USA)</USA>
+    <JPN> (Japan)</JPN>
+    <EUR> (Europe)</EUR>
+    <Custom> (Customized)</Custom>
+    <ChangeCustomRom>Change Custom ROM</ChangeCustomRom>
   </Text>
 </Language>

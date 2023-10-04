@@ -158,7 +158,7 @@ namespace WarpSearch
         Aos
     }
 
-    public enum GameVersion
+    public enum GameVersionEnum
     {
         USA,
         EUR,

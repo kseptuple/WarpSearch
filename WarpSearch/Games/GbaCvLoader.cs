@@ -11,7 +11,7 @@ namespace WarpSearch.Games
 {
     public static class GbaCvLoader
     {
-        public static GbaCv LoadGame(string fileName, FormMain formMain)
+        public static GbaCv LoadGame(string fileName, FormMain formMain, bool forceCustom)
         {
             int fileLength = 0;
             if (File.Exists(fileName))
@@ -34,29 +34,62 @@ namespace WarpSearch.Games
             fs.Flush();
             fs.Close();
 
-            string gameSignStr = Encoding.ASCII.GetString(gameSign);
-            switch (gameSignStr)
+            if (forceCustom)
             {
-                case "CASTLEVANIA2A2CEA4":
-                    return new AoSUSA(data, formMain);
-                case "CASTLEVANIA2A2CPA4":
-                    return new AoSEUR(data, formMain);
-                case "CASTLEVANIA2A2CJEM":
-                    return new AoSJPN(data, formMain);
-                case "CASTLEVANIA1ACHEA4":
-                    return new HoDUSA(data, formMain);
-                case "CASTLEVANIA1ACHPA4":
-                    return new HoDEUR(data, formMain);
-                case "CASTLEVANIA1ACHJEM":
-                    return new HoDJPN(data, formMain);
-                default:
-                    var result = MessageBox.Show(formMain, L10N.GetText("UnknownRom"), formMain.Text, MessageBoxButtons.OKCancel, MessageBoxIcon.Information);
-                    if (result == DialogResult.OK)
-                    {
-                        new FormCustomGame(data, formMain).Show(formMain);
-                    }
-                    return null;
+                new FormCustomGame(data, formMain, fileName).Show(formMain);
+                return null;
             }
+            else
+            {
+                string gameSignStr = Encoding.ASCII.GetString(gameSign);
+                GbaCv result = null;
+                GameVersionEnum gameVersion = GameVersionEnum.USA;
+                switch (gameSignStr)
+                {
+                    case "CASTLEVANIA2A2CEA4":
+                        result = new AoSUSA(data, formMain);
+                        gameVersion = GameVersionEnum.USA;
+                        break;
+                    case "CASTLEVANIA2A2CPA4":
+                        result = new AoSEUR(data, formMain);
+                        gameVersion = GameVersionEnum.EUR;
+                        break;
+                    case "CASTLEVANIA2A2CJEM":
+                        result = new AoSJPN(data, formMain);
+                        gameVersion = GameVersionEnum.JPN;
+                        break;
+                    case "CASTLEVANIA1ACHEA4":
+                        result = new HoDUSA(data, formMain);
+                        gameVersion = GameVersionEnum.USA;
+                        break;
+                    case "CASTLEVANIA1ACHPA4":
+                        result = new HoDEUR(data, formMain);
+                        gameVersion = GameVersionEnum.EUR;
+                        break;
+                    case "CASTLEVANIA1ACHJEM":
+                        result = new HoDJPN(data, formMain);
+                        gameVersion = GameVersionEnum.JPN;
+                        break;
+                    default:
+                        var confirmResult = MessageBox.Show(formMain, L10N.GetText("UnknownRom"), formMain.Text, MessageBoxButtons.OKCancel, MessageBoxIcon.Information);
+                        if (confirmResult == DialogResult.OK)
+                        {
+                            new FormCustomGame(data, formMain, fileName).Show(formMain);
+                        }
+                        return null;
+                }
+                if (result != null)
+                {
+                    result.FileName = fileName;
+                    result.GameVersion = gameVersion;
+                }
+                return result;
+            }
+        }
+
+        public static void ResetCustomRom(GbaCv game, FormMain formMain)
+        {
+            new FormCustomGame(game, formMain).Show(formMain);
         }
 
         public static List<SpecialRoomData> getSpecialRooms(GameTypeEnum gameType, bool useHackSupport, List<ROMPointer> romPointers)
