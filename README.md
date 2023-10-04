@@ -1,6 +1,14 @@
 # WarpSearch
  An utility to search warps in Castlevania: Aria of Sorrow and Castlevania: Harmony of Disonnance.
- 
+
+## Update History
+ ### 1.1.0
+ * Support Europe version of both games.
+ * Support customized rom settings.
+ * Various bug fixes.
+ ### 1.0.0
+ First version.
+
 ## Usage
  Click on File -> Open ROM... to load an Aos/Hod rom. This tool currently supports USA and JPN version of both games.
  ### Search warp destination
@@ -35,8 +43,4 @@
  ![图片](https://user-images.githubusercontent.com/20589452/220098159-111a195b-1a21-46ca-9d2d-7046a22397fb.png)
  ### Hack supporting
  Click on Setting -> Use Hack Supporting to support better to modified games.
- 
- ## Future update planning
- * Support Europe version of both games
- * Support setting customized params to modified games
  
