@@ -2,6 +2,9 @@
  An utility to search warps in Castlevania: Aria of Sorrow and Castlevania: Harmony of Disonnance.
 
 ## Update History
+ ### 1.1.1
+ * Various bug fixes.
+ * User interface is slightly changed to enhance experience.
  ### 1.1.0
  * Support Europe version of both games.
  * Support customized rom settings.
