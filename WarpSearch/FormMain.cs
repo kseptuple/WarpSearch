@@ -866,8 +866,23 @@ namespace WarpSearch
                 {
                     originalSelectedRoom = selectedRoom;
                     textRoomPointer.Text = selectedRoom.Room.RoomPointer.ToString();
-                    textSector.Text = selectedRoom.MapSector.ToString("X2");
-                    textRoomId.Text = selectedRoom.RoomId.ToString("X2");
+                    if (selectedRoom.MapSector >= 0)
+                    {
+                        textSector.Text = selectedRoom.MapSector.ToString("X2");
+                    }
+                    else
+                    {
+                        textSector.Text = "-";
+                    }
+                    if (selectedRoom.RoomId >= 0)
+                    {
+                        textRoomId.Text = selectedRoom.RoomId.ToString("X2");
+                    }
+                    else
+                    {
+                        textRoomId.Text = "-";
+                    }
+
                     var room = selectedRoom.Room;
                     comboRoomList.Items.Add(selectedRoom.Room.RoomPointer.ToString());
                     comboRoomList.SelectedIndex = 0;

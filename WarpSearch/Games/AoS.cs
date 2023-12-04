@@ -54,6 +54,7 @@ namespace WarpSearch.Games
                 }
                 maxExitAddress = 0x8_00_00_00;
                 minExitAddress = 0xA_00_00_00;
+                InitPointerAddress();
             }
             ROMPointer pointer = MapPointer;
             //不再使用RoomRootPointer加载房间
@@ -96,7 +97,7 @@ namespace WarpSearch.Games
                     mainForm.DrawRoom(x, y, RoomType.Null);
                 }
             }
-            if (useHackSupport)
+            if (useHackSupport && load)
             {
                 //从房间列表补充房间
                 List<ROMPointer> sectorList = new List<ROMPointer>();
@@ -155,12 +156,16 @@ namespace WarpSearch.Games
                 //画到地图外面的房间
                 foreach (var roomPosition in roomPositions)
                 {
-                    if (!RoomsAtPositions.ContainsKey(roomPosition.Key))
+                    if (load && !RoomsAtPositions.ContainsKey(roomPosition.Key))
                     {
                         RoomsAtPositions.Add(roomPosition.Key, roomPosition.Value);
                     }
                     if (!mapPositionList.Exists(p => p.X == roomPosition.Key.X && p.Y == roomPosition.Key.Y))
+                    {
                         mainForm.DrawRoom(roomPosition.Key.X, roomPosition.Key.Y, RoomType.Error);
+                        mapPositionList.Add(new Point(roomPosition.Key.X, roomPosition.Key.Y));
+                    }
+                        
                 }
             }
 

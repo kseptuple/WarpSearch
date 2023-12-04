@@ -30,7 +30,6 @@ namespace WarpSearch.Games
         protected uint RoomFlagStart { get; set; } = 0;
 
         protected Dictionary<uint, List<uint>> PointerAddresses { get; set; } = new Dictionary<uint, List<uint>>();
-        protected bool PointerAddressInitFinished { get; set; }
 
         public GameTypeEnum GameType { get; set; } = GameTypeEnum.Null;
         public GameVersionEnum GameVersion { get; set; }
@@ -70,11 +69,10 @@ namespace WarpSearch.Games
             mainForm = formMain;
             data = fileData;
             fileSize = data.Length;
-            PointerAddressInitFinished = false;
         }
 
         //所有可能是指针的数据
-        private void initPointerAddress()
+        protected void InitPointerAddress()
         {
             PointerAddresses.Clear();
             for (uint i = 0; i < data.Length; i++)
@@ -89,7 +87,6 @@ namespace WarpSearch.Games
                     PointerAddresses[pointer].Add(i + 0x8_00_00_00);
                 }
             }
-            PointerAddressInitFinished = true;
         }
 
         public virtual void LoadRooms(bool load = true)
