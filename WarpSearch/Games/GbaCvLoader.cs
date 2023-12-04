@@ -36,7 +36,7 @@ namespace WarpSearch.Games
 
             if (forceCustom)
             {
-                new FormCustomGame(data, formMain, fileName).Show(formMain);
+                new FormCustomGame(data, formMain, fileName).ShowDialog(formMain);
                 return null;
             }
             else
@@ -96,7 +96,7 @@ namespace WarpSearch.Games
                         var confirmResult = MessageBox.Show(formMain, L10N.GetText("UnknownRom"), formMain.Text, MessageBoxButtons.OKCancel, MessageBoxIcon.Information);
                         if (confirmResult == DialogResult.OK)
                         {
-                            new FormCustomGame(data, formMain, fileName).Show(formMain);
+                            new FormCustomGame(data, formMain, fileName).ShowDialog(formMain);
                         }
                         return null;
                 }
@@ -111,7 +111,7 @@ namespace WarpSearch.Games
 
         public static void ResetCustomRom(GbaCv game, FormMain formMain)
         {
-            new FormCustomGame(game, formMain).Show(formMain);
+            new FormCustomGame(game, formMain).ShowDialog(formMain);
         }
 
         public static List<SpecialRoomData> getSpecialRooms(GameTypeEnum gameType, bool useHackSupport, List<ROMPointer> romPointers)

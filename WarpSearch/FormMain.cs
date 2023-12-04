@@ -84,6 +84,8 @@ namespace WarpSearch
         private List<RomSettings> romSettings = new List<RomSettings>();
         private const int maxRomSettings = 1000;
 
+        private bool isChangingNumericSize = false;
+
         public FormMain()
         {
             InitializeComponent();
@@ -194,6 +196,7 @@ namespace WarpSearch
         private void PictureMap_Click(object sender, EventArgs e)
         {
             if (rom == null) return;
+            ActiveControl = null;
             var mouseEvent = e as MouseEventArgs;
             if (mouseEvent != null)
             {
@@ -521,6 +524,20 @@ namespace WarpSearch
             }
 
             toolStripStatusRomType.Text = statusText;
+            if (rom.GameType == GameTypeEnum.Aos)
+            {
+                labelOptionSearches[0].Enabled = false;
+                labelSearchLevel1.Enabled = false;
+                labelOptionSearches[2].Enabled = false;
+                labelSearchLevel3.Enabled = false;
+            }
+            else
+            {
+                labelOptionSearches[0].Enabled = true;
+                labelSearchLevel1.Enabled = true;
+                labelOptionSearches[2].Enabled = true;
+                labelSearchLevel3.Enabled = true;
+            }
         }
 
         private void ReloadRom()
@@ -688,6 +705,95 @@ namespace WarpSearch
 
         private void TrackBarResize_Scroll(object sender, EventArgs e)
         {
+            isChangingNumericSize = true;
+            textBoxResize.Text = ((decimal)trackBarResize.Value / 100).ToString();
+            formatNumericSize();
+            resizeMap();
+            isChangingNumericSize = false;
+        }
+
+        private void textBoxResize_TextChanged(object sender, EventArgs e)
+        {
+            if (!isChangingNumericSize)
+            {
+                checkNumericSize();
+                resizeMap();
+            }
+        }
+
+        private void textBoxResize_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (e.KeyChar == ',')
+            {
+                e.KeyChar = '.';
+            }
+
+            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar) && (e.KeyChar != '.'))
+            {
+                e.Handled = true;
+            }
+
+            if (e.KeyChar == '.' && textBoxResize.Text.IndexOf('.') > -1)
+            {
+                e.Handled = true;
+            }
+        }
+
+        private void textBoxResize_Validating(object sender, CancelEventArgs e)
+        {
+            formatNumericSize();
+        }
+
+        private void checkNumericSize()
+        {
+            if (!isChangingNumericSize)
+            {
+                isChangingNumericSize = true;
+                decimal value = 0;
+                if (decimal.TryParse(textBoxResize.Text, out value))
+                {
+                    decimal newValue = value;
+                    if (value * 100 < trackBarResize.Minimum) newValue = (decimal)trackBarResize.Minimum / 100;
+                    if (value * 100 > trackBarResize.Maximum) newValue = (decimal)trackBarResize.Maximum / 100;
+
+                    if (newValue != value)
+                    {
+                        textBoxResize.Text = newValue.ToString();
+                        formatNumericSize();
+                    }
+                    trackBarResize.Value = (int)(newValue * 100);
+                    if (textBoxResize.Text.Length - textBoxResize.Text.IndexOf('.') > 3)
+                    {
+                        textBoxResize.Text = textBoxResize.Text.Substring(0, textBoxResize.Text.IndexOf('.') + 3);
+                    }
+                }
+                else
+                {
+                    if (textBoxResize.Text != "")
+                    {
+                        textBoxResize.Text = ((decimal)trackBarResize.Minimum / 100).ToString();
+                    }
+                    trackBarResize.Value = trackBarResize.Minimum;
+                }
+                isChangingNumericSize = false;
+            }
+        }
+
+        private void formatNumericSize()
+        {
+            decimal value = 0;
+            if (decimal.TryParse(textBoxResize.Text, out value))
+            {
+                textBoxResize.Text = value.ToString("0.00");
+            }
+            else
+            {
+                textBoxResize.Text = ((decimal)trackBarResize.Minimum / 100).ToString();
+            }
+        }
+
+        private void resizeMap()
+        {
             scale = trackBarResize.Value / 100.0f;
             if (rom == null) return;
             map = new Bitmap((int)Math.Floor((rom.MapWidth + 4) * gridSize), (int)Math.Floor((rom.MapHeight + 4) * gridSize));
@@ -728,6 +834,31 @@ namespace WarpSearch
                     toolStripMenuItemHodLast.Enabled = !string.IsNullOrEmpty(defaultHodPath);
                     ToolStripMenuItemHackSupport.CheckState = useHackSupport ? CheckState.Checked : CheckState.Unchecked;
                     Language = settings.Language;
+                    if (settings.Scale >= trackBarResize.Minimum && settings.Scale <= trackBarResize.Maximum)
+                    {
+                        textBoxResize.Text = ((decimal)settings.Scale / 100).ToString();
+                        formatNumericSize();
+                    }
+                    if (settings.SearchLevel >= trackBarSearchOption.Minimum + 1 && settings.SearchLevel <= trackBarSearchOption.Maximum + 1)
+                    {
+                        trackBarSearchOption.Value = settings.SearchLevel - 1;
+                    }
+                    if (settings.FormWidth != 0 && settings.FormHeight != 0)
+                    {
+                        Rectangle currentScreen = Screen.FromControl(this).WorkingArea;
+
+                        Top = settings.FormTop;
+                        Left = settings.FormLeft;
+                        if (Top < 0) Top = 0;
+                        if (Left < 0) Left = 0;
+                        if (Top > currentScreen.Height - MaximumSize.Height) Top = currentScreen.Height - MaximumSize.Height;
+                        if (Left > currentScreen.Width - MaximumSize.Width) Left = currentScreen.Width - MaximumSize.Width;
+
+                        Height = settings.FormHeight;
+                        Width = settings.FormWidth;
+                        if (Top + Height > currentScreen.Height) Height = currentScreen.Height - Top;
+                        if (Left + Width > currentScreen.Width) Width = currentScreen.Width - Left;
+                    }
                 }
                 if (settingError)
                 {
@@ -796,6 +927,7 @@ namespace WarpSearch
                     }
                 }
             }
+            setSearchOptionText();
         }
 
         private void ToolStripMenuItemLanguageItem_Click(object sender, EventArgs e)
@@ -828,6 +960,12 @@ namespace WarpSearch
                 settings.HodPath = defaultHodPath;
                 settings.useHackSupport = useHackSupport;
                 settings.Language = Language;
+                settings.Scale = trackBarResize.Value;
+                settings.SearchLevel = trackBarSearchOption.Value + 1;
+                settings.FormWidth = Width;
+                settings.FormHeight = Height;
+                settings.FormLeft = Left;
+                settings.FormTop = Top;
                 xmlSerializer.Serialize(sw, settings);
                 sw.Flush();
             }
@@ -1004,6 +1142,12 @@ namespace WarpSearch
         public string HodPath { get; set; }
         public bool useHackSupport { get; set; }
         public string Language { get; set; }
+        public int Scale { get; set; }
+        public int SearchLevel { get; set; }
+        public int FormTop { get; set; }
+        public int FormLeft { get; set; }
+        public int FormWidth { get; set; }
+        public int FormHeight { get; set; }
     }
 
     public class RomSettings

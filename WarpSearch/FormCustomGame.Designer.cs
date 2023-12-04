@@ -313,6 +313,7 @@
             this.Name = "FormCustomGame";
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "打开自定义ROM";
             this.groupBoxCustomize.ResumeLayout(false);
             this.groupBoxCustomize.PerformLayout();

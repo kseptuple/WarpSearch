@@ -28,12 +28,12 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.pictureMap = new System.Windows.Forms.PictureBox();
             this.menuStripMain = new System.Windows.Forms.MenuStrip();
             this.ToolStripMenuItemFile = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItemAosLast = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItemHodLast = new System.Windows.Forms.ToolStripMenuItem();
             this.ToolStripMenuItemOpenRom = new System.Windows.Forms.ToolStripMenuItem();
+            this.ToolStripMenuItemOpenCustom = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeaprator1 = new System.Windows.Forms.ToolStripSeparator();
             this.ToolStripMenuItemExit = new System.Windows.Forms.ToolStripMenuItem();
             this.ToolStripMenuItemSetting = new System.Windows.Forms.ToolStripMenuItem();
@@ -86,8 +86,9 @@
             this.labelRequiredFlag = new System.Windows.Forms.Label();
             this.statusStripMain = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusRomType = new System.Windows.Forms.ToolStripStatusLabel();
-            this.ToolStripMenuItemOpenCustom = new System.Windows.Forms.ToolStripMenuItem();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureMap)).BeginInit();
+            this.panelPicture = new System.Windows.Forms.Panel();
+            this.pictureMap = new System.Windows.Forms.PictureBox();
+            this.textBoxResize = new System.Windows.Forms.TextBox();
             this.menuStripMain.SuspendLayout();
             this.panelMax.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
@@ -98,21 +99,9 @@
             this.tableLayoutPanel1.SuspendLayout();
             this.panelFlag.SuspendLayout();
             this.statusStripMain.SuspendLayout();
+            this.panelPicture.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureMap)).BeginInit();
             this.SuspendLayout();
-            // 
-            // pictureMap
-            // 
-            this.pictureMap.BackColor = System.Drawing.Color.Black;
-            this.pictureMap.Location = new System.Drawing.Point(528, 31);
-            this.pictureMap.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.pictureMap.Name = "pictureMap";
-            this.pictureMap.Size = new System.Drawing.Size(875, 599);
-            this.pictureMap.TabIndex = 0;
-            this.pictureMap.TabStop = false;
-            this.pictureMap.Visible = false;
-            this.pictureMap.Click += new System.EventHandler(this.PictureMap_Click);
-            this.pictureMap.Paint += new System.Windows.Forms.PaintEventHandler(this.PictureMap_Paint);
-            this.pictureMap.MouseMove += new System.Windows.Forms.MouseEventHandler(this.PictureMap_MouseMove);
             // 
             // menuStripMain
             // 
@@ -124,7 +113,7 @@
             this.menuStripMain.Location = new System.Drawing.Point(0, 0);
             this.menuStripMain.Name = "menuStripMain";
             this.menuStripMain.Padding = new System.Windows.Forms.Padding(5, 2, 0, 2);
-            this.menuStripMain.Size = new System.Drawing.Size(1415, 30);
+            this.menuStripMain.Size = new System.Drawing.Size(1415, 28);
             this.menuStripMain.TabIndex = 2;
             this.menuStripMain.Text = "menuStrip1";
             // 
@@ -164,6 +153,13 @@
             this.ToolStripMenuItemOpenRom.Size = new System.Drawing.Size(256, 26);
             this.ToolStripMenuItemOpenRom.Text = "打开ROM...";
             this.ToolStripMenuItemOpenRom.Click += new System.EventHandler(this.ToolStripMenuItemOpenRom_Click);
+            // 
+            // ToolStripMenuItemOpenCustom
+            // 
+            this.ToolStripMenuItemOpenCustom.Name = "ToolStripMenuItemOpenCustom";
+            this.ToolStripMenuItemOpenCustom.Size = new System.Drawing.Size(256, 26);
+            this.ToolStripMenuItemOpenCustom.Text = "打开自定义ROM...";
+            this.ToolStripMenuItemOpenCustom.Click += new System.EventHandler(this.ToolStripMenuItemOpenCustom_Click);
             // 
             // toolStripSeaprator1
             // 
@@ -466,7 +462,7 @@
             this.trackBarResize.Maximum = 400;
             this.trackBarResize.Minimum = 100;
             this.trackBarResize.Name = "trackBarResize";
-            this.trackBarResize.Size = new System.Drawing.Size(364, 30);
+            this.trackBarResize.Size = new System.Drawing.Size(317, 30);
             this.trackBarResize.SmallChange = 5;
             this.trackBarResize.TabIndex = 6;
             this.trackBarResize.TickStyle = System.Windows.Forms.TickStyle.None;
@@ -713,33 +709,64 @@
             this.toolStripStatusRomType.VisitedLinkColor = System.Drawing.Color.Blue;
             this.toolStripStatusRomType.Click += new System.EventHandler(this.toolStripStatusRomType_Click);
             // 
-            // ToolStripMenuItemOpenCustom
+            // panelPicture
             // 
-            this.ToolStripMenuItemOpenCustom.Name = "ToolStripMenuItemOpenCustom";
-            this.ToolStripMenuItemOpenCustom.Size = new System.Drawing.Size(256, 26);
-            this.ToolStripMenuItemOpenCustom.Text = "打开自定义ROM...";
-            this.ToolStripMenuItemOpenCustom.Click += new System.EventHandler(this.ToolStripMenuItemOpenCustom_Click);
+            this.panelPicture.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.panelPicture.AutoScroll = true;
+            this.panelPicture.Controls.Add(this.pictureMap);
+            this.panelPicture.Location = new System.Drawing.Point(520, 31);
+            this.panelPicture.Name = "panelPicture";
+            this.panelPicture.Size = new System.Drawing.Size(895, 794);
+            this.panelPicture.TabIndex = 26;
+            // 
+            // pictureMap
+            // 
+            this.pictureMap.BackColor = System.Drawing.Color.Black;
+            this.pictureMap.Location = new System.Drawing.Point(0, 0);
+            this.pictureMap.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.pictureMap.Name = "pictureMap";
+            this.pictureMap.Size = new System.Drawing.Size(875, 599);
+            this.pictureMap.TabIndex = 2;
+            this.pictureMap.TabStop = false;
+            this.pictureMap.Visible = false;
+            this.pictureMap.Click += new System.EventHandler(this.PictureMap_Click);
+            this.pictureMap.Paint += new System.Windows.Forms.PaintEventHandler(this.PictureMap_Paint);
+            this.pictureMap.MouseMove += new System.Windows.Forms.MouseEventHandler(this.PictureMap_MouseMove);
+            // 
+            // textBoxResize
+            // 
+            this.textBoxResize.Location = new System.Drawing.Point(472, 438);
+            this.textBoxResize.Name = "textBoxResize";
+            this.textBoxResize.Size = new System.Drawing.Size(45, 25);
+            this.textBoxResize.TabIndex = 27;
+            this.textBoxResize.Text = "3.00";
+            this.textBoxResize.TextChanged += new System.EventHandler(this.textBoxResize_TextChanged);
+            this.textBoxResize.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBoxResize_KeyPress);
+            this.textBoxResize.Validating += new System.ComponentModel.CancelEventHandler(this.textBoxResize_Validating);
             // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1415, 854);
+            this.Controls.Add(this.textBoxResize);
+            this.Controls.Add(this.panelPicture);
             this.Controls.Add(this.statusStripMain);
             this.Controls.Add(this.panelFlag);
             this.Controls.Add(this.tableLayoutPanel1);
             this.Controls.Add(this.labelScale);
             this.Controls.Add(this.trackBarResize);
             this.Controls.Add(this.panelMax);
-            this.Controls.Add(this.pictureMap);
             this.Controls.Add(this.menuStripMain);
             this.MainMenuStrip = this.menuStripMain;
             this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.MinimumSize = new System.Drawing.Size(1200, 800);
             this.Name = "FormMain";
             this.Text = "晓月/白夜出城搜索器";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormMain_FormClosing);
             this.Load += new System.EventHandler(this.FormMain_Load);
-            ((System.ComponentModel.ISupportInitialize)(this.pictureMap)).EndInit();
             this.menuStripMain.ResumeLayout(false);
             this.menuStripMain.PerformLayout();
             this.panelMax.ResumeLayout(false);
@@ -757,14 +784,14 @@
             this.panelFlag.PerformLayout();
             this.statusStripMain.ResumeLayout(false);
             this.statusStripMain.PerformLayout();
+            this.panelPicture.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.pictureMap)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
         }
 
         #endregion
-
-        private System.Windows.Forms.PictureBox pictureMap;
         private System.Windows.Forms.MenuStrip menuStripMain;
         private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItemFile;
         private System.Windows.Forms.ToolStripSeparator toolStripSeaprator1;
@@ -823,6 +850,9 @@
         private System.Windows.Forms.StatusStrip statusStripMain;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusRomType;
         private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItemOpenCustom;
+        private System.Windows.Forms.Panel panelPicture;
+        private System.Windows.Forms.PictureBox pictureMap;
+        private System.Windows.Forms.TextBox textBoxResize;
     }
 }
 
