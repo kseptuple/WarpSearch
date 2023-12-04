@@ -243,7 +243,7 @@ namespace WarpSearch
                             {
                                 currentSourceRoomInListId = -1;
                                 selectRoom(actualX, actualY);
-                                rom.FindWarpSource(trackBarSearchOption.Value);
+                                //选择房间的时候已经找到了源房间，不需要再搜索了
                                 pictureMap.Refresh();
                             }
                             else if (mouseEvent.Button == MouseButtons.Left)
@@ -1070,6 +1070,8 @@ namespace WarpSearch
 
             var pointEndCenter = new PointF((EndX + offset + 0.5f) * gridSize, (EndY + offset + 0.5f) * gridSize);
             var maxLength = ((EndY - StartY) * (EndY - StartY) + (EndX - StartX) * (EndX - StartX)) / 4f;
+            //length: 箭头两边的长度
+            //maxLength: 箭头中轴允许的最大长度的平方
             var length = 0f;
             var angle1 = 0d;
             var angle2 = 0d;
@@ -1078,25 +1080,25 @@ namespace WarpSearch
                 length = (float)Math.Sqrt(maxLength);
                 if (maxLength < 0.4f)
                 {
-                    length *= 1.41421354f;
+                    length *= 1.41421354f;      //Math.Sec(Math.PI / 4)
                     angle1 = angle + Math.PI / 4;
                     angle2 = angle - Math.PI / 4;
                 }
                 else if (maxLength < 1.4f)
                 {
-                    length *= 1.15470052f;
+                    length *= 1.15470052f;      //Math.Sec(Math.PI / 6)
                     angle1 = angle + Math.PI / 6;
                     angle2 = angle - Math.PI / 6;
                 }
                 else if (maxLength < 2.6f)
                 {
-                    length *= 1.08239222f;
+                    length *= 1.08239222f;      //Math.Sec(Math.PI / 8)
                     angle1 = angle + Math.PI / 8;
                     angle2 = angle - Math.PI / 8;
                 }
                 else
                 {
-                    length *= 1.03527617f;
+                    length *= 1.03527617f;      //Math.Sec(Math.PI / 12)
                     angle1 = angle + Math.PI / 12;
                     angle2 = angle - Math.PI / 12;
                 }
