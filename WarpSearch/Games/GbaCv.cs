@@ -382,11 +382,14 @@ namespace WarpSearch.Games
                                 }
                                 else if (sourceXToRoom == 2)
                                 {
+                                    //远距离换版
+                                    if (sourceYToRoom == -1 || sourceYToRoom == room.Height)
+                                        continue;
                                     //不要红门传送
                                     if (searchLevel == 0)
                                         continue;
                                     //红门传送，判断红门的位置
-                                    if (searchLevel == 1 && (room.GateHeight == null || !room.GateHeight.Contains(sourceYToRoom)))
+                                    if (searchLevel < 3 && (room.GateHeight == null || !room.GateHeight.Contains(sourceYToRoom)))
                                         continue;
                                 }
                             }
@@ -446,7 +449,7 @@ namespace WarpSearch.Games
                             }
                             //出口是目标房间的其他入口
                             //需要排除，防止重复
-                            if (currentPointer < exitInfo.ExitPointer && exits.Find(e => e.ExitPointer.Address == currentPointer.Address) != null)
+                            if (currentPointer < exitInfo.ExitPointer && exits.Exists(e => e.ExitPointer.Address == currentPointer.Address))
                             {
                                 break;
                             }
