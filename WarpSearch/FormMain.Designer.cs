@@ -113,7 +113,7 @@
             this.menuStripMain.Location = new System.Drawing.Point(0, 0);
             this.menuStripMain.Name = "menuStripMain";
             this.menuStripMain.Padding = new System.Windows.Forms.Padding(5, 2, 0, 2);
-            this.menuStripMain.Size = new System.Drawing.Size(1415, 28);
+            this.menuStripMain.Size = new System.Drawing.Size(1546, 28);
             this.menuStripMain.TabIndex = 2;
             this.menuStripMain.Text = "menuStrip1";
             // 
@@ -214,7 +214,7 @@
             this.panelMax.Location = new System.Drawing.Point(12, 31);
             this.panelMax.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.panelMax.Name = "panelMax";
-            this.panelMax.Size = new System.Drawing.Size(505, 402);
+            this.panelMax.Size = new System.Drawing.Size(527, 402);
             this.panelMax.TabIndex = 5;
             // 
             // tableLayoutPanel2
@@ -229,7 +229,7 @@
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
             this.tableLayoutPanel2.RowCount = 1;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(499, 28);
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(524, 28);
             this.tableLayoutPanel2.TabIndex = 23;
             // 
             // labelRoomPointer
@@ -274,7 +274,7 @@
             this.panelBottom.Location = new System.Drawing.Point(9, 130);
             this.panelBottom.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.panelBottom.Name = "panelBottom";
-            this.panelBottom.Size = new System.Drawing.Size(496, 268);
+            this.panelBottom.Size = new System.Drawing.Size(515, 268);
             this.panelBottom.TabIndex = 9;
             // 
             // labelSearchLevel
@@ -340,7 +340,7 @@
             // 
             this.labelSearchLevel1.Location = new System.Drawing.Point(160, 224);
             this.labelSearchLevel1.Name = "labelSearchLevel1";
-            this.labelSearchLevel1.Size = new System.Drawing.Size(333, 38);
+            this.labelSearchLevel1.Size = new System.Drawing.Size(355, 38);
             this.labelSearchLevel1.TabIndex = 13;
             this.labelSearchLevel1.Text = "搜索红门传送（仅白夜）";
             // 
@@ -348,7 +348,7 @@
             // 
             this.labelSearchLevel3.Location = new System.Drawing.Point(160, 150);
             this.labelSearchLevel3.Name = "labelSearchLevel3";
-            this.labelSearchLevel3.Size = new System.Drawing.Size(333, 38);
+            this.labelSearchLevel3.Size = new System.Drawing.Size(355, 38);
             this.labelSearchLevel3.TabIndex = 12;
             this.labelSearchLevel3.Text = "搜索一格宽房间右边第二格（仅白夜）";
             // 
@@ -356,7 +356,7 @@
             // 
             this.labelSearchLevel2.Location = new System.Drawing.Point(160, 188);
             this.labelSearchLevel2.Name = "labelSearchLevel2";
-            this.labelSearchLevel2.Size = new System.Drawing.Size(333, 38);
+            this.labelSearchLevel2.Size = new System.Drawing.Size(355, 38);
             this.labelSearchLevel2.TabIndex = 11;
             this.labelSearchLevel2.Text = "搜索斜角换版";
             // 
@@ -364,7 +364,7 @@
             // 
             this.labelSearchLevel4.Location = new System.Drawing.Point(160, 112);
             this.labelSearchLevel4.Name = "labelSearchLevel4";
-            this.labelSearchLevel4.Size = new System.Drawing.Size(333, 38);
+            this.labelSearchLevel4.Size = new System.Drawing.Size(355, 38);
             this.labelSearchLevel4.TabIndex = 10;
             this.labelSearchLevel4.Text = "搜索远距离换版";
             // 
@@ -372,7 +372,7 @@
             // 
             this.labelSearchLevel5.Location = new System.Drawing.Point(160, 76);
             this.labelSearchLevel5.Name = "labelSearchLevel5";
-            this.labelSearchLevel5.Size = new System.Drawing.Size(333, 38);
+            this.labelSearchLevel5.Size = new System.Drawing.Size(355, 38);
             this.labelSearchLevel5.TabIndex = 9;
             this.labelSearchLevel5.Text = "搜索非正常房间内换版";
             // 
@@ -384,7 +384,7 @@
             this.trackBarSearchOption.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.trackBarSearchOption.Maximum = 5;
             this.trackBarSearchOption.Name = "trackBarSearchOption";
-            this.trackBarSearchOption.Size = new System.Drawing.Size(252, 30);
+            this.trackBarSearchOption.Size = new System.Drawing.Size(274, 30);
             this.trackBarSearchOption.TabIndex = 8;
             this.trackBarSearchOption.TickStyle = System.Windows.Forms.TickStyle.None;
             this.trackBarSearchOption.Value = 4;
@@ -394,7 +394,7 @@
             // 
             this.labelFindSourceTip.Location = new System.Drawing.Point(129, 2);
             this.labelFindSourceTip.Name = "labelFindSourceTip";
-            this.labelFindSourceTip.Size = new System.Drawing.Size(364, 38);
+            this.labelFindSourceTip.Size = new System.Drawing.Size(386, 38);
             this.labelFindSourceTip.TabIndex = 7;
             this.labelFindSourceTip.Text = "右键点击选择目标房间，左键点击选择起始房间";
             // 
@@ -422,7 +422,7 @@
             // 
             this.labelFindDestTip.Location = new System.Drawing.Point(-3, 0);
             this.labelFindDestTip.Name = "labelFindDestTip";
-            this.labelFindDestTip.Size = new System.Drawing.Size(496, 38);
+            this.labelFindDestTip.Size = new System.Drawing.Size(518, 38);
             this.labelFindDestTip.TabIndex = 0;
             this.labelFindDestTip.Text = "右键点击选择房间，左键点击选择换版位置";
             // 
@@ -462,7 +462,7 @@
             this.trackBarResize.Maximum = 400;
             this.trackBarResize.Minimum = 100;
             this.trackBarResize.Name = "trackBarResize";
-            this.trackBarResize.Size = new System.Drawing.Size(317, 30);
+            this.trackBarResize.Size = new System.Drawing.Size(339, 30);
             this.trackBarResize.SmallChange = 5;
             this.trackBarResize.TabIndex = 6;
             this.trackBarResize.TickStyle = System.Windows.Forms.TickStyle.None;
@@ -665,7 +665,7 @@
             this.toolStripStatusRomType});
             this.statusStripMain.Location = new System.Drawing.Point(0, 828);
             this.statusStripMain.Name = "statusStripMain";
-            this.statusStripMain.Size = new System.Drawing.Size(1415, 26);
+            this.statusStripMain.Size = new System.Drawing.Size(1546, 26);
             this.statusStripMain.TabIndex = 25;
             this.statusStripMain.Text = "statusStrip1";
             // 
@@ -686,9 +686,9 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.panelPicture.AutoScroll = true;
             this.panelPicture.Controls.Add(this.pictureMap);
-            this.panelPicture.Location = new System.Drawing.Point(520, 31);
+            this.panelPicture.Location = new System.Drawing.Point(545, 31);
             this.panelPicture.Name = "panelPicture";
-            this.panelPicture.Size = new System.Drawing.Size(895, 794);
+            this.panelPicture.Size = new System.Drawing.Size(1001, 794);
             this.panelPicture.TabIndex = 26;
             // 
             // pictureMap
@@ -707,7 +707,7 @@
             // 
             // textBoxResize
             // 
-            this.textBoxResize.Location = new System.Drawing.Point(472, 438);
+            this.textBoxResize.Location = new System.Drawing.Point(494, 438);
             this.textBoxResize.Name = "textBoxResize";
             this.textBoxResize.Size = new System.Drawing.Size(45, 25);
             this.textBoxResize.TabIndex = 27;
@@ -722,7 +722,7 @@
             this.panelFlag.Controls.Add(this.labelRequiredFlag);
             this.panelFlag.Location = new System.Drawing.Point(335, 472);
             this.panelFlag.Name = "panelFlag";
-            this.panelFlag.Size = new System.Drawing.Size(182, 250);
+            this.panelFlag.Size = new System.Drawing.Size(204, 250);
             this.panelFlag.TabIndex = 25;
             this.panelFlag.Visible = false;
             // 
@@ -733,7 +733,7 @@
             this.listFlag.Location = new System.Drawing.Point(3, 17);
             this.listFlag.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.listFlag.Name = "listFlag";
-            this.listFlag.Size = new System.Drawing.Size(170, 229);
+            this.listFlag.Size = new System.Drawing.Size(198, 229);
             this.listFlag.TabIndex = 26;
             // 
             // labelRequiredFlag
@@ -750,7 +750,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1415, 854);
+            this.ClientSize = new System.Drawing.Size(1546, 854);
             this.Controls.Add(this.panelFlag);
             this.Controls.Add(this.textBoxResize);
             this.Controls.Add(this.panelPicture);

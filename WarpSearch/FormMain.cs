@@ -296,6 +296,8 @@ namespace WarpSearch
                                         }
                                         isAddingToRoomList = true;
                                         listFlag.Items.Clear();
+                                        bool hasFlag = false;
+                                        int roomAndExitCount = 0;
                                         for (int i = 0; i < listSourceRoom.Items.Count; i++)
                                         {
                                             foreach (var currentRoom in currentRoomInfoList)
@@ -308,9 +310,16 @@ namespace WarpSearch
                                                     {
                                                         listSourceRoom.SelectedIndex = i;
                                                     }
-                                                    displaySourceRoom(currentSourceRoomInList);
+                                                    roomAndExitCount++;
+                                                    displaySourceRoom(currentSourceRoomInList, out bool _hasFlag);
+                                                    hasFlag = hasFlag || _hasFlag;
                                                 }
                                             }
+                                        }
+                                        panelFlag.Visible = hasFlag;
+                                        if (roomAndExitCount == 1 && hasFlag)
+                                        {
+                                            listFlag.Items.RemoveAt(0);
                                         }
                                         isAddingToRoomList = false;
                                     }
@@ -329,8 +338,9 @@ namespace WarpSearch
             }
         }
 
-        private void displaySourceRoom(RoomAndExit currentSourceRoomInList)
+        private void displaySourceRoom(RoomAndExit currentSourceRoomInList, out bool hasFlag)
         {
+            hasFlag = false;
             for (int j = 0; j < SourceRoomPointers.Count; j++)
             {
                 if (SourceRoomPointers[j] == currentSourceRoomInList.Room.RoomPointer.Address)
@@ -371,30 +381,46 @@ namespace WarpSearch
             {
                 textDestFlag.Text = selectedRoom.Room.EventFlag.ToString("X2");
             }
-            if (flagListForRoom.ContainsKey(currentSourceRoomInList))
+            if (!isAddingToRoomList)
             {
-                if (!isAddingToRoomList)
+                if (flagListForRoom.ContainsKey(currentSourceRoomInList))
                 {
                     listFlag.Items.Clear();
+
+                    var flagList = flagListForRoom[currentSourceRoomInList];
+                    foreach (var roomFlag in flagList)
+                    {
+                        listFlag.Items.Add($"{roomFlag.Key:X8}:{roomFlag.Value:X2}");
+                    }
+                    panelFlag.Show();
+                    hasFlag = true;
                 }
                 else
                 {
-                    if (listFlag.Items.Count != 0)
-                    {
-                        listFlag.Items.Add("===========");
-                    }
+                    panelFlag.Hide();
                 }
-                
-                var flagList = flagListForRoom[currentSourceRoomInList];
-                foreach (var roomFlag in flagList)
-                {
-                    listFlag.Items.Add($"{roomFlag.Key:X8}:{roomFlag.Value:X2}");
-                }
-                panelFlag.Show();
             }
             else
             {
-                panelFlag.Hide();
+                if (listFlag.Items.Count != 0)
+                {
+                    listFlag.Items.Add("===========");
+                }
+                listFlag.Items.Add($"{currentSourceRoomInList.Room.RoomPointer.Address:X8}" +
+                    $" ({currentSourceRoomInList.Exit.SourceX},{currentSourceRoomInList.Exit.SourceY}):");
+                if (flagListForRoom.ContainsKey(currentSourceRoomInList))
+                {
+                    var flagList = flagListForRoom[currentSourceRoomInList];
+                    foreach (var roomFlag in flagList)
+                    {
+                        listFlag.Items.Add($"{roomFlag.Key:X8}:{roomFlag.Value:X2}");
+                    }
+                    hasFlag = true;
+                }
+                else
+                {
+                    listFlag.Items.Add("-");
+                }
             }
         }
 
@@ -1147,7 +1173,7 @@ namespace WarpSearch
                 currentSourceRoomInListIdList.Clear();
             }
             var currentSourceRoomInList = (RoomAndExit)listSourceRoom.SelectedItem;
-            displaySourceRoom(currentSourceRoomInList);
+            displaySourceRoom(currentSourceRoomInList, out _);
         }
 
         private void ToolStripMenuItemHackSupport_Click(object sender, EventArgs e)
