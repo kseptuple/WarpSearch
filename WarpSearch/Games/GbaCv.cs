@@ -165,9 +165,11 @@ namespace WarpSearch.Games
             {
                 mainForm.ClearLine();
             }
+            bool isUncertain = false;
             var roomInfo = mainForm.selectedRoom;
             var sourcePos = mainForm.selectedPos;
             if (roomInfo == null || roomInfo.Room == null) return;
+
             var currentPointer = roomInfo.Room.ExitPointer;
             var sourceXToRoom = sourcePos.X - roomInfo.Room.Left;
 
@@ -177,96 +179,128 @@ namespace WarpSearch.Games
                 if (roomInfo.Room.Width == 1 && sourceXToRoom > 1) sourceXToRoom = 1;
             }
             var sourceYToRoom = sourcePos.Y - roomInfo.Room.Top;
-            while (currentPointer <= maxExitAddress)
+            List<uint> destAddressList = new List<uint>();
+            uint lastExitPossibleAddress = (uint)(data.Length - exitLength);
+            while (currentPointer <= lastExitPossibleAddress)
             {
                 //出口的位置对应上了
                 if (sourceXToRoom == (sbyte)(data[currentPointer + 4]) && sourceYToRoom == (sbyte)(data[currentPointer + 5]))
                 {
                     var destPointer = getROMPointer(currentPointer);
-                    if (!RoomStructs.ContainsKey(destPointer.Address))
+                    Dictionary<uint, byte> flagList = new Dictionary<uint, byte>();
+                    ushort flag = 0;
+                    //防止后续读取时越界
+                    int minimumSpace = GameType == GameTypeEnum.Aos ? 13 : 11;
+                    bool isFound = false;
+                    while (destPointer.Address >= 0x8_00_00_00 && destPointer.Address < 0x8_00_00_00 + data.Length - minimumSpace)
                     {
-                        Dictionary<uint, byte> flagList = new Dictionary<uint, byte>();
-                        ushort flag = 0;
-                        //防止后续读取时越界
-                        int minimumSpace = GameType == GameTypeEnum.Aos ? 13 : 11;
-                        while (destPointer.Address >= 0x8_00_00_00 && destPointer.Address < 0x8_00_00_00 + data.Length - minimumSpace)
+                        if (!destAddressList.Contains(destPointer.Address))
                         {
-                            flag = getUShort((uint)(destPointer + 2));
-                            if (flag == 0xFFFF)
+                            destAddressList.Add(destPointer.Address);
+                        }
+                        else
+                        {
+                            //出现循环
+                            break;
+                        }
+                        flag = getUShort((uint)(destPointer + 2));
+                        if (flag == 0xFFFF)
+                        {
+                            //不存在下一个房间
+                            if (RoomStructs.ContainsKey(destPointer.Address))
                             {
-                                if (!RoomStructs.ContainsKey(destPointer.Address))
+                                isFound = true;
+                            }
+                            break;
+                        }
+                        else
+                        {
+                            if (GameType == GameTypeEnum.Hod)
+                            {
+                                if (RoomStructs.ContainsKey(destPointer.Address))
                                 {
-                                    mainForm.AddRoomPos(sourcePos.X, sourcePos.Y, true, previewOnly);
-                                    drawBadRoom();
+                                    isFound = true;
+                                    break;
                                 }
                                 else
                                 {
-                                    mainForm.AddRoomPos(sourcePos.X, sourcePos.Y, false, previewOnly, true);
-                                    drawGoodRoom(destPointer, true, flagList);
-                                }
-                                return;
-                            }
-                            else
-                            {
-                                if (GameType == GameTypeEnum.Hod)
-                                {
-                                    int bit = 0;
-                                    uint address = getFlagAddress(flag, out bit);
+                                    isUncertain = true;
+                                    uint address = getFlagAddress(flag, out int bit);
                                     if (!flagList.ContainsKey(address))
                                     {
                                         flagList.Add(address, 0);
                                     }
                                     flagList[address] |= (byte)(1 << bit);
                                 }
-                                destPointer = getROMPointerNotAligned((uint)(destPointer + 4));
                             }
-                        }
 
-                        //房间列表里没有这样的房间，是假出口
-                        mainForm.AddRoomPos(sourcePos.X, sourcePos.Y, true, previewOnly);
-                        drawBadRoom();
+                            destPointer = getROMPointerNotAligned((uint)(destPointer + 4));
+                        }
+                    }
+
+                    if (isFound)
+                    {
+                        var newIsUncertain = drawGoodRoom(destPointer, isUncertain, flagList);
+                        mainForm.AddRoomPos(sourcePos.X, sourcePos.Y, false, previewOnly, newIsUncertain);
                     }
                     else
                     {
-                        mainForm.AddRoomPos(sourcePos.X, sourcePos.Y, false, previewOnly);
-                        drawGoodRoom(destPointer, false, null);
+                        mainForm.AddRoomPos(sourcePos.X, sourcePos.Y, true, previewOnly);
+                        drawBadRoom();
                     }
                     return;
                 }
                 currentPointer = currentPointer.Address + (uint)exitLength;
             }
-            drawBadRoom();
             mainForm.AddRoomPos(sourcePos.X, sourcePos.Y, true, previewOnly);
+            drawBadRoom();
+            return;
 
-            void drawGoodRoom(ROMPointer pointer, bool isUncertain, Dictionary<uint, byte> flagList)
+            bool drawGoodRoom(ROMPointer pointer, bool _isUncertain, Dictionary<uint, byte> flagList)
             {
+                //获取目标房间的位置坐标
+                var (exitX, exitY) = getExitDestPos();
+                bool isOutsideDest = false;
+                if (exitX < 0 || exitX > RoomStructs[pointer.Address].Width - 1 || exitY < 0 || exitY > RoomStructs[pointer.Address].Height - 1)
+                {
+                    isOutsideDest = true;
+                    _isUncertain = true;
+                }
                 if (!previewOnly)
                 {
                     mainForm.sourceRoom = roomInfo.Room;
                     mainForm.destRoom = RoomStructs[pointer.Address];
-                    var destX = 0;
-                    var destY = 0;
-                    //获取目标房间的位置坐标
-                    if (GameType == GameTypeEnum.Aos)
-                    {
-                        destX = RoomStructs[pointer.Address].Left + (sbyte)(data[currentPointer + 11]);
-                        destY = RoomStructs[pointer.Address].Top + (sbyte)(data[currentPointer + 13]);
-                    }
-                    else if (GameType == GameTypeEnum.Hod)
-                    {
-                        destX = RoomStructs[pointer.Address].Left + (sbyte)(data[currentPointer + 9]);
-                        destY = RoomStructs[pointer.Address].Top + (sbyte)(data[currentPointer + 11]);
-                        var XOffset = data[currentPointer + 8];
-                        if (XOffset > 0x80) destX += 1;
-                    }
-                    mainForm.AddRoomPos(destX, destY, false, false, isUncertain);
+                    var destX = RoomStructs[pointer.Address].Left + exitX;
+                    var destY = RoomStructs[pointer.Address].Top + exitY;
+                    mainForm.AddRoomPos(destX, destY, false, false, _isUncertain);
                     mainForm.SetFlagListForDestSearch(flagList);
                     //画线
                     if (sourcePos.X != destX || sourcePos.Y != destY)
                     {
-                        mainForm.AddLine(sourcePos.X, sourcePos.Y, destX, destY);
+                        mainForm.AddLine(sourcePos.X, sourcePos.Y, destX, destY, true);
+                    }
+                    if (isOutsideDest)
+                    {
+                        mainForm.AddLine(RoomStructs[pointer.Address].Left, RoomStructs[pointer.Address].Top, destX, destY, false);
                     }
                 }
+                return _isUncertain;
+            }
+
+            (int, int) getExitDestPos()
+            {
+                if (GameType == GameTypeEnum.Aos)
+                {
+                    return ((sbyte)data[currentPointer + 11], (sbyte)data[currentPointer + 13]);
+                }
+                else if (GameType == GameTypeEnum.Hod)
+                {
+                    var tmpX = 0;
+                    var XOffset = data[currentPointer + 8];
+                    if (XOffset > 0x80) tmpX = 1;
+                    return ((sbyte)data[currentPointer + 9] + tmpX, (sbyte)data[currentPointer + 11]);
+                }
+                return (0, 0);
             }
 
             void drawBadRoom()
@@ -294,9 +328,9 @@ namespace WarpSearch.Games
                 addSourceRoom(exit, false);
             }
 
-            getAllPossibleExits(roomInfo.Room.RoomPointer.Address, new Dictionary<uint, byte>());
+            getAllPossibleExits(roomInfo.Room.RoomPointer.Address, new Dictionary<uint, byte>(), false);
 
-            void getAllPossibleExits(uint address, Dictionary<uint, byte> flagList)
+            void getAllPossibleExits(uint address, Dictionary<uint, byte> flagList, bool isUncertain)
             {
                 //已经检查过这个指针了，防止循环
                 if (addresses.Contains(address))
@@ -311,12 +345,24 @@ namespace WarpSearch.Games
                     foreach (uint currentPointerAddress in addressList)
                     {
                         var currentPointerActualAddress = currentPointerAddress - 0x8_00_00_00;
+
+                        //可能性1：这个指针本身是个出口
+                        if (currentPointerAddress > minExitAddress)
+                        {
+                            if (!exits.Exists(e => e.ExitPointer.Address == currentPointerAddress))
+                            {
+                                addSourceRoom(CreateExitInfo(currentPointerAddress), isUncertain, flagList);
+                            }
+                        }
+
+                        //可能性2：是其他地方跳转过来的
                         ushort flag = getUShort(currentPointerActualAddress - 2);
                         //flag == -1时没有机会跳到下一个房间了
                         if (flag == 0xFFFF)
                         {
                             continue;
                         }
+
                         //复制一个新的flagList
                         Dictionary<uint, byte> newFlagList = new Dictionary<uint, byte>();
                         foreach (var flagItem in flagList)
@@ -325,6 +371,7 @@ namespace WarpSearch.Games
                         }
                         if (GameType == GameTypeEnum.Hod)
                         {
+                            isUncertain = true;
                             int bit = 0;
                             uint flagAddress = getFlagAddress(flag, out bit);
                             if (!newFlagList.ContainsKey(flagAddress))
@@ -333,16 +380,8 @@ namespace WarpSearch.Games
                             }
                             newFlagList[flagAddress] |= (byte)(1 << bit);
                         }
-                        //可能性1：这个指针本身是个出口
-                        if (currentPointerAddress > minExitAddress)
-                        {
-                            if (!exits.Exists(e => e.ExitPointer.Address == currentPointerAddress))
-                            {
-                                addSourceRoom(CreateExitInfo(currentPointerAddress), true, newFlagList);
-                            }
-                        }
-                        //可能性2：是其他地方跳转过来的
-                        getAllPossibleExits(currentPointerAddress - 4, newFlagList);
+
+                        getAllPossibleExits(currentPointerAddress - 4, newFlagList, isUncertain);
                     }
                 }
             }
@@ -350,6 +389,10 @@ namespace WarpSearch.Games
             void addSourceRoom(ExitInfo exitInfo, bool isUncertain, Dictionary<uint, byte> flagList = null)
             {
                 var exitGroupId = 0;
+                if (exitInfo.DestX < 0 || exitInfo.DestX > roomInfo.Room.Width - 1  || exitInfo.DestY < 0 || exitInfo.DestY > roomInfo.Room.Height - 1)
+                {
+                    isUncertain = true;
+                }
                 //出口分组
                 if (GameType == GameTypeEnum.Aos)
                 {
@@ -383,7 +426,7 @@ namespace WarpSearch.Games
                                 else if (sourceXToRoom == 2)
                                 {
                                     //远距离换版
-                                    if (sourceYToRoom == -1 || sourceYToRoom == room.Height)
+                                    if (sourceYToRoom <= -1 || sourceYToRoom >= room.Height)
                                         continue;
                                     //不要红门传送
                                     if (searchLevel == 0)
@@ -436,28 +479,9 @@ namespace WarpSearch.Games
                         //找到了该出口位置对应的出口
                         if (sourceXToRoom == (sbyte)(data[currentPointer + 4]) && sourceYToRoom == (sbyte)(data[currentPointer + 5]))
                         {
-                            var destPointer = getROMPointer(currentPointer);
-                            //房间列表里没有这样的房间，是假出口
-                            if (!RoomStructs.ContainsKey(destPointer.Address))
-                            {
-                                break;
-                            }
-                            //出口不是目标房间
-                            if (destPointer.Address != roomInfo.Room.RoomPointer.Address)
-                            {
-                                break;
-                            }
-                            //出口是目标房间的其他入口
-                            //需要排除，防止重复
-                            if (currentPointer < exitInfo.ExitPointer && exits.Exists(e => e.ExitPointer.Address == currentPointer.Address))
-                            {
-                                break;
-                            }
-                            else
-                            {
-                                mainForm.AddSourceRoom(RoomStructs[room.RoomPointer.Address], exitInfo, isUncertain, flagList);
-                                break;
-                            }
+                            //如果这是一个通往目标房间的出口，那么它应当能在其他路径中搜索到
+                            //所以不需要重复处理
+                            break;
                         }
                         currentPointer = currentPointer.Address + (uint)exitLength;
                         num++;

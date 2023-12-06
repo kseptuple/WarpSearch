@@ -81,14 +81,14 @@
             this.labelSourcePointerInfo = new System.Windows.Forms.Label();
             this.labelExitInfo = new System.Windows.Forms.Label();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.listFlag = new System.Windows.Forms.ListBox();
-            this.panelFlag = new System.Windows.Forms.Panel();
-            this.labelRequiredFlag = new System.Windows.Forms.Label();
             this.statusStripMain = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusRomType = new System.Windows.Forms.ToolStripStatusLabel();
             this.panelPicture = new System.Windows.Forms.Panel();
             this.pictureMap = new System.Windows.Forms.PictureBox();
             this.textBoxResize = new System.Windows.Forms.TextBox();
+            this.panelFlag = new System.Windows.Forms.Panel();
+            this.listFlag = new System.Windows.Forms.ListBox();
+            this.labelRequiredFlag = new System.Windows.Forms.Label();
             this.menuStripMain.SuspendLayout();
             this.panelMax.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
@@ -97,10 +97,10 @@
             this.panelTop.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trackBarResize)).BeginInit();
             this.tableLayoutPanel1.SuspendLayout();
-            this.panelFlag.SuspendLayout();
             this.statusStripMain.SuspendLayout();
             this.panelPicture.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureMap)).BeginInit();
+            this.panelFlag.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStripMain
@@ -127,7 +127,7 @@
             this.toolStripSeaprator1,
             this.ToolStripMenuItemExit});
             this.ToolStripMenuItemFile.Name = "ToolStripMenuItemFile";
-            this.ToolStripMenuItemFile.Size = new System.Drawing.Size(71, 24);
+            this.ToolStripMenuItemFile.Size = new System.Drawing.Size(71, 26);
             this.ToolStripMenuItemFile.Text = "文件(&F)";
             // 
             // toolStripMenuItemAosLast
@@ -180,7 +180,7 @@
             this.toolStripSeaprator2,
             this.ToolStripMenuItemLanguage});
             this.ToolStripMenuItemSetting.Name = "ToolStripMenuItemSetting";
-            this.ToolStripMenuItemSetting.Size = new System.Drawing.Size(72, 24);
+            this.ToolStripMenuItemSetting.Size = new System.Drawing.Size(72, 26);
             this.ToolStripMenuItemSetting.Text = "设置(&S)";
             // 
             // ToolStripMenuItemHackSupport
@@ -658,36 +658,6 @@
             this.tableLayoutPanel1.Size = new System.Drawing.Size(317, 244);
             this.tableLayoutPanel1.TabIndex = 22;
             // 
-            // listFlag
-            // 
-            this.listFlag.FormattingEnabled = true;
-            this.listFlag.ItemHeight = 15;
-            this.listFlag.Location = new System.Drawing.Point(3, 25);
-            this.listFlag.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.listFlag.Name = "listFlag";
-            this.listFlag.Size = new System.Drawing.Size(162, 214);
-            this.listFlag.TabIndex = 23;
-            // 
-            // panelFlag
-            // 
-            this.panelFlag.Controls.Add(this.labelRequiredFlag);
-            this.panelFlag.Controls.Add(this.listFlag);
-            this.panelFlag.Location = new System.Drawing.Point(335, 472);
-            this.panelFlag.Name = "panelFlag";
-            this.panelFlag.Size = new System.Drawing.Size(168, 244);
-            this.panelFlag.TabIndex = 24;
-            this.panelFlag.Visible = false;
-            // 
-            // labelRequiredFlag
-            // 
-            this.labelRequiredFlag.AutoSize = true;
-            this.labelRequiredFlag.Location = new System.Drawing.Point(5, 8);
-            this.labelRequiredFlag.Name = "labelRequiredFlag";
-            this.labelRequiredFlag.Size = new System.Drawing.Size(99, 15);
-            this.labelRequiredFlag.TabIndex = 24;
-            this.labelRequiredFlag.Text = "需要的flag：";
-            this.labelRequiredFlag.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
             // statusStripMain
             // 
             this.statusStripMain.ImageScalingSize = new System.Drawing.Size(20, 20);
@@ -746,15 +716,45 @@
             this.textBoxResize.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBoxResize_KeyPress);
             this.textBoxResize.Validating += new System.ComponentModel.CancelEventHandler(this.textBoxResize_Validating);
             // 
+            // panelFlag
+            // 
+            this.panelFlag.Controls.Add(this.listFlag);
+            this.panelFlag.Controls.Add(this.labelRequiredFlag);
+            this.panelFlag.Location = new System.Drawing.Point(335, 472);
+            this.panelFlag.Name = "panelFlag";
+            this.panelFlag.Size = new System.Drawing.Size(182, 250);
+            this.panelFlag.TabIndex = 25;
+            this.panelFlag.Visible = false;
+            // 
+            // listFlag
+            // 
+            this.listFlag.FormattingEnabled = true;
+            this.listFlag.ItemHeight = 15;
+            this.listFlag.Location = new System.Drawing.Point(3, 17);
+            this.listFlag.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.listFlag.Name = "listFlag";
+            this.listFlag.Size = new System.Drawing.Size(170, 229);
+            this.listFlag.TabIndex = 26;
+            // 
+            // labelRequiredFlag
+            // 
+            this.labelRequiredFlag.AutoSize = true;
+            this.labelRequiredFlag.Location = new System.Drawing.Point(3, 0);
+            this.labelRequiredFlag.Name = "labelRequiredFlag";
+            this.labelRequiredFlag.Size = new System.Drawing.Size(99, 15);
+            this.labelRequiredFlag.TabIndex = 24;
+            this.labelRequiredFlag.Text = "需要的flag：";
+            this.labelRequiredFlag.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1415, 854);
+            this.Controls.Add(this.panelFlag);
             this.Controls.Add(this.textBoxResize);
             this.Controls.Add(this.panelPicture);
             this.Controls.Add(this.statusStripMain);
-            this.Controls.Add(this.panelFlag);
             this.Controls.Add(this.tableLayoutPanel1);
             this.Controls.Add(this.labelScale);
             this.Controls.Add(this.trackBarResize);
@@ -780,12 +780,12 @@
             ((System.ComponentModel.ISupportInitialize)(this.trackBarResize)).EndInit();
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
-            this.panelFlag.ResumeLayout(false);
-            this.panelFlag.PerformLayout();
             this.statusStripMain.ResumeLayout(false);
             this.statusStripMain.PerformLayout();
             this.panelPicture.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pictureMap)).EndInit();
+            this.panelFlag.ResumeLayout(false);
+            this.panelFlag.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -841,18 +841,18 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeaprator2;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
-        private System.Windows.Forms.ListBox listFlag;
-        private System.Windows.Forms.Panel panelFlag;
         private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItemLanguage;
         private System.Windows.Forms.Label labelArea;
         private System.Windows.Forms.Label labelNumber;
-        private System.Windows.Forms.Label labelRequiredFlag;
         private System.Windows.Forms.StatusStrip statusStripMain;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusRomType;
         private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItemOpenCustom;
         private System.Windows.Forms.Panel panelPicture;
         private System.Windows.Forms.PictureBox pictureMap;
         private System.Windows.Forms.TextBox textBoxResize;
+        private System.Windows.Forms.Panel panelFlag;
+        private System.Windows.Forms.ListBox listFlag;
+        private System.Windows.Forms.Label labelRequiredFlag;
     }
 }
 
