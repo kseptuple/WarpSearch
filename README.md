@@ -50,5 +50,5 @@
  * Support customized rom settings.
  * Various bug fixes.
  ### 1.0.0
- First version.
+ * First version.
  
