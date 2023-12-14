@@ -1,17 +1,6 @@
 # WarpSearch
  An utility to search warps in Castlevania: Aria of Sorrow and Castlevania: Harmony of Disonnance.
 
-## Update History
- ### 1.1.1
- * Various bug fixes.
- * User interface is slightly changed to enhance experience.
- ### 1.1.0
- * Support Europe version of both games.
- * Support customized rom settings.
- * Various bug fixes.
- ### 1.0.0
- First version.
-
 ## Usage
  Click on File -> Open ROM... to load an Aos/Hod rom. This tool currently supports USA and JPN version of both games.
  ### Search warp destination
@@ -22,6 +11,8 @@
  You may notice somewhere inside a room is also green. This means if you can somehow trigger a "room change" inside that room, you will be able warp to a certain place.
  
  ![image](https://user-images.githubusercontent.com/20589452/220073003-f02279c5-060b-4aa6-928e-ee62c8eb4d5d.png)
+
+ An orange square means the program cannot determine whether this exit will work. This involves 2 cases: One is that the target position is out of target room, causing unavoidable second warp; another is that this warp reqiures certain flag to work (only in HoD). Both of them only happens in very rare case though.
 
  ### Search warp source
  Select "Where can I warp from to here". Right click on the map to select a room, and some of the rooms will become black in the map. Left click a blacked room to show how can you access selected room from the blacked room. You can also choose a room in the list box on the left.
@@ -46,4 +37,18 @@
  ![图片](https://user-images.githubusercontent.com/20589452/220098159-111a195b-1a21-46ca-9d2d-7046a22397fb.png)
  ### Hack supporting
  Click on Setting -> Use Hack Supporting to support better to modified games.
+
+ 
+## Update History
+ ### 1.1.2
+ * Fix various egde cases.
+ ### 1.1.1
+ * Various bug fixes.
+ * User interface is slightly changed to enhance experience.
+ ### 1.1.0
+ * Support Europe version of both games.
+ * Support customized rom settings.
+ * Various bug fixes.
+ ### 1.0.0
+ First version.
  
