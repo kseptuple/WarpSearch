@@ -40,6 +40,8 @@
 
  
 ## Update History
+ ### 1.1.3
+ * Fix a bug causing custom rom info not saved.
  ### 1.1.2
  * Fix various egde cases.
  ### 1.1.1
