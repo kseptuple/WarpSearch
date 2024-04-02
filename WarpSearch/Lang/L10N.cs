@@ -20,8 +20,6 @@ namespace WarpSearch.Lang
 
         private static Dictionary<string, string> texts = new Dictionary<string, string>();
 
-        public static Dictionary<string, string> Texts = new Dictionary<string, string>();
-
         public static List<LanguageModel> LanguageModels = new List<LanguageModel>();
         public static void SetLang(Form form, string areaCode)
         {

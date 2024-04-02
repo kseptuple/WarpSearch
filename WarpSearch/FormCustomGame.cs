@@ -24,8 +24,6 @@ namespace WarpSearch
 
         private string fileName;
 
-        private bool isChangeCustomParam = false;
-
         public FormCustomGame()
         {
             InitializeComponent();
@@ -37,7 +35,6 @@ namespace WarpSearch
             this.formMain = formMain;
             this.fileName = fileName;
             L10N.SetLang(this, formMain.Language);
-            isChangeCustomParam = false;
             radioButtonHoDU.Checked = true;
         }
 
@@ -45,9 +42,8 @@ namespace WarpSearch
         {
             this.data = game.GetData();
             this.formMain = formMain;
-            this.fileName = null;
+            this.fileName = game.FileName;
             L10N.SetLang(this, formMain.Language);
-            isChangeCustomParam = true;
             Text = L10N.GetText("ChangeCustomRom");
             if (game.GameType == GameTypeEnum.Hod)
             {
@@ -222,10 +218,7 @@ namespace WarpSearch
             if (game != null)
             {
                 game.GameVersion = gameVersion;
-                if (!isChangeCustomParam)
-                {
-                    game.FileName = fileName;
-                }
+                game.FileName = fileName;
                 game.IsCustom = true;
             }
 
