@@ -10,14 +10,14 @@ namespace WarpSearch
 {
     public partial class FormMain
     {
-        public void DrawRoom(int x, int y, RoomType type, bool isHodCastleB = false)
+        public void DrawRoom(int x, int y, MapSquareType type, bool isHodCastleB = false)
         {
             Brush currentBrush = null;
             x += globalOffset;
             y += globalOffset;
             switch (type)
             {
-                case RoomType.Normal:
+                case MapSquareType.Normal:
                     if (isHodCastleB)
                     {
                         currentBrush = greenBrush;
@@ -28,15 +28,15 @@ namespace WarpSearch
                         currentBrush = blueBrush;
                     }
                     break;
-                case RoomType.Warp:
+                case MapSquareType.Warp:
                     if (isHodCastleB)
                     {
                         GreenRooms.Add(new Point(x, y));
                     }
                     currentBrush = yellowBrush;
                     break;
-                case RoomType.Save:
-                case RoomType.Error:
+                case MapSquareType.Save:
+                case MapSquareType.Error:
                     if (isHodCastleB)
                     {
                         GreenRooms.Add(new Point(x, y));
@@ -105,5 +105,36 @@ namespace WarpSearch
             bitmapGraphics.DrawString(text, drawFont, trueWhiteBrush, x * gridSize, y * gridSize);
         }
 
+    }
+
+    public class MapRoomToDraw
+    {
+        public int X { get; set; }
+        public int Y { get; set; }
+        public MapSquareType SquareType { get; set; }
+        public bool IsCastleB { get; set; } = false;
+    }
+
+    public class MapLineToDraw
+    {
+        public int X { get; set; }
+        public int Y { get; set; }
+        public bool IsHorizonal { get; set; }
+        public bool IsSolid { get; set; }
+    }
+
+    public class MapTextToDraw
+    {
+        public string Text { get; set; }
+        public int X { get; set; }
+        public int Y { get; set; }
+        public float Size { get; set; }
+    }
+
+    public class MapElementsToDraw
+    {
+        public List<MapRoomToDraw> Rooms { get; set; }
+        public List<MapLineToDraw> Lines { get; set; }
+        public List<MapTextToDraw> Texts { get; set; }
     }
 }

@@ -6,32 +6,43 @@ using System.Threading.Tasks;
 
 namespace WarpSearch.Common
 {
-    public class RoomInfo
-    {
-        public int X { get; set; }
-        public int Y { get; set; }
-        public int Sector { get; set; }
-        public int MapSector { get; set; }
-        public int RoomId { get; set; }
-        public RoomType Type { get; set; }
-        public RoomStruct Room { get; set; }
-    }
+    //public class MapSquareInfo
+    //{
+    //    public int X { get; set; }
+    //    public int Y { get; set; }
+    //    public MapSquareType SquareType { get; set; }
+    //    public RoomStruct BelongingRoom { get; set; }
+    //}
 
     public class RoomStruct
     {
         public RomPointer RoomPointer { get; set; }
-        public int EventFlag { get; set; }
+        public int Sector { get; set; }
+        public int MapSector { get; set; }
+        public int RoomId { get; set; }
+        public int EventFlag { get; set; } = -1;
         public RomPointer ExitPointer { get; set; }
         public List<int> GateHeight { get; set; }
         public int Width { get; set; }
         public int Height { get; set; }
         public int Top { get; set; }
         public int Left { get; set; }
-        public List<ExitInfo> Exits { get; set; }
-
-        public RoomStruct()
+        public List<ExitInfo> Exits { get; set; } = new List<ExitInfo>();
+        public List<RoomStruct> OverlappingRooms { get; set; } = new List<RoomStruct>();
+        public override bool Equals(object obj)
         {
-            EventFlag = -1;
+            if (obj is null || !(obj is RoomStruct)) return false;
+            return RoomPointer == (obj as RoomStruct).RoomPointer;
+        }
+
+        //public static bool operator ==(RoomStruct room1, RoomStruct room2)
+        //{
+
+        //}
+
+        public override int GetHashCode()
+        {
+            return RoomPointer;
         }
     }
 
@@ -72,7 +83,7 @@ namespace WarpSearch.Common
         }
     }
 
-    public enum RoomType
+    public enum MapSquareType
     {
         Null,
         Normal,

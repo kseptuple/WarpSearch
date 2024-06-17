@@ -14,10 +14,10 @@ namespace WarpSearch.Games
         protected FormMain mainForm = null;
 
         protected byte[] data = null;
-        public Dictionary<Point, RoomInfo> RoomsAtPositions { get; set; } = new Dictionary<Point, RoomInfo>();
+        public Dictionary<Point, RoomStruct> RoomsAtPositions { get; set; } = new Dictionary<Point, RoomStruct>();
         public Dictionary<uint, RoomStruct> RoomStructs { get; set; } = new Dictionary<uint, RoomStruct>();
 
-        public Dictionary<uint, List<RoomInfo>> FlagRoomLists { get; set; } = new Dictionary<uint, List<RoomInfo>>();
+        public Dictionary<uint, List<MapSquareInfo>> FlagRoomLists { get; set; } = new Dictionary<uint, List<MapSquareInfo>>();
         protected List<List<RomPointer>> exitGroups { get; set; } = null;
         //protected ROMPointer RoomRootPointer { get; set; } = 0;
         protected RomPointer MapPointer { get; set; } = 0;
@@ -46,12 +46,14 @@ namespace WarpSearch.Games
 
         protected List<SpecialRoomData> specialRoomDataList { get; set; } = null;
 
-        protected List<Point> mapPositionList { get; set; } = new List<Point>();
+        protected List<Point> mapPositionsToDraw { get; set; } = new List<Point>();
 
         protected bool useHackSupport = false;
 
         public string FileName { get; set; }
         public bool IsCustom { get; set; } = false;
+
+        public MapElementsToDraw MapElements { get; set; } = new MapElementsToDraw();
 
         public virtual bool UseHackSupport
         {
@@ -70,6 +72,9 @@ namespace WarpSearch.Games
             mainForm = formMain;
             data = fileData;
             fileSize = data.Length;
+            MapElements.Rooms = new List<MapRoomToDraw>();
+            MapElements.Lines = new List<MapLineToDraw>();
+            MapElements.Texts = new List<MapTextToDraw>();
         }
 
         //所有可能是指针的数据
@@ -90,68 +95,41 @@ namespace WarpSearch.Games
             }
         }
 
-        public virtual void LoadRooms(bool load = true)
+        public virtual void LoadRooms()
         {
             throw new NotImplementedException();
         }
 
-        public virtual void DrawRooms()
+        //public virtual void DrawRooms()
+        //{
+        //    LoadRooms(false);
+        //}
+
+        protected void AddLine(int x, int y, int type, bool isHorizonal)
         {
-            LoadRooms(false);
+            switch (type)
+            {
+                case 1:
+                case 2:
+                    MapElements.Lines.Add(new MapLineToDraw { X = x, Y = y, IsHorizonal = isHorizonal, IsSolid = false });
+                    break;
+                case 3:
+                    MapElements.Lines.Add(new MapLineToDraw { X = x, Y = y, IsHorizonal = isHorizonal, IsSolid = true });
+                    break;
+                default:
+                    break;
+            }
         }
 
         //画地图房间
         protected void DrawLinesUitls(int x, int y, int topType, int bottomType, int leftType, int rightType)
         {
-            switch (topType)
-            {
-                case 1:
-                case 2:
-                    mainForm.DrawLine(x, y, true, false);
-                    break;
-                case 3:
-                    mainForm.DrawLine(x, y, true, true);
-                    break;
-                default:
-                    break;
-            }
-            switch (leftType)
-            {
-                case 1:
-                case 2:
-                    mainForm.DrawLine(x, y, false, false);
-                    break;
-                case 3:
-                    mainForm.DrawLine(x, y, false, true);
-                    break;
-                default:
-                    break;
-            }
-            switch (bottomType)
-            {
-                case 1:
-                case 2:
-                    mainForm.DrawLine(x, y + 1, true, false);
-                    break;
-                case 3:
-                    mainForm.DrawLine(x, y + 1, true, true);
-                    break;
-                default:
-                    break;
-            }
-            switch (rightType)
-            {
-                case 1:
-                case 2:
-                    mainForm.DrawLine(x + 1, y, false, false);
-                    break;
-                case 3:
-                    mainForm.DrawLine(x + 1, y, false, true);
-                    break;
-                default:
-                    break;
-            }
+            AddLine(x, y, topType, true);
+            AddLine(x, y, leftType, false);
+            AddLine(x, y + 1, bottomType, true);
+            AddLine(x + 1, y, rightType, false);
         }
+
         public void Dispose()
         {
             data = null;
@@ -169,23 +147,23 @@ namespace WarpSearch.Games
             bool isUncertain = false;
             var roomInfo = mainForm.selectedRoom;
             var sourcePos = mainForm.selectedPos;
-            if (roomInfo == null || roomInfo.Room == null) return;
+            if (roomInfo == null || roomInfo.BelongingRoom == null) return;
 
-            var currentPointer = roomInfo.Room.ExitPointer;
-            var sourceXToRoom = sourcePos.X - roomInfo.Room.Left;
+            var currentPointer = roomInfo.BelongingRoom.ExitPointer;
+            var sourceXToRoom = sourcePos.X - roomInfo.BelongingRoom.Left;
 
             //晓月一格宽的房间右侧，超过一格的视为一格
             if (GameType == GameTypeEnum.Aos)
             {
-                if (roomInfo.Room.Width == 1 && sourceXToRoom > 1) sourceXToRoom = 1;
+                if (roomInfo.BelongingRoom.Width == 1 && sourceXToRoom > 1) sourceXToRoom = 1;
             }
-            var sourceYToRoom = sourcePos.Y - roomInfo.Room.Top;
+            var sourceYToRoom = sourcePos.Y - roomInfo.BelongingRoom.Top;
             List<uint> destAddressList = new List<uint>();
             uint lastExitPossibleAddress = (uint)(data.Length - exitLength);
             while (currentPointer.RomOffset <= lastExitPossibleAddress)
             {
                 //出口的位置对应上了
-                if (sourceXToRoom == (sbyte)(getByte(currentPointer, 4)) && sourceYToRoom == (sbyte)(getByte(currentPointer, 5)))
+                if (sourceXToRoom == (sbyte)getByte(currentPointer, 4) && sourceYToRoom == (sbyte)getByte(currentPointer, 5))
                 {
                     var destPointer = getRomPointer(currentPointer, 0);
                     Dictionary<uint, byte> flagList = new Dictionary<uint, byte>();
@@ -269,7 +247,7 @@ namespace WarpSearch.Games
                 }
                 if (!previewOnly)
                 {
-                    mainForm.sourceRoom = roomInfo.Room;
+                    mainForm.sourceRoom = roomInfo.BelongingRoom;
                     mainForm.destRoom = RoomStructs[pointer];
                     var destX = RoomStructs[pointer].Left + exitX;
                     var destY = RoomStructs[pointer].Top + exitY;
@@ -320,16 +298,16 @@ namespace WarpSearch.Games
             mainForm.ClearLine();
             mainForm.ClearSourceRoomList();
             var roomInfo = mainForm.selectedRoom;
-            if (roomInfo == null || roomInfo.Room == null) return;
+            if (roomInfo == null || roomInfo.BelongingRoom == null) return;
             //找到通向当前房间的所有出口
-            var exits = FindNormalExits(roomInfo.Room.RoomPointer);
+            var exits = FindNormalExits(roomInfo.BelongingRoom.RoomPointer);
             List<uint> addresses = new List<uint>();
             foreach (var exit in exits)
             {
                 addSourceRoom(exit, false);
             }
 
-            getAllPossibleExits(roomInfo.Room.RoomPointer, new Dictionary<uint, byte>(), false);
+            getAllPossibleExits(roomInfo.BelongingRoom.RoomPointer, new Dictionary<uint, byte>(), false);
 
             void getAllPossibleExits(uint address, Dictionary<uint, byte> flagList, bool isUncertain)
             {
@@ -390,7 +368,7 @@ namespace WarpSearch.Games
             void addSourceRoom(ExitInfo exitInfo, bool isUncertain, Dictionary<uint, byte> flagList = null)
             {
                 var exitGroupId = 0;
-                if (exitInfo.DestX < 0 || exitInfo.DestX > roomInfo.Room.Width - 1 || exitInfo.DestY < 0 || exitInfo.DestY > roomInfo.Room.Height - 1)
+                if (exitInfo.DestX < 0 || exitInfo.DestX > roomInfo.BelongingRoom.Width - 1 || exitInfo.DestY < 0 || exitInfo.DestY > roomInfo.BelongingRoom.Height - 1)
                 {
                     isUncertain = true;
                 }
@@ -478,7 +456,7 @@ namespace WarpSearch.Games
                             break;
                         }
                         //找到了该出口位置对应的出口
-                        if (sourceXToRoom == (sbyte)(getByte(currentPointer, 4)) && sourceYToRoom == (sbyte)(getByte(currentPointer, 5)))
+                        if (sourceXToRoom == (sbyte)getByte(currentPointer, 4) && sourceYToRoom == (sbyte)getByte(currentPointer, 5))
                         {
                             //如果这是一个通往目标房间的出口，那么它应当能在其他路径中搜索到
                             //所以不需要重复处理

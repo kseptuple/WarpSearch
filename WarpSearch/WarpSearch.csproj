@@ -64,8 +64,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Common\HodInternalTypes.cs" />
-    <Compile Include="Common\AosInternalTypes.cs" />
     <Compile Include="Common\RomPointer.cs" />
     <Compile Include="FormCustomGame.cs">
       <SubType>Form</SubType>
