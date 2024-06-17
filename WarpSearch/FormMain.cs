@@ -17,6 +17,7 @@ using System.Xml.Serialization;
 using System.Xml;
 using WarpSearch.Lang;
 using System.Collections.Specialized;
+using WarpSearch.Common;
 
 namespace WarpSearch
 {
@@ -100,101 +101,6 @@ namespace WarpSearch
             labelOptionSearches.Add(labelSearchOption4);
             labelOptionSearches.Add(labelSearchOption5);
             toolStripStatusRomType.Text = string.Empty;
-        }
-
-        public void DrawRoom(int x, int y, RoomType type, bool isHodCastleB = false)
-        {
-            Brush currentBrush = null;
-            x += globalOffset;
-            y += globalOffset;
-            switch (type)
-            {
-                case RoomType.Normal:
-                    if (isHodCastleB)
-                    {
-                        currentBrush = greenBrush;
-                        GreenRooms.Add(new Point(x, y));
-                    }
-                    else
-                    {
-                        currentBrush = blueBrush;
-                    }
-                    break;
-                case RoomType.Warp:
-                    if (isHodCastleB)
-                    {
-                        GreenRooms.Add(new Point(x, y));
-                    }
-                    currentBrush = yellowBrush;
-                    break;
-                case RoomType.Save:
-                case RoomType.Error:
-                    if (isHodCastleB)
-                    {
-                        GreenRooms.Add(new Point(x, y));
-                    }
-                    currentBrush = redBrush;
-                    break;
-                default:
-                    currentBrush = blackBrush;
-                    break;
-            }
-            bitmapGraphics.FillRectangle(currentBrush, x * gridSize, y * gridSize, gridSize, gridSize);
-        }
-
-        public void DrawLine(int x, int y, bool isHorizonal, bool isSolid)
-        {
-            x += 2;
-            y += 2;
-            if (isHorizonal)
-            {
-                if (isSolid)
-                {
-                    bitmapGraphics.FillRectangle(whiteBrush, x * gridSize, y * gridSize, gridSize + lineWidth, lineWidth);
-                }
-                else
-                {
-                    if (romType == GameTypeEnum.Hod)
-                    {
-                        bitmapGraphics.FillRectangle(whiteBrush, x * gridSize, y * gridSize, (gridSize - lineWidth) * 0.333333333f + lineWidth, lineWidth);
-                        bitmapGraphics.FillRectangle(whiteBrush, x * gridSize + (gridSize - lineWidth) * 0.666666667f + lineWidth, y * gridSize, (gridSize - lineWidth) * 0.333333333f + lineWidth, lineWidth);
-                    }
-                    else
-                    {
-                        bitmapGraphics.FillRectangle(whiteBrush, x * gridSize, y * gridSize, gridSize + lineWidth, lineWidth);
-                        bitmapGraphics.FillRectangle(cyanBrush, x * gridSize + lineWidth, y * gridSize, gridSize - lineWidth, lineWidth);
-                    }
-                }
-
-            }
-            else
-            {
-                if (isSolid)
-                {
-                    bitmapGraphics.FillRectangle(whiteBrush, x * gridSize, y * gridSize, lineWidth, gridSize + lineWidth);
-                }
-                else
-                {
-                    if (romType == GameTypeEnum.Hod)
-                    {
-                        bitmapGraphics.FillRectangle(whiteBrush, x * gridSize, y * gridSize, lineWidth, (gridSize - lineWidth) * 0.333333333f + lineWidth);
-                        bitmapGraphics.FillRectangle(whiteBrush, x * gridSize, y * gridSize + (gridSize - lineWidth) * 0.666666667f + lineWidth, lineWidth, (gridSize - lineWidth) * 0.333333333f);
-                    }
-                    else
-                    {
-                        bitmapGraphics.FillRectangle(whiteBrush, x * gridSize, y * gridSize, lineWidth, gridSize + lineWidth);
-                        bitmapGraphics.FillRectangle(cyanBrush, x * gridSize, y * gridSize + lineWidth, lineWidth, gridSize - lineWidth);
-                    }
-                }
-            }
-        }
-
-        public void DrawText(string text, int x, int y, float size)
-        {
-            x += 2;
-            y += 2;
-            Font drawFont = new Font(SystemFonts.DefaultFont.FontFamily, size * scale);
-            bitmapGraphics.DrawString(text, drawFont, trueWhiteBrush, x * gridSize, y * gridSize);
         }
 
         private void PictureMap_Click(object sender, EventArgs e)
@@ -285,9 +191,9 @@ namespace WarpSearch
                                     {
                                         List<RoomInfo> currentRoomInfoList = new List<RoomInfo>();
                                         currentRoomInfoList.Add(currentSourceRoom);
-                                        if (rom.FlagRoomLists.ContainsKey(currentSourceRoom.Room.RoomPointer.Address))
+                                        if (rom.FlagRoomLists.ContainsKey(currentSourceRoom.Room.RoomPointer))
                                         {
-                                            foreach (var roomInfo in rom.FlagRoomLists[currentSourceRoom.Room.RoomPointer.Address])
+                                            foreach (var roomInfo in rom.FlagRoomLists[currentSourceRoom.Room.RoomPointer])
                                             {
                                                 if (roomInfo.Room.Left <= actualX && roomInfo.Room.Top <= actualY &&
                                                     roomInfo.Room.Left + roomInfo.Room.Width > actualX && roomInfo.Room.Top + roomInfo.Room.Height > actualY)
@@ -303,7 +209,7 @@ namespace WarpSearch
                                             foreach (var currentRoom in currentRoomInfoList)
                                             {
                                                 currentSourceRoomInList = (RoomAndExit)listSourceRoom.Items[i];
-                                                if (currentSourceRoomInList.Room.RoomPointer.Address == currentRoom.Room.RoomPointer.Address)
+                                                if (currentSourceRoomInList.Room.RoomPointer == currentRoom.Room.RoomPointer)
                                                 {
                                                     hasValidRoom = true;
                                                     if (listSourceRoom.SelectedIndex == -1)
@@ -343,7 +249,7 @@ namespace WarpSearch
             hasFlag = false;
             for (int j = 0; j < SourceRoomPointers.Count; j++)
             {
-                if (SourceRoomPointers[j] == currentSourceRoomInList.Room.RoomPointer.Address)
+                if (SourceRoomPointers[j] == currentSourceRoomInList.Room.RoomPointer)
                 {
                     currentSourceRoomInListIdList.Add(j);
                     RoomToDraw[j + 1].Brush = transparentWhiteBrush;
@@ -356,7 +262,7 @@ namespace WarpSearch
             var destX = selectedRoom.Room.Left + currentSourceRoomInList.Exit.DestX;
             var destY = selectedRoom.Room.Top + currentSourceRoomInList.Exit.DestY;
 
-            if (currentSourceRoomInList.Exit.DestX < 0 || currentSourceRoomInList.Exit.DestX > selectedRoom.Room.Width - 1 
+            if (currentSourceRoomInList.Exit.DestX < 0 || currentSourceRoomInList.Exit.DestX > selectedRoom.Room.Width - 1
                 || currentSourceRoomInList.Exit.DestY < 0 || currentSourceRoomInList.Exit.DestY > selectedRoom.Room.Height - 1)
             {
                 isOutsideDest = true;
@@ -406,7 +312,7 @@ namespace WarpSearch
                 {
                     listFlag.Items.Add("===========");
                 }
-                listFlag.Items.Add($"{currentSourceRoomInList.Room.RoomPointer.Address:X8}" +
+                listFlag.Items.Add($"{currentSourceRoomInList.Room.RoomPointer}" +
                     $" ({currentSourceRoomInList.Exit.SourceX},{currentSourceRoomInList.Exit.SourceY}):");
                 if (flagListForRoom.ContainsKey(currentSourceRoomInList))
                 {
@@ -476,7 +382,7 @@ namespace WarpSearch
             }
             else
             {
-                selectedRoom = rom.FlagRoomLists[originalSelectedRoom.Room.RoomPointer.Address][comboRoomList.SelectedIndex - 1];
+                selectedRoom = rom.FlagRoomLists[originalSelectedRoom.Room.RoomPointer][comboRoomList.SelectedIndex - 1];
             }
             var room = selectedRoom.Room;
             RoomToDraw.Add(new RectangleToDraw(transparentWhiteBrush, room.Left, room.Top, room.Width, room.Height));
@@ -696,12 +602,12 @@ namespace WarpSearch
                 for (int i = 0; i < listSourceRoom.Items.Count; i++)
                 {
                     var oldRoomAndExit = (RoomAndExit)listSourceRoom.Items[i];
-                    if (oldRoomAndExit.Room.RoomPointer.Address > room.RoomPointer.Address)
+                    if (oldRoomAndExit.Room.RoomPointer > room.RoomPointer)
                     {
                         listSourceRoom.Items.Insert(i, roomAndExit);
                         break;
                     }
-                    if (oldRoomAndExit.Room.RoomPointer.Address == room.RoomPointer.Address && oldRoomAndExit.Exit.ExitPointer.Address == exit.ExitPointer.Address)
+                    if (oldRoomAndExit.Room.RoomPointer == room.RoomPointer && oldRoomAndExit.Exit.ExitPointer == exit.ExitPointer)
                     {
                         break;
                     }
@@ -713,9 +619,9 @@ namespace WarpSearch
                 }
             }
 
-            if (!SourceRoomPointers.Contains(room.RoomPointer.Address))
+            if (!SourceRoomPointers.Contains(room.RoomPointer))
             {
-                SourceRoomPointers.Add(room.RoomPointer.Address);
+                SourceRoomPointers.Add(room.RoomPointer);
                 AddDestRoom(room, true);
             }
             if (flagList != null && flagList.Count != 0 && !flagListForRoom.ContainsKey(roomAndExit))
@@ -1132,9 +1038,9 @@ namespace WarpSearch
                     var room = selectedRoom.Room;
                     comboRoomList.Items.Add(selectedRoom.Room.RoomPointer.ToString());
                     comboRoomList.SelectedIndex = 0;
-                    if (rom.FlagRoomLists.ContainsKey(room.RoomPointer.Address))
+                    if (rom.FlagRoomLists.ContainsKey(room.RoomPointer))
                     {
-                        foreach (var roomInfo in rom.FlagRoomLists[room.RoomPointer.Address])
+                        foreach (var roomInfo in rom.FlagRoomLists[room.RoomPointer])
                         {
                             if (roomInfo.Room.EventFlag != -1)
                             {
@@ -1249,6 +1155,31 @@ namespace WarpSearch
         {
             return romSettings.FirstOrDefault(r => r.RomPath == romPath);
         }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            if (rom == null) { return; }
+            StringBuilder sb = new StringBuilder();
+            List<RoomInfo> rooms = new List<RoomInfo>();
+            foreach (var item in rom.RoomsAtPositions.Keys)
+            {
+                var room = rom.RoomsAtPositions[item];
+                if (rooms.Exists(r => r.Room.RoomPointer == room.Room.RoomPointer))
+                {
+                    continue;
+                }
+                rooms.Add(room);
+                selectedRoom = room;
+                currentSourceRoomInListIdList.Clear();
+                flagListForRoom.Clear();
+                rom.FindWarpSource(trackBarSearchOption.Value);
+                foreach (RoomAndExit exits in listSourceRoom.Items)
+                {
+                    sb.AppendLine($"{exits.Room.RoomPointer} {exits.Exit.SourceX} {exits.Exit.SourceY}=={room.Room.RoomPointer} {exits.Exit.DestX} {exits.Exit.DestY}");
+                }
+            }
+            File.WriteAllText("E:\\test3.csv", sb.ToString());
+        }
     }
 
     public class Settings
@@ -1334,7 +1265,7 @@ namespace WarpSearch
             {
                 pointEnd = new PointF((EndX + offset + 0.5f) * gridSize, (EndY + offset + 0.5f) * gridSize);
             }
-            
+
             g?.DrawLine(Pen, pointStart, pointEnd);
 
             if (HasArrow)

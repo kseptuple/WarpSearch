@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.IO;
 using System.Windows.Forms;
 using WarpSearch.Lang;
+using WarpSearch.Common;
 
 namespace WarpSearch.Games
 {
@@ -114,7 +115,7 @@ namespace WarpSearch.Games
             new FormCustomGame(game, formMain).ShowDialog(formMain);
         }
 
-        public static List<SpecialRoomData> getSpecialRooms(GameTypeEnum gameType, bool useHackSupport, List<ROMPointer> romPointers)
+        public static List<SpecialRoomData> getSpecialRooms(GameTypeEnum gameType, bool useHackSupport, List<RomPointer> romPointers)
         {
             List<SpecialRoomData> result = null;
             if (gameType == GameTypeEnum.Aos)

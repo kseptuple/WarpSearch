@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 using System.Drawing;
+using WarpSearch.Common;
 
 namespace WarpSearch.Games
 {
@@ -17,14 +18,14 @@ namespace WarpSearch.Games
         public Dictionary<uint, RoomStruct> RoomStructs { get; set; } = new Dictionary<uint, RoomStruct>();
 
         public Dictionary<uint, List<RoomInfo>> FlagRoomLists { get; set; } = new Dictionary<uint, List<RoomInfo>>();
-        protected List<List<ROMPointer>> exitGroups { get; set; } = null;
+        protected List<List<RomPointer>> exitGroups { get; set; } = null;
         //protected ROMPointer RoomRootPointer { get; set; } = 0;
-        protected ROMPointer MapPointer { get; set; } = 0;
-        protected ROMPointer MapLinePointer { get; set; } = 0;
-        protected ROMPointer FirstRoomPointer { get; set; } = 0;
-        public ROMPointer GetMapPointer() => MapPointer;
-        public ROMPointer GetMapLinePointer() => MapLinePointer;
-        public ROMPointer GetFirstRoomPointer() => FirstRoomPointer;
+        protected RomPointer MapPointer { get; set; } = 0;
+        protected RomPointer MapLinePointer { get; set; } = 0;
+        protected RomPointer FirstRoomPointer { get; set; } = 0;
+        public RomPointer GetMapPointer() => MapPointer;
+        public RomPointer GetMapLinePointer() => MapLinePointer;
+        public RomPointer GetFirstRoomPointer() => FirstRoomPointer;
         public byte[] GetData() => data;
 
         protected uint RoomFlagStart { get; set; } = 0;
@@ -37,8 +38,8 @@ namespace WarpSearch.Games
         public int MapWidth { get; set; } = 0;
         public int MapHeight { get; set; } = 0;
 
-        protected ROMPointer maxExitAddress { get; set; } = 0x8_00_00_00;
-        protected ROMPointer minExitAddress { get; set; } = 0xA_00_00_00;
+        protected RomPointer maxExitAddress { get; set; } = 0x8_00_00_00;
+        protected RomPointer minExitAddress { get; set; } = 0xA_00_00_00;
 
         protected int exitLength { get; set; } = 0;
         protected int fileSize { get; set; } = 0;
@@ -181,33 +182,33 @@ namespace WarpSearch.Games
             var sourceYToRoom = sourcePos.Y - roomInfo.Room.Top;
             List<uint> destAddressList = new List<uint>();
             uint lastExitPossibleAddress = (uint)(data.Length - exitLength);
-            while (currentPointer <= lastExitPossibleAddress)
+            while (currentPointer.RomOffset <= lastExitPossibleAddress)
             {
                 //出口的位置对应上了
-                if (sourceXToRoom == (sbyte)(data[currentPointer + 4]) && sourceYToRoom == (sbyte)(data[currentPointer + 5]))
+                if (sourceXToRoom == (sbyte)(getByte(currentPointer, 4)) && sourceYToRoom == (sbyte)(getByte(currentPointer, 5)))
                 {
-                    var destPointer = getROMPointer(currentPointer);
+                    var destPointer = getRomPointer(currentPointer, 0);
                     Dictionary<uint, byte> flagList = new Dictionary<uint, byte>();
                     ushort flag = 0;
                     //防止后续读取时越界
                     int minimumSpace = GameType == GameTypeEnum.Aos ? 13 : 11;
                     bool isFound = false;
-                    while (destPointer.Address >= 0x8_00_00_00 && destPointer.Address < 0x8_00_00_00 + data.Length - minimumSpace)
+                    while (destPointer >= 0x8_00_00_00 && destPointer < 0x8_00_00_00 + data.Length - minimumSpace)
                     {
-                        if (!destAddressList.Contains(destPointer.Address))
+                        if (!destAddressList.Contains(destPointer))
                         {
-                            destAddressList.Add(destPointer.Address);
+                            destAddressList.Add(destPointer);
                         }
                         else
                         {
                             //出现循环
                             break;
                         }
-                        flag = getUShort((uint)(destPointer + 2));
+                        flag = getUShort(destPointer, 2);
                         if (flag == 0xFFFF)
                         {
                             //不存在下一个房间
-                            if (RoomStructs.ContainsKey(destPointer.Address))
+                            if (RoomStructs.ContainsKey(destPointer))
                             {
                                 isFound = true;
                             }
@@ -217,7 +218,7 @@ namespace WarpSearch.Games
                         {
                             if (GameType == GameTypeEnum.Hod)
                             {
-                                if (RoomStructs.ContainsKey(destPointer.Address))
+                                if (RoomStructs.ContainsKey(destPointer))
                                 {
                                     isFound = true;
                                     break;
@@ -234,7 +235,7 @@ namespace WarpSearch.Games
                                 }
                             }
 
-                            destPointer = getROMPointerNotAligned((uint)(destPointer + 4));
+                            destPointer = getUnalignedRomPointer(destPointer, 4);
                         }
                     }
 
@@ -250,18 +251,18 @@ namespace WarpSearch.Games
                     }
                     return;
                 }
-                currentPointer = currentPointer.Address + (uint)exitLength;
+                currentPointer = currentPointer + (uint)exitLength;
             }
             mainForm.AddRoomPos(sourcePos.X, sourcePos.Y, true, previewOnly);
             drawBadRoom();
             return;
 
-            bool drawGoodRoom(ROMPointer pointer, bool _isUncertain, Dictionary<uint, byte> flagList)
+            bool drawGoodRoom(RomPointer pointer, bool _isUncertain, Dictionary<uint, byte> flagList)
             {
                 //获取目标房间的位置坐标
                 var (exitX, exitY) = getExitDestPos();
                 bool isOutsideDest = false;
-                if (exitX < 0 || exitX > RoomStructs[pointer.Address].Width - 1 || exitY < 0 || exitY > RoomStructs[pointer.Address].Height - 1)
+                if (exitX < 0 || exitX > RoomStructs[pointer].Width - 1 || exitY < 0 || exitY > RoomStructs[pointer].Height - 1)
                 {
                     isOutsideDest = true;
                     _isUncertain = true;
@@ -269,9 +270,9 @@ namespace WarpSearch.Games
                 if (!previewOnly)
                 {
                     mainForm.sourceRoom = roomInfo.Room;
-                    mainForm.destRoom = RoomStructs[pointer.Address];
-                    var destX = RoomStructs[pointer.Address].Left + exitX;
-                    var destY = RoomStructs[pointer.Address].Top + exitY;
+                    mainForm.destRoom = RoomStructs[pointer];
+                    var destX = RoomStructs[pointer].Left + exitX;
+                    var destY = RoomStructs[pointer].Top + exitY;
                     mainForm.AddRoomPos(destX, destY, false, false, _isUncertain);
                     mainForm.SetFlagListForDestSearch(flagList);
                     //画线
@@ -281,7 +282,7 @@ namespace WarpSearch.Games
                     }
                     if (isOutsideDest)
                     {
-                        mainForm.AddLine(RoomStructs[pointer.Address].Left, RoomStructs[pointer.Address].Top, destX, destY, false);
+                        mainForm.AddLine(RoomStructs[pointer].Left, RoomStructs[pointer].Top, destX, destY, false);
                     }
                 }
                 return _isUncertain;
@@ -291,14 +292,14 @@ namespace WarpSearch.Games
             {
                 if (GameType == GameTypeEnum.Aos)
                 {
-                    return ((sbyte)data[currentPointer + 11], (sbyte)data[currentPointer + 13]);
+                    return ((sbyte)getByte(currentPointer, 11), (sbyte)getByte(currentPointer, 13));
                 }
                 else if (GameType == GameTypeEnum.Hod)
                 {
                     var tmpX = 0;
-                    var XOffset = data[currentPointer + 8];
+                    var XOffset = getByte(currentPointer, 8);
                     if (XOffset > 0x80) tmpX = 1;
-                    return ((sbyte)data[currentPointer + 9] + tmpX, (sbyte)data[currentPointer + 11]);
+                    return ((sbyte)getByte(currentPointer, 9) + tmpX, (sbyte)getByte(currentPointer, 11));
                 }
                 return (0, 0);
             }
@@ -328,7 +329,7 @@ namespace WarpSearch.Games
                 addSourceRoom(exit, false);
             }
 
-            getAllPossibleExits(roomInfo.Room.RoomPointer.Address, new Dictionary<uint, byte>(), false);
+            getAllPossibleExits(roomInfo.Room.RoomPointer, new Dictionary<uint, byte>(), false);
 
             void getAllPossibleExits(uint address, Dictionary<uint, byte> flagList, bool isUncertain)
             {
@@ -349,14 +350,14 @@ namespace WarpSearch.Games
                         //可能性1：这个指针本身是个出口
                         if (currentPointerAddress > minExitAddress)
                         {
-                            if (!exits.Exists(e => e.ExitPointer.Address == currentPointerAddress))
+                            if (!exits.Exists(e => e.ExitPointer == currentPointerAddress))
                             {
                                 addSourceRoom(CreateExitInfo(currentPointerAddress), isUncertain, flagList);
                             }
                         }
 
                         //可能性2：是其他地方跳转过来的
-                        ushort flag = getUShort(currentPointerActualAddress - 2);
+                        ushort flag = getUShort(currentPointerActualAddress, -2);
                         //flag == -1时没有机会跳到下一个房间了
                         if (flag == 0xFFFF)
                         {
@@ -389,25 +390,25 @@ namespace WarpSearch.Games
             void addSourceRoom(ExitInfo exitInfo, bool isUncertain, Dictionary<uint, byte> flagList = null)
             {
                 var exitGroupId = 0;
-                if (exitInfo.DestX < 0 || exitInfo.DestX > roomInfo.Room.Width - 1  || exitInfo.DestY < 0 || exitInfo.DestY > roomInfo.Room.Height - 1)
+                if (exitInfo.DestX < 0 || exitInfo.DestX > roomInfo.Room.Width - 1 || exitInfo.DestY < 0 || exitInfo.DestY > roomInfo.Room.Height - 1)
                 {
                     isUncertain = true;
                 }
                 //出口分组
                 if (GameType == GameTypeEnum.Aos)
                 {
-                    exitGroupId = (exitInfo.ExitPointer >> 2) & 3;
+                    exitGroupId = (int)((exitInfo.ExitPointer.RomOffset >> 2) & 3);
                 }
                 else if (GameType == GameTypeEnum.Hod)
                 {
-                    exitGroupId = (exitInfo.ExitPointer >> 2) % 3;
+                    exitGroupId = (int)((exitInfo.ExitPointer.RomOffset >> 2) % 3);
                 }
                 //出口的位置等于目标出口的位置
                 var sourceXToRoom = exitInfo.SourceX;
                 var sourceYToRoom = exitInfo.SourceY;
                 foreach (var pointer in exitGroups[exitGroupId])
                 {
-                    var room = RoomStructs[pointer.Address];
+                    var room = RoomStructs[pointer];
                     //晓月不允许一格宽房间向右超过一格
                     if (GameType == GameTypeEnum.Aos && room.Width == 1 && sourceXToRoom > 1)
                         continue;
@@ -471,38 +472,43 @@ namespace WarpSearch.Games
                             }
                         }
                         //找到了目标出口
-                        if (currentPointer.Address == exitInfo.ExitPointer.Address)
+                        if (currentPointer == exitInfo.ExitPointer)
                         {
-                            mainForm.AddSourceRoom(RoomStructs[room.RoomPointer.Address], exitInfo, isUncertain, flagList);
+                            mainForm.AddSourceRoom(RoomStructs[room.RoomPointer], exitInfo, isUncertain, flagList);
                             break;
                         }
                         //找到了该出口位置对应的出口
-                        if (sourceXToRoom == (sbyte)(data[currentPointer + 4]) && sourceYToRoom == (sbyte)(data[currentPointer + 5]))
+                        if (sourceXToRoom == (sbyte)(getByte(currentPointer, 4)) && sourceYToRoom == (sbyte)(getByte(currentPointer, 5)))
                         {
                             //如果这是一个通往目标房间的出口，那么它应当能在其他路径中搜索到
                             //所以不需要重复处理
                             break;
                         }
-                        currentPointer = currentPointer.Address + (uint)exitLength;
+                        currentPointer = currentPointer + (uint)exitLength;
                         num++;
                     }
                 }
             }
         }
-        protected List<ExitInfo> FindNormalExits(ROMPointer roomPointer)
+        protected List<ExitInfo> FindNormalExits(RomPointer roomPointer)
         {
             var result = new List<ExitInfo>();
             foreach (var rs in RoomStructs.Values)
             {
                 foreach (var exit in rs.Exits)
                 {
-                    if (exit.ExitDestination.Address == roomPointer.Address)
+                    if (exit.ExitDestination == roomPointer)
                     {
                         result.Add(exit);
                     }
                 }
             }
             return result;
+        }
+
+        protected byte getByte(RomPointer start, int offset)
+        {
+            return data[start.RomOffset + offset];
         }
 
         protected uint getUint(uint start)
@@ -522,24 +528,33 @@ namespace WarpSearch.Games
             return 0;
         }
 
-        protected ushort getUShort(uint start)
+        protected ushort getUShort(RomPointer start, int offset)
         {
-            return (ushort)(data[start] | (data[start + 1] << 8));
+            uint actualAddress = (uint)(start.RomOffset + offset);
+            return (ushort)(data[actualAddress] | (data[actualAddress + 1] << 8));
         }
 
-        public ROMPointer getROMPointer(uint start)
+        protected uint getUnalignedUShort(RomPointer start, int offset)
         {
-            if (start >= data.Length) return null;
-            return data[start] | (data[start + 1] << 8) | (data[start + 2] << 16) | (data[start + 3] << 24);
+            uint actualAddress = (uint)(start.RomOffset + offset);
+            return (uint)(data[actualAddress] | (data[actualAddress - 1] << 24));
         }
 
-        public ROMPointer getROMPointerNotAligned(uint start)
+        public RomPointer getRomPointer(RomPointer start, int offset)
         {
-            if (start >= data.Length) return null;
-            return getUint(start);
+            uint actualAddress = (uint)(start.RomOffset + offset);
+            if (actualAddress >= data.Length) return null;
+            return data[actualAddress] | (data[actualAddress + 1] << 8) | (data[actualAddress + 2] << 16) | (data[actualAddress + 3] << 24);
         }
 
-        protected virtual ExitInfo CreateExitInfo(ROMPointer pointer)
+        public RomPointer getUnalignedRomPointer(RomPointer start, int offset)
+        {
+            uint actualAddress = (uint)(start.RomOffset + offset);
+            if (actualAddress >= data.Length) return null;
+            return getUint(actualAddress);
+        }
+
+        protected virtual ExitInfo CreateExitInfo(RomPointer pointer)
         {
             throw new NotImplementedException();
         }

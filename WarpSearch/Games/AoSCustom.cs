@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WarpSearch.Common;
 
 namespace WarpSearch.Games
 {
     public class AoSCustom : AoS
     {
-        public AoSCustom(byte[] fileData, FormMain formMain, ROMPointer firstRoomPointer,
-            ROMPointer mapPointer, ROMPointer mapLinePointer, GameVersionEnum gameVersion) : base(fileData, formMain)
+        public AoSCustom(byte[] fileData, FormMain formMain, RomPointer firstRoomPointer,
+            RomPointer mapPointer, RomPointer mapLinePointer, GameVersionEnum gameVersion) : base(fileData, formMain)
         {
             //RoomRootPointer = null;
             FirstRoomPointer = firstRoomPointer;

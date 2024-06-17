@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Drawing;
+using WarpSearch.Common;
 
 namespace WarpSearch.Games
 {
@@ -15,7 +16,7 @@ namespace WarpSearch.Games
 
         private List<uint> currentRootRoomAddressList = new List<uint>();
 
-        protected List<ROMPointer> specialRomPointers { get; set; }
+        protected List<RomPointer> specialRomPointers { get; set; }
         public override bool UseHackSupport
         {
             get
@@ -61,7 +62,7 @@ namespace WarpSearch.Games
 
         public HoD(byte[] fileData, FormMain formMain) : base(fileData, formMain)
         {
-            exitGroups = new List<List<ROMPointer>>() { new List<ROMPointer>(), new List<ROMPointer>(), new List<ROMPointer>() };
+            exitGroups = new List<List<RomPointer>>() { new List<RomPointer>(), new List<RomPointer>(), new List<RomPointer>() };
             GameType = GameTypeEnum.Hod;
             exitLength = 12;
             //美版和日版通用
@@ -83,7 +84,7 @@ namespace WarpSearch.Games
                 minExitAddress = 0xA_00_00_00;
                 InitPointerAddress();
             }
-            ROMPointer pointer = MapPointer;
+            RomPointer pointer = MapPointer;
             //不再使用RoomRootPointer加载房间
 
             int tmp = 0;
@@ -91,11 +92,11 @@ namespace WarpSearch.Games
             //从地图读取房间
             for (int i = 0; i < 5120; i += 2)
             {
-                tmp = (data[pointer + i + 1] << 8) | data[pointer + i];
+                tmp = (getByte(pointer, i+1) << 8) | getByte(pointer, i);
                 int x = (i & 127) >> 1;
                 int y = (i >> 7) + topOffset;
                 int y2 = y + castleYDiff;
-                if (tmp != 65535)
+                if (tmp != 0xffff)
                 {
                     //表城和里城共用地图，一次加载两个格子
                     var tmpRoom = new RoomInfo();
@@ -113,18 +114,18 @@ namespace WarpSearch.Games
 
                     tmpRoom.Type = RoomType.Normal;
                     tmpRoom2.Type = RoomType.Normal;
-                    if ((tmp & 32768) != 0)
+                    if ((tmp & 0x8000) != 0)
                     {
                         tmpRoom.Type = RoomType.Save;
                         tmpRoom2.Type = RoomType.Save;
                     }
                     else
                     {
-                        if ((tmp & 16384) != 0)
+                        if ((tmp & 0x4000) != 0)
                         {
                             tmpRoom.Type = RoomType.Warp;
                         }
-                        if ((tmp & 8192) != 0)
+                        if ((tmp & 0x2000) != 0)
                         {
                             tmpRoom2.Type = RoomType.Warp;
                         }
@@ -149,14 +150,14 @@ namespace WarpSearch.Games
             if (useHackSupport && load)
             {
                 //从房间列表补充房间
-                List<ROMPointer> sectorList = new List<ROMPointer>();
+                List<RomPointer> sectorList = new List<RomPointer>();
                 int currentSector = 0;
                 //获取区域列表
                 while (true)
                 {
-                    ROMPointer tmpSectorPointer = getROMPointer(FirstRoomPointer + ((uint)currentSector << 2));
-                    if (tmpSectorPointer == null || tmpSectorPointer.Address == 0) break;
-                    if (tmpSectorPointer.Address < 0x8_00_00_00 || tmpSectorPointer.Address >= (uint)fileSize + 0x8_00_00_00) break;
+                    RomPointer tmpSectorPointer = getRomPointer(FirstRoomPointer, currentSector << 2);
+                    if (tmpSectorPointer == null || tmpSectorPointer == 0) break;
+                    if (tmpSectorPointer < 0x8_00_00_00 || tmpSectorPointer >= (uint)fileSize + 0x8_00_00_00) break;
                     sectorList.Add(tmpSectorPointer);
                     currentSector++;
                 }
@@ -166,11 +167,11 @@ namespace WarpSearch.Games
                     var sectorPointer = sectorList[i];
                     //到下个区域或者rom结束/非指针为止
                     //使用dsvedit的判断方法
-                    var nextSectorPointer = i == sectorList.Count - 1 ? new ROMPointer((uint)fileSize + 0x8_00_00_00) : sectorList[i + 1];
+                    var nextSectorPointer = i == sectorList.Count - 1 ? new RomPointer((uint)fileSize + 0x8_00_00_00) : sectorList[i + 1];
                     int currentRoom = 0;
-                    ROMPointer tmpRoomPointer = getROMPointer(sectorPointer + ((uint)currentRoom << 2));
-                    if (tmpRoomPointer == null || tmpRoomPointer.Address < 0x8_00_00_00 || tmpRoomPointer.Address > (uint)fileSize + 0x8_00_00_00) continue;
-                    if (sectorPointer + ((uint)currentRoom << 2) > nextSectorPointer) continue;
+                    RomPointer tmpRoomPointer = getRomPointer(sectorPointer, currentRoom << 2);
+                    if (tmpRoomPointer == null || tmpRoomPointer < 0x8_00_00_00 || tmpRoomPointer > (uint)fileSize + 0x8_00_00_00) continue;
+                    if (tmpRoomPointer > nextSectorPointer) continue;
                     while (loadRoomInfo(new RoomInfo()
                     {
                         X = -1,
@@ -182,9 +183,9 @@ namespace WarpSearch.Games
                     }, tmpRoomPointer, -1, -1, false, -1, true, currentRoom))
                     {
                         currentRoom++;
-                        tmpRoomPointer = getROMPointer(sectorPointer + ((uint)currentRoom << 2));
-                        if (tmpRoomPointer == null || tmpRoomPointer.Address < 0x8_00_00_00 || tmpRoomPointer.Address > (uint)fileSize + 0x8_00_00_00) break;
-                        if (sectorPointer + ((uint)currentRoom << 2) > nextSectorPointer) break;
+                        tmpRoomPointer = getRomPointer(sectorPointer, currentRoom << 2);
+                        if (tmpRoomPointer == null || tmpRoomPointer < 0x8_00_00_00 || tmpRoomPointer > (uint)fileSize + 0x8_00_00_00) break;
+                        if (tmpRoomPointer > nextSectorPointer) break;
                     }
                 }
             }
@@ -217,7 +218,7 @@ namespace WarpSearch.Games
             pointer = MapLinePointer;
             for (int i = 0; i < 1280; i++)
             {
-                tmp = data[pointer + i] >> 4;
+                tmp = getByte(pointer, i) >> 4;
                 for (int j = 0; j < 2; j++)
                 {
                     int x = ((i & 31) << 1) | j;
@@ -251,7 +252,7 @@ namespace WarpSearch.Games
                         default:
                             break;
                     }
-                    tmp = data[pointer + i] & 15;
+                    tmp = getByte(pointer, i) & 15;
                 }
             }
 
@@ -298,15 +299,15 @@ namespace WarpSearch.Games
             }
         }
 
-        private bool loadRoomInfo(RoomInfo roomInfo, ROMPointer pointer = null, int left = -1, int top = -1, bool isCastleB = false, int eventFlag = -1, bool isFromRoomList = false, int roomId = -1)
+        private bool loadRoomInfo(RoomInfo roomInfo, RomPointer pointer = null, int left = -1, int top = -1, bool isCastleB = false, int eventFlag = -1, bool isFromRoomList = false, int roomId = -1)
         {
             try
             {
                 RoomStruct rs = new RoomStruct();
                 rs.EventFlag = eventFlag;
                 //房间指针
-                rs.RoomPointer = pointer ?? getROMPointer(getROMPointer(FirstRoomPointer + (uint)(roomInfo.Sector << 2)) + (uint)(roomInfo.RoomId << 2));
-                if (rs.RoomPointer == null || rs.RoomPointer.Address == 0)
+                rs.RoomPointer = pointer ?? getRomPointer(getRomPointer(FirstRoomPointer, roomInfo.Sector << 2), roomInfo.RoomId << 2);
+                if (rs.RoomPointer == null || rs.RoomPointer == 0)
                 {
                     return false;
                 }
@@ -317,17 +318,17 @@ namespace WarpSearch.Games
                     if (!RoomsAtPositions.ContainsKey(p))
                         RoomsAtPositions.Add(p, roomInfo);
                 }
-                if (RoomStructs.ContainsKey(rs.RoomPointer.Address))
+                if (RoomStructs.ContainsKey(rs.RoomPointer))
                 {
                     if (!isFromRoomList)
                     {
-                        roomInfo.Room = RoomStructs[rs.RoomPointer.Address];
+                        roomInfo.Room = RoomStructs[rs.RoomPointer];
                         RoomsAtPositions[p] = roomInfo;
                     }
                     return true;
                 }
                 //房间的位置和大小
-                var topLeft = getUShort(rs.RoomPointer + (uint)34);
+                var topLeft = getUShort(rs.RoomPointer, 34);
                 rs.Left = left != -1 ? left : topLeft & 127;
                 rs.Top = top != -1 ? top : (topLeft >> 7) & 127;
                 rs.Top += topOffset;
@@ -336,57 +337,57 @@ namespace WarpSearch.Games
                     isCastleB = ((topLeft >> 14) & 1) == 1;
                 }
                 if (isCastleB) rs.Top = rs.Top + castleYDiff;
-                var firstLayer = getROMPointer(getROMPointer(rs.RoomPointer + (uint)8) + (uint)4);
-                if (firstLayer.Address == 0)
+                var firstLayer = getRomPointer(getRomPointer(rs.RoomPointer, 8), 4);
+                if (firstLayer == 0)
                 {
                     rs.Width = 1;
                     rs.Height = 1;
                 }
                 else
                 {
-                    rs.Width = data[firstLayer];
-                    rs.Height = data[firstLayer + 1];
+                    rs.Width = getByte(firstLayer,0);
+                    rs.Height = getByte(firstLayer, 1);
                 }
                 if (rs.Width == 1)
                 {
-                    var entityPointer = getROMPointer(rs.RoomPointer + (uint)24);
-                    if (entityPointer.Address != 0)
+                    var entityPointer = getRomPointer(rs.RoomPointer, 24);
+                    if (entityPointer != 0)
                     {
                         //获取房间内部的物体，记录红门的位置
-                        while (getUShort(entityPointer) != 0x7fff)
+                        while (getUShort(entityPointer, 0) != 0x7fff)
                         {
-                            if (data[entityPointer] >= 0x80)
+                            if (getByte(entityPointer, 0) >= 0x80)
                             {
-                                if ((data[entityPointer + 4] & 0xc0) == 0x40 && data[entityPointer + 5] == 5)
+                                if ((getByte(entityPointer, 4) & 0xc0) == 0x40 && getByte(entityPointer, 5) == 5)
                                 {
                                     if (rs.GateHeight == null) rs.GateHeight = new List<int>();
-                                    rs.GateHeight.Add(data[entityPointer + 3]);
+                                    rs.GateHeight.Add(getByte(entityPointer, 3));
                                 }
                             }
-                            entityPointer = entityPointer.Address + 0xc;
+                            entityPointer = entityPointer + 0xc;
                         }
                     }
                 }
                 //出口
-                rs.ExitPointer = getROMPointer(rs.RoomPointer + (uint)28);
-                var groupId = (rs.ExitPointer >> 2) % 3;
+                rs.ExitPointer = getRomPointer(rs.RoomPointer, 28);
+                var groupId = (int)((rs.ExitPointer.RomOffset >> 2) % 3);
                 exitGroups[groupId].Add(rs.RoomPointer);
                 rs.Exits = new List<ExitInfo>();
                 var currentExit = rs.ExitPointer;
                 int exitCount = 0;
                 while (true)
                 {
-                    var exitAddress = getROMPointer(currentExit).Address;
+                    var exitAddress = getRomPointer(currentExit, 0);
                     if (exitAddress < 0x8_00_00_00 || exitAddress >= (uint)fileSize + 0x8_00_00_00) break;
                     rs.Exits.Add(CreateExitInfo(currentExit));
-                    currentExit = currentExit.Address + (uint)exitLength;
+                    currentExit = currentExit + (uint)exitLength;
                     exitCount++;
                 }
                 if (exitCount != 0)
                 {
                     if (currentExit > maxExitAddress)
                     {
-                        maxExitAddress = currentExit.Address + (uint)((exitCount - 1) * exitLength);
+                        maxExitAddress = currentExit + (uint)((exitCount - 1) * exitLength);
                     }
                     if (currentExit < minExitAddress)
                     {
@@ -395,7 +396,7 @@ namespace WarpSearch.Games
                 }
                 if (currentExit > maxExitAddress && exitCount != 0)
                 {
-                    maxExitAddress = rs.ExitPointer.Address + (uint)((exitCount - 1) * exitLength);
+                    maxExitAddress = rs.ExitPointer + (uint)((exitCount - 1) * exitLength);
                 }
                 roomInfo.Room = rs;
                 if (eventFlag == -1)
@@ -408,7 +409,7 @@ namespace WarpSearch.Games
                     if (!isFromRoomList)
                     {
                         RoomsAtPositions[p] = roomInfo;
-                        currentRootRoomAddressList.Add(roomInfo.Room.RoomPointer.Address);
+                        currentRootRoomAddressList.Add(roomInfo.Room.RoomPointer);
                     }
                     else
                     {
@@ -421,18 +422,18 @@ namespace WarpSearch.Games
                                 if (!RoomsAtPositions.ContainsKey(p))
                                 {
                                     RoomsAtPositions.Add(p, roomInfo);
-                                    if (!currentRootRoomAddressList.Contains(roomInfo.Room.RoomPointer.Address))
+                                    if (!currentRootRoomAddressList.Contains(roomInfo.Room.RoomPointer))
                                     {
-                                        currentRootRoomAddressList.Add(roomInfo.Room.RoomPointer.Address);
+                                        currentRootRoomAddressList.Add(roomInfo.Room.RoomPointer);
                                     }
                                 }
                                 else if (RoomsAtPositions[p].Room == null)
                                 {
                                     RoomsAtPositions[p].RoomId = roomId;
                                     RoomsAtPositions[p].Room = rs;
-                                    if (!currentRootRoomAddressList.Contains(roomInfo.Room.RoomPointer.Address))
+                                    if (!currentRootRoomAddressList.Contains(roomInfo.Room.RoomPointer))
                                     {
-                                        currentRootRoomAddressList.Add(roomInfo.Room.RoomPointer.Address);
+                                        currentRootRoomAddressList.Add(roomInfo.Room.RoomPointer);
                                     }
                                 }
                                 else
@@ -442,34 +443,34 @@ namespace WarpSearch.Games
                                     if (originalRoom.Left > p.X || originalRoom.Left + originalRoom.Width < p.X
                                         || originalRoom.Top > p.Y || originalRoom.Top + originalRoom.Height < p.Y)
                                     {
-                                        if (!wrongPositionRoomList.Contains(originalRoom.RoomPointer.Address))
+                                        if (!wrongPositionRoomList.Contains(originalRoom.RoomPointer))
                                         {
-                                            wrongPositionRoomList.Add(originalRoom.RoomPointer.Address);
-                                            if (!FlagRoomLists.ContainsKey(rs.RoomPointer.Address))
+                                            wrongPositionRoomList.Add(originalRoom.RoomPointer);
+                                            if (!FlagRoomLists.ContainsKey(rs.RoomPointer))
                                             {
-                                                FlagRoomLists.Add(rs.RoomPointer.Address, new List<RoomInfo>());
+                                                FlagRoomLists.Add(rs.RoomPointer, new List<RoomInfo>());
                                             }
-                                            if (FlagRoomLists.ContainsKey(originalRoom.RoomPointer.Address))
+                                            if (FlagRoomLists.ContainsKey(originalRoom.RoomPointer))
                                             {
-                                                FlagRoomLists[rs.RoomPointer.Address].Add(originalRoomInfo);
-                                                foreach (var originalRoomList in FlagRoomLists[originalRoom.RoomPointer.Address])
+                                                FlagRoomLists[rs.RoomPointer].Add(originalRoomInfo);
+                                                foreach (var originalRoomList in FlagRoomLists[originalRoom.RoomPointer])
                                                 {
-                                                    FlagRoomLists[rs.RoomPointer.Address].Add(originalRoomList);
+                                                    FlagRoomLists[rs.RoomPointer].Add(originalRoomList);
                                                 }
                                             }
                                         }
                                         RoomsAtPositions.Remove(p);
                                         RoomsAtPositions.Add(p, roomInfo);
-                                        if (!currentRootRoomAddressList.Contains(roomInfo.Room.RoomPointer.Address))
+                                        if (!currentRootRoomAddressList.Contains(roomInfo.Room.RoomPointer))
                                         {
-                                            currentRootRoomAddressList.Add(roomInfo.Room.RoomPointer.Address);
+                                            currentRootRoomAddressList.Add(roomInfo.Room.RoomPointer);
                                         }
                                     }
                                     else
                                     {
-                                        if (!currentRootRoomAddressList.Contains(RoomsAtPositions[p].Room.RoomPointer.Address))
+                                        if (!currentRootRoomAddressList.Contains(RoomsAtPositions[p].Room.RoomPointer))
                                         {
-                                            currentRootRoomAddressList.Add(RoomsAtPositions[p].Room.RoomPointer.Address);
+                                            currentRootRoomAddressList.Add(RoomsAtPositions[p].Room.RoomPointer);
                                         }
                                     }
                                 }
@@ -478,7 +479,7 @@ namespace WarpSearch.Games
 
                         foreach (var rootRoomAddress in currentRootRoomAddressList)
                         {
-                            if (rootRoomAddress == roomInfo.Room.RoomPointer.Address)
+                            if (rootRoomAddress == roomInfo.Room.RoomPointer)
                                 continue;
                             if (!FlagRoomLists.ContainsKey(rootRoomAddress))
                             {
@@ -495,7 +496,7 @@ namespace WarpSearch.Games
                         FlagRoomLists[rootRoomAddress].Add(roomInfo);
                     }
                 }
-                RoomStructs.Add(roomInfo.Room.RoomPointer.Address, roomInfo.Room);
+                RoomStructs.Add(roomInfo.Room.RoomPointer, roomInfo.Room);
                 if (useHackSupport)
                 {
                     for (int i = rs.Left; i < rs.Left + rs.Width; i++)
@@ -508,7 +509,7 @@ namespace WarpSearch.Games
                         }
                     }
                 }
-                var flag = getUShort(rs.RoomPointer + (uint)2);
+                var flag = getUShort(rs.RoomPointer, 2);
                 if (flag != 0xFFFF)
                 {
                     //事件flag不是-1，加载下一个事件flag的房间
@@ -522,7 +523,7 @@ namespace WarpSearch.Games
                             }
                         }
                     }
-                    var newPointer = getROMPointer(rs.RoomPointer + (uint)4);
+                    var newPointer = getRomPointer(rs.RoomPointer, 4);
                     var newRs = new RoomInfo()
                     {
                         Sector = roomInfo.Sector,
@@ -542,18 +543,18 @@ namespace WarpSearch.Games
             }
         }
 
-        protected override ExitInfo CreateExitInfo(ROMPointer pointer)
+        protected override ExitInfo CreateExitInfo(RomPointer pointer)
         {
             var exit = new ExitInfo();
             exit.ExitPointer = pointer;
-            exit.ExitDestination = getROMPointer(pointer);
-            exit.SourceX = (sbyte)(data[pointer + 4]);
-            exit.SourceY = (sbyte)(data[pointer + 5]);
-            exit.XOffset = data[pointer + 8];
-            exit.DestX = (sbyte)(data[pointer + 9]);
+            exit.ExitDestination = getRomPointer(pointer, 0);
+            exit.SourceX = (sbyte)(getByte(pointer, 4));
+            exit.SourceY = (sbyte)(getByte(pointer, 5));
+            exit.XOffset = getByte(pointer, 8);
+            exit.DestX = (sbyte)(getByte(pointer, 9));
             if (exit.XOffset > 0x80) exit.DestX += 1;
-            exit.YOffset = data[pointer + 10];
-            exit.DestY = (sbyte)(data[pointer + 11]);
+            exit.YOffset = getByte(pointer, 10);
+            exit.DestY = (sbyte)(getByte(pointer, 11));
             return exit;
         }
     }

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WarpSearch
+namespace WarpSearch.Common
 {
     public class RoomInfo
     {
@@ -19,9 +19,9 @@ namespace WarpSearch
 
     public class RoomStruct
     {
-        public ROMPointer RoomPointer { get; set; }
+        public RomPointer RoomPointer { get; set; }
         public int EventFlag { get; set; }
-        public ROMPointer ExitPointer { get; set; }
+        public RomPointer ExitPointer { get; set; }
         public List<int> GateHeight { get; set; }
         public int Width { get; set; }
         public int Height { get; set; }
@@ -37,14 +37,14 @@ namespace WarpSearch
 
     public class ExitInfo
     {
-        public ROMPointer ExitDestination { get; set; }
+        public RomPointer ExitDestination { get; set; }
         public int SourceX { get; set; }
         public int SourceY { get; set; }
         public int DestX { get; set; }
         public int XOffset { get; set; }
         public int DestY { get; set; }
         public int YOffset { get; set; }
-        public ROMPointer ExitPointer { get; set; }
+        public RomPointer ExitPointer { get; set; }
     }
 
     public class SpecialRoomData
@@ -57,8 +57,8 @@ namespace WarpSearch
         public int BottomType { get; set; }
         public int LeftType { get; set; }
         public int RightType { get; set; }
-        public ROMPointer romPointer { get; set; }
-        public SpecialRoomData(int X, int Y, int Left, int Top, int TopType, int BottomType, int LeftType, int RightType, ROMPointer romPointer)
+        public RomPointer romPointer { get; set; }
+        public SpecialRoomData(int X, int Y, int Left, int Top, int TopType, int BottomType, int LeftType, int RightType, RomPointer romPointer)
         {
             this.X = X;
             this.Y = Y;
@@ -81,52 +81,6 @@ namespace WarpSearch
         Error
     }
 
-    public class ROMPointer : IComparable<ROMPointer>
-    {
-        private uint actualAddress = 0;
-
-        public ROMPointer() { }
-
-        public ROMPointer(uint Address)
-        {
-            actualAddress = Address - 0x8_00_00_00;
-        }
-
-        public uint Address => actualAddress + 0x8_00_00_00;
-
-        public static implicit operator ROMPointer(uint Address)
-        {
-            return new ROMPointer(Address);
-        }
-
-        public static implicit operator ROMPointer(int Address)
-        {
-            return new ROMPointer((uint)Address);
-        }
-
-        public static implicit operator uint(ROMPointer pointer)
-        {
-            return pointer.actualAddress;
-        }
-
-        public static implicit operator int(ROMPointer pointer)
-        {
-            unchecked
-            {
-                return (int)pointer.actualAddress;
-            }
-        }
-
-        public override string ToString()
-        {
-            return Address.ToString("X8");
-        }
-
-        public int CompareTo(ROMPointer other)
-        {
-            return actualAddress.CompareTo(other.actualAddress);
-        }
-    }
 
     public class RoomAndExit
     {
