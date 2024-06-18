@@ -6,14 +6,6 @@ using System.Threading.Tasks;
 
 namespace WarpSearch.Common
 {
-    //public class MapSquareInfo
-    //{
-    //    public int X { get; set; }
-    //    public int Y { get; set; }
-    //    public MapSquareType SquareType { get; set; }
-    //    public RoomStruct BelongingRoom { get; set; }
-    //}
-
     public class RoomStruct
     {
         public RomPointer RoomPointer { get; set; }

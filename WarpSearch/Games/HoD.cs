@@ -72,7 +72,7 @@ namespace WarpSearch.Games
         {
             RoomsAtPositions.Clear();
             RoomStructs.Clear();
-            FlagRoomLists.Clear();
+            //FlagRoomLists.Clear();
             //roomPositions.Clear();
             foreach (var exitGroup in exitGroups)
             {
@@ -145,7 +145,7 @@ namespace WarpSearch.Games
                         {
                             RoomsAtPositions.Add(new Point(x, y2), room2);
                         }
-                        MapElements.Rooms.Add(new MapRoomToDraw { X = x, Y = y2, SquareType = mapSquareType2 });
+                        MapElements.Rooms.Add(new MapRoomToDraw { X = x, Y = y2, SquareType = mapSquareType2, IsCastleB = true });
                     }
                 }
 
@@ -193,6 +193,11 @@ namespace WarpSearch.Games
                 }
             }
 
+            foreach (var roomAddress in RoomStructs.Keys)
+            {
+                addExtraRoomsToMap(RoomStructs[roomAddress]);
+            }
+
             //画地图线
             pointer = MapLinePointer;
             for (int i = 0; i < 1280; i++)
@@ -228,7 +233,8 @@ namespace WarpSearch.Games
                 var room = createRoomStruct(-1, -1, specialRoomData.romPointer, specialRoomData.Left, specialRoomData.Top);
                 if (room != null)
                 {
-                    addExtraRoomsToMap(room, MapSquareType.Normal);
+                    RoomsAtPositions.Add(new Point(specialRoomData.X, specialRoomData.Y), room);
+                    MapElements.Rooms.Add(new MapRoomToDraw { X = specialRoomData.X, Y = specialRoomData.Y, SquareType = MapSquareType.Normal });
                 }
             }
 
@@ -252,7 +258,7 @@ namespace WarpSearch.Games
                             var existingRoom = RoomsAtPositions[p];
                             if (existingRoom.Equals(room))
                             {
-                                return;
+                                continue;
                             }
                             if (!existingRoom.OverlappingRooms.Contains(room))
                             {
@@ -264,11 +270,16 @@ namespace WarpSearch.Games
             }
         }
 
-        private RoomStruct createRoomStruct(int sector = -1, int roomId = -1, RomPointer pointer = null, int left = -1, int top = -1, 
+        private RoomStruct createRoomStruct(int mapSector = -1, int roomId = -1, RomPointer pointer = null, int left = -1, int top = -1, 
             bool? isCastleB = null, int eventFlag = -1, RoomStruct rootRoom = null)
         {
             try
             {
+                var sector = getMapRegionToSector(mapSector);
+                if (isCastleB!= null && isCastleB.Value)
+                {
+                    sector += 1;
+                }
                 //房间指针
                 pointer = pointer ?? getRomPointer(getRomPointer(FirstRoomPointer, sector << 2), roomId << 2);
                 if (pointer == null || pointer == 0)
@@ -286,8 +297,8 @@ namespace WarpSearch.Games
                 rs.RoomPointer = pointer;
 
                 rs.RoomId = roomId;
-                rs.MapSector = sector;
-                rs.Sector = getMapRegionToSector(sector);
+                rs.MapSector = mapSector;
+                rs.Sector = sector;
 
                 //房间的位置和大小
                 var topLeft = getUShort(rs.RoomPointer, 34);
@@ -301,7 +312,6 @@ namespace WarpSearch.Games
                 if (isCastleB.Value)
                 {
                     rs.Top += castleYDiff;
-                    rs.Sector += 1;
                 }
 
                 var firstLayer = getRomPointer(getRomPointer(rs.RoomPointer, 8), 4);
@@ -371,7 +381,7 @@ namespace WarpSearch.Games
                     {
                         rootRoom = rs;
                     }
-                    var subRoom = createRoomStruct(sector, roomId, newPointer, left, top, isCastleB, flag, rootRoom);
+                    var subRoom = createRoomStruct(mapSector, roomId, newPointer, left, top, isCastleB, flag, rootRoom);
                     rootRoom.OverlappingRooms.Add(subRoom);
                 }
                 return rs;

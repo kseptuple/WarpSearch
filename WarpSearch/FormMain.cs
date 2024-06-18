@@ -66,9 +66,9 @@ namespace WarpSearch
 
         private GameTypeEnum romType = GameTypeEnum.Null;
 
-        private MapSquareInfo originalSelectedRoom = null;
+        private RoomStruct originalSelectedRoom = null;
 
-        public MapSquareInfo selectedRoom = null;
+        public RoomStruct selectedRoom = null;
         public Point selectedPos = default;
 
         public RoomStruct sourceRoom = null;
@@ -165,7 +165,7 @@ namespace WarpSearch
                             }
                             else if (mouseEvent.Button == MouseButtons.Left)
                             {
-                                if (selectedRoom == null || selectedRoom.BelongingRoom == null) return;
+                                if (selectedRoom == null || selectedRoom == null) return;
                                 PositionToDraw.Clear();
                                 LinesToDraw.Clear();
                                 if (currentSourceRoomInListIdList.Count != 0)
@@ -177,7 +177,7 @@ namespace WarpSearch
                                     currentSourceRoomInListIdList.Clear();
                                 }
                                 var point = new Point(actualX, actualY);
-                                MapSquareInfo currentSourceRoom = null;
+                                RoomStruct currentSourceRoom = null;
                                 RoomAndExit currentSourceRoomInList = null;
                                 textSrcRoomPointer.Text = "";
                                 textDestRoomPointer.Text = "";
@@ -189,14 +189,14 @@ namespace WarpSearch
                                     currentSourceRoom = rom.RoomsAtPositions[point];
                                     if (currentSourceRoom != null)
                                     {
-                                        List<MapSquareInfo> currentRoomInfoList = new List<MapSquareInfo>();
+                                        List<RoomStruct> currentRoomInfoList = new List<RoomStruct>();
                                         currentRoomInfoList.Add(currentSourceRoom);
-                                        if (rom.FlagRoomLists.ContainsKey(currentSourceRoom.BelongingRoom.RoomPointer))
+                                        if (currentSourceRoom.OverlappingRooms.Count > 0)
                                         {
-                                            foreach (var roomInfo in rom.FlagRoomLists[currentSourceRoom.BelongingRoom.RoomPointer])
+                                            foreach (var roomInfo in currentSourceRoom.OverlappingRooms)
                                             {
-                                                if (roomInfo.BelongingRoom.Left <= actualX && roomInfo.BelongingRoom.Top <= actualY &&
-                                                    roomInfo.BelongingRoom.Left + roomInfo.BelongingRoom.Width > actualX && roomInfo.BelongingRoom.Top + roomInfo.BelongingRoom.Height > actualY)
+                                                if (roomInfo.Left <= actualX && roomInfo.Top <= actualY &&
+                                                    roomInfo.Left + roomInfo.Width > actualX && roomInfo.Top + roomInfo.Height > actualY)
                                                     currentRoomInfoList.Add(roomInfo);
                                             }
                                         }
@@ -209,7 +209,7 @@ namespace WarpSearch
                                             foreach (var currentRoom in currentRoomInfoList)
                                             {
                                                 currentSourceRoomInList = (RoomAndExit)listSourceRoom.Items[i];
-                                                if (currentSourceRoomInList.Room.RoomPointer == currentRoom.BelongingRoom.RoomPointer)
+                                                if (currentSourceRoomInList.Room.RoomPointer == currentRoom.RoomPointer)
                                                 {
                                                     hasValidRoom = true;
                                                     if (listSourceRoom.SelectedIndex == -1)
@@ -259,11 +259,11 @@ namespace WarpSearch
             bool isUncertain = currentSourceRoomInList.IsUncertain;
             var sourceX = currentSourceRoomInList.Room.Left + currentSourceRoomInList.Exit.SourceX;
             var sourceY = currentSourceRoomInList.Room.Top + currentSourceRoomInList.Exit.SourceY;
-            var destX = selectedRoom.BelongingRoom.Left + currentSourceRoomInList.Exit.DestX;
-            var destY = selectedRoom.BelongingRoom.Top + currentSourceRoomInList.Exit.DestY;
+            var destX = selectedRoom.Left + currentSourceRoomInList.Exit.DestX;
+            var destY = selectedRoom.Top + currentSourceRoomInList.Exit.DestY;
 
-            if (currentSourceRoomInList.Exit.DestX < 0 || currentSourceRoomInList.Exit.DestX > selectedRoom.BelongingRoom.Width - 1
-                || currentSourceRoomInList.Exit.DestY < 0 || currentSourceRoomInList.Exit.DestY > selectedRoom.BelongingRoom.Height - 1)
+            if (currentSourceRoomInList.Exit.DestX < 0 || currentSourceRoomInList.Exit.DestX > selectedRoom.Width - 1
+                || currentSourceRoomInList.Exit.DestY < 0 || currentSourceRoomInList.Exit.DestY > selectedRoom.Height - 1)
             {
                 isOutsideDest = true;
                 isUncertain = true;
@@ -278,14 +278,14 @@ namespace WarpSearch
             }
             if (isOutsideDest)
             {
-                AddLine(selectedRoom.BelongingRoom.Left, selectedRoom.BelongingRoom.Top, destX, destY, false);
+                AddLine(selectedRoom.Left, selectedRoom.Top, destX, destY, false);
             }
             pictureMap.Refresh();
             textSrcRoomPointer.Text = currentSourceRoomInList.Room.RoomPointer.ToString();
-            textDestRoomPointer.Text = selectedRoom.BelongingRoom.RoomPointer.ToString();
-            if (selectedRoom.BelongingRoom.EventFlag != -1)
+            textDestRoomPointer.Text = selectedRoom.RoomPointer.ToString();
+            if (selectedRoom.EventFlag != -1)
             {
-                textDestFlag.Text = selectedRoom.BelongingRoom.EventFlag.ToString("X2");
+                textDestFlag.Text = selectedRoom.EventFlag.ToString("X2");
             }
             if (!isAddingToRoomList)
             {
@@ -382,9 +382,9 @@ namespace WarpSearch
             }
             else
             {
-                selectedRoom = rom.FlagRoomLists[originalSelectedRoom.BelongingRoom.RoomPointer][comboRoomList.SelectedIndex - 1];
+                selectedRoom = originalSelectedRoom.OverlappingRooms[comboRoomList.SelectedIndex - 1];
             }
-            var room = selectedRoom.BelongingRoom;
+            var room = selectedRoom;
             RoomToDraw.Add(new RectangleToDraw(transparentWhiteBrush, room.Left, room.Top, room.Width, room.Height));
             if (opMode == OperationMode.FindSource)
             {
@@ -474,6 +474,7 @@ namespace WarpSearch
             map = new Bitmap((int)Math.Floor((rom.MapWidth + 4) * gridSize), (int)Math.Floor((rom.MapHeight + 4) * gridSize));
             bitmapGraphics = Graphics.FromImage(map);
             rom.LoadRooms();
+            DrawMap();
             setSearchOptionText();
             pictureMap.Image = map;
             pictureMap.Width = map.Width;
@@ -535,6 +536,7 @@ namespace WarpSearch
             map = new Bitmap((int)Math.Floor((rom.MapWidth + 4) * gridSize), (int)Math.Floor((rom.MapHeight + 4) * gridSize));
             bitmapGraphics = Graphics.FromImage(map);
             rom.LoadRooms();
+            DrawMap();
             pictureMap.Image = map;
             pictureMap.Width = map.Width;
             pictureMap.Height = map.Height;
@@ -792,7 +794,7 @@ namespace WarpSearch
             if (rom == null) return;
             map = new Bitmap((int)Math.Floor((rom.MapWidth + 4) * gridSize), (int)Math.Floor((rom.MapHeight + 4) * gridSize));
             bitmapGraphics = Graphics.FromImage(map);
-            rom.DrawRooms();
+            DrawMap();
             pictureMap.Image = map;
             pictureMap.Width = map.Width;
             pictureMap.Height = map.Height;
@@ -1014,10 +1016,10 @@ namespace WarpSearch
             if (rom.RoomsAtPositions.ContainsKey(point))
             {
                 selectedRoom = rom.RoomsAtPositions[point];
-                if (selectedRoom != null && selectedRoom.BelongingRoom != null)
+                if (selectedRoom != null && selectedRoom != null)
                 {
                     originalSelectedRoom = selectedRoom;
-                    textRoomPointer.Text = selectedRoom.BelongingRoom.RoomPointer.ToString();
+                    textRoomPointer.Text = selectedRoom.RoomPointer.ToString();
                     if (selectedRoom.MapSector >= 0)
                     {
                         textSector.Text = selectedRoom.MapSector.ToString("X2");
@@ -1035,20 +1037,20 @@ namespace WarpSearch
                         textRoomId.Text = "-";
                     }
 
-                    var room = selectedRoom.BelongingRoom;
-                    comboRoomList.Items.Add(selectedRoom.BelongingRoom.RoomPointer.ToString());
+                    var room = selectedRoom;
+                    comboRoomList.Items.Add(selectedRoom.RoomPointer.ToString());
                     comboRoomList.SelectedIndex = 0;
-                    if (rom.FlagRoomLists.ContainsKey(room.RoomPointer))
+                    if (room.OverlappingRooms.Count > 0)
                     {
-                        foreach (var roomInfo in rom.FlagRoomLists[room.RoomPointer])
+                        foreach (var roomInfo in room.OverlappingRooms)
                         {
-                            if (roomInfo.BelongingRoom.EventFlag != -1)
+                            if (roomInfo.EventFlag != -1)
                             {
-                                comboRoomList.Items.Add($"{roomInfo.BelongingRoom.RoomPointer} (Flag={roomInfo.BelongingRoom.EventFlag:X2})");
+                                comboRoomList.Items.Add($"{roomInfo.RoomPointer} (Flag={roomInfo.EventFlag:X2})");
                             }
                             else
                             {
-                                comboRoomList.Items.Add(roomInfo.BelongingRoom.RoomPointer.ToString());
+                                comboRoomList.Items.Add(roomInfo.RoomPointer.ToString());
                             }
                         }
                     }
@@ -1066,7 +1068,7 @@ namespace WarpSearch
         private void ListSourceRoom_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (isAddingToRoomList) return;
-            if (selectedRoom == null || selectedRoom.BelongingRoom == null) return;
+            if (selectedRoom == null || selectedRoom == null) return;
             if (listSourceRoom.SelectedItem == null) return;
             PositionToDraw.Clear();
             LinesToDraw.Clear();
@@ -1160,11 +1162,11 @@ namespace WarpSearch
         {
             if (rom == null) { return; }
             StringBuilder sb = new StringBuilder();
-            List<MapSquareInfo> rooms = new List<MapSquareInfo>();
+            List<RoomStruct> rooms = new List<RoomStruct>();
             foreach (var item in rom.RoomsAtPositions.Keys)
             {
                 var room = rom.RoomsAtPositions[item];
-                if (rooms.Exists(r => r.BelongingRoom.RoomPointer == room.BelongingRoom.RoomPointer))
+                if (rooms.Exists(r => r.RoomPointer == room.RoomPointer))
                 {
                     continue;
                 }
@@ -1175,7 +1177,7 @@ namespace WarpSearch
                 rom.FindWarpSource(trackBarSearchOption.Value);
                 foreach (RoomAndExit exits in listSourceRoom.Items)
                 {
-                    sb.AppendLine($"{exits.Room.RoomPointer} {exits.Exit.SourceX} {exits.Exit.SourceY}=={room.BelongingRoom.RoomPointer} {exits.Exit.DestX} {exits.Exit.DestY}");
+                    sb.AppendLine($"{exits.Room.RoomPointer} {exits.Exit.SourceX} {exits.Exit.SourceY}=={room.RoomPointer} {exits.Exit.DestX} {exits.Exit.DestY}");
                 }
             }
             File.WriteAllText("E:\\test3.csv", sb.ToString());

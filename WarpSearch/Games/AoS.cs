@@ -47,7 +47,7 @@ namespace WarpSearch.Games
         {
             RoomsAtPositions.Clear();
             RoomStructs.Clear();
-            FlagRoomLists.Clear();
+            //FlagRoomLists.Clear();
             //roomPositions.Clear();
             foreach (var exitGroup in exitGroups)
             {
@@ -167,15 +167,17 @@ namespace WarpSearch.Games
             }
 
             MapElements.Texts.Add(new MapTextToDraw { X = 12, Y = 53, Text = "Boss Rush", Size = 3 });
-            MapElements.Texts.Add(new MapTextToDraw { X = 12, Y = 50, Text = "Boss Rush", Size = 3 });
-            MapElements.Texts.Add(new MapTextToDraw { X = 47, Y = 51, Text = "Boss Rush", Size = 3 });
+            MapElements.Texts.Add(new MapTextToDraw { X = 12, Y = 50, Text = "Debug Room", Size = 3 });
+            MapElements.Texts.Add(new MapTextToDraw { X = 47, Y = 51, Text = "Bad Ending", Size = 3 });
 
             void addSpecialRooms(SpecialRoomData specialRoomData)
             {
                 var room = createRoomStruct(-1, -1, specialRoomData.romPointer, specialRoomData.Left, specialRoomData.Top);
+
                 if (room != null)
                 {
-                    addExtraRoomsToMap(room, MapSquareType.Normal);
+                    RoomsAtPositions.Add(new Point(specialRoomData.X, specialRoomData.Y), room);
+                    MapElements.Rooms.Add(new MapRoomToDraw { X = specialRoomData.X, Y = specialRoomData.Y, SquareType = MapSquareType.Normal });
                 }
             }
 
@@ -199,7 +201,7 @@ namespace WarpSearch.Games
                             var existingRoom = RoomsAtPositions[p];
                             if (existingRoom.Equals(room))
                             {
-                                return;
+                                continue;
                             }
                             if (!existingRoom.OverlappingRooms.Contains(room))
                             {

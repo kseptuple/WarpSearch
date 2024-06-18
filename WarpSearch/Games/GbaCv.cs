@@ -17,7 +17,7 @@ namespace WarpSearch.Games
         public Dictionary<Point, RoomStruct> RoomsAtPositions { get; set; } = new Dictionary<Point, RoomStruct>();
         public Dictionary<uint, RoomStruct> RoomStructs { get; set; } = new Dictionary<uint, RoomStruct>();
 
-        public Dictionary<uint, List<MapSquareInfo>> FlagRoomLists { get; set; } = new Dictionary<uint, List<MapSquareInfo>>();
+        //public Dictionary<uint, List<RoomStruct>> FlagRoomLists { get; set; } = new Dictionary<uint, List<RoomStruct>>();
         protected List<List<RomPointer>> exitGroups { get; set; } = null;
         //protected ROMPointer RoomRootPointer { get; set; } = 0;
         protected RomPointer MapPointer { get; set; } = 0;
@@ -147,17 +147,17 @@ namespace WarpSearch.Games
             bool isUncertain = false;
             var roomInfo = mainForm.selectedRoom;
             var sourcePos = mainForm.selectedPos;
-            if (roomInfo == null || roomInfo.BelongingRoom == null) return;
+            if (roomInfo == null || roomInfo == null) return;
 
-            var currentPointer = roomInfo.BelongingRoom.ExitPointer;
-            var sourceXToRoom = sourcePos.X - roomInfo.BelongingRoom.Left;
+            var currentPointer = roomInfo.ExitPointer;
+            var sourceXToRoom = sourcePos.X - roomInfo.Left;
 
             //晓月一格宽的房间右侧，超过一格的视为一格
             if (GameType == GameTypeEnum.Aos)
             {
-                if (roomInfo.BelongingRoom.Width == 1 && sourceXToRoom > 1) sourceXToRoom = 1;
+                if (roomInfo.Width == 1 && sourceXToRoom > 1) sourceXToRoom = 1;
             }
-            var sourceYToRoom = sourcePos.Y - roomInfo.BelongingRoom.Top;
+            var sourceYToRoom = sourcePos.Y - roomInfo.Top;
             List<uint> destAddressList = new List<uint>();
             uint lastExitPossibleAddress = (uint)(data.Length - exitLength);
             while (currentPointer.RomOffset <= lastExitPossibleAddress)
@@ -247,7 +247,7 @@ namespace WarpSearch.Games
                 }
                 if (!previewOnly)
                 {
-                    mainForm.sourceRoom = roomInfo.BelongingRoom;
+                    mainForm.sourceRoom = roomInfo;
                     mainForm.destRoom = RoomStructs[pointer];
                     var destX = RoomStructs[pointer].Left + exitX;
                     var destY = RoomStructs[pointer].Top + exitY;
@@ -298,16 +298,16 @@ namespace WarpSearch.Games
             mainForm.ClearLine();
             mainForm.ClearSourceRoomList();
             var roomInfo = mainForm.selectedRoom;
-            if (roomInfo == null || roomInfo.BelongingRoom == null) return;
+            if (roomInfo == null || roomInfo == null) return;
             //找到通向当前房间的所有出口
-            var exits = FindNormalExits(roomInfo.BelongingRoom.RoomPointer);
+            var exits = FindNormalExits(roomInfo.RoomPointer);
             List<uint> addresses = new List<uint>();
             foreach (var exit in exits)
             {
                 addSourceRoom(exit, false);
             }
 
-            getAllPossibleExits(roomInfo.BelongingRoom.RoomPointer, new Dictionary<uint, byte>(), false);
+            getAllPossibleExits(roomInfo.RoomPointer, new Dictionary<uint, byte>(), false);
 
             void getAllPossibleExits(uint address, Dictionary<uint, byte> flagList, bool isUncertain)
             {
@@ -368,7 +368,7 @@ namespace WarpSearch.Games
             void addSourceRoom(ExitInfo exitInfo, bool isUncertain, Dictionary<uint, byte> flagList = null)
             {
                 var exitGroupId = 0;
-                if (exitInfo.DestX < 0 || exitInfo.DestX > roomInfo.BelongingRoom.Width - 1 || exitInfo.DestY < 0 || exitInfo.DestY > roomInfo.BelongingRoom.Height - 1)
+                if (exitInfo.DestX < 0 || exitInfo.DestX > roomInfo.Width - 1 || exitInfo.DestY < 0 || exitInfo.DestY > roomInfo.Height - 1)
                 {
                     isUncertain = true;
                 }

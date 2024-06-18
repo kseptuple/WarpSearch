@@ -105,6 +105,26 @@ namespace WarpSearch
             bitmapGraphics.DrawString(text, drawFont, trueWhiteBrush, x * gridSize, y * gridSize);
         }
 
+        public void DrawMap()
+        {
+            if (rom != null)
+            {
+                var mapElements = rom.MapElements;
+                foreach (var room in mapElements.Rooms)
+                {
+                    DrawRoom(room.X, room.Y, room.SquareType, room.IsCastleB);
+                }
+                foreach (var line in mapElements.Lines)
+                {
+                    DrawLine(line.X, line.Y, line.IsHorizonal, line.IsSolid);
+                }
+                foreach (var text in mapElements.Texts)
+                {
+                    DrawText(text.Text, text.X, text.Y, text.Size);
+                }
+            }
+        }
+
     }
 
     public class MapRoomToDraw
