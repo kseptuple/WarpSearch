@@ -13,7 +13,7 @@ namespace WarpSearch.Games
             0x84fb324, 0x84fb3bc, 0x84fb454, 0x84fb4ec, 0x84fb5a4, 0x84fb63c, 0x84fb6d4, 0x84fb75c, 0x84fa920, 0x84fa9b8, 0x84faa48, 0x84faae0, 
             0x84fab78, 0x84fac10, 0x84faca8, 0x84fad40, 0x84fadd8, 0x84fae70, 0x84faf08, 0x84faf90 };
 
-        public AoSJPN(byte[] fileData, FormMain formMain) : base(fileData, formMain)
+        public AoSJPN(byte[] fileData) : base(fileData)
         {
             //RoomRootPointer = 0x800198C;
             FirstRoomPointer = 0x84E5808;

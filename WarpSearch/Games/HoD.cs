@@ -60,13 +60,17 @@ namespace WarpSearch.Games
             }
         }
 
-        public HoD(byte[] fileData, FormMain formMain) : base(fileData, formMain)
+        public HoD(byte[] fileData) : base(fileData)
         {
             exitGroups = new List<List<RomPointer>>() { new List<RomPointer>(), new List<RomPointer>(), new List<RomPointer>() };
             GameType = GameTypeEnum.Hod;
             exitLength = 12;
             //美版和日版通用
             RoomFlagStart = 0x314;
+            MapWidth = 80;
+            MapHeight = 80;
+            castleYDiff = 40;
+            topOffset = 0;
         }
         public override void LoadRooms()
         {
@@ -151,7 +155,7 @@ namespace WarpSearch.Games
 
             }
 
-            specialRoomDataList = GbaCvLoader.getSpecialRooms(GameTypeEnum.Hod, UseHackSupport, specialRomPointers);
+            specialRoomDataList = GbaCvLoader.getSpecialRooms(GameTypeEnum.Hod, specialRomPointers);
 
             foreach (var specialRoomData in specialRoomDataList)
             {

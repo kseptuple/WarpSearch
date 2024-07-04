@@ -9,8 +9,8 @@ namespace WarpSearch.Games
 {
     public class HoDCustom : HoD
     {
-        public HoDCustom(byte[] fileData, FormMain formMain, RomPointer firstRoomPointer,
-            RomPointer mapPointer, RomPointer mapLinePointer, GameVersionEnum gameVersion) : base(fileData, formMain)
+        public HoDCustom(byte[] fileData, RomPointer firstRoomPointer,
+            RomPointer mapPointer, RomPointer mapLinePointer, GameVersionEnum gameVersion) : base(fileData)
         {
             //RoomRootPointer = null;
             FirstRoomPointer = firstRoomPointer;

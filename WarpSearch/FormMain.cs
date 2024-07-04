@@ -129,7 +129,7 @@ namespace WarpSearch
                                 var left = actualX;
                                 var top = actualY;
                                 selectedPos = new Point(left, top);
-                                rom.FindWarpDestination();
+                                FindAndDrawWarpDestination();
                                 if (sourceRoom != null && destRoom != null)
                                 {
                                     textSrcRoomPointer.Text = sourceRoom.RoomPointer.ToString();
@@ -269,8 +269,8 @@ namespace WarpSearch
                 isUncertain = true;
             }
 
-            AddRoomPos(sourceX, sourceY, false, false, isUncertain);
-            AddRoomPos(destX, destY, false, false, isUncertain);
+            AddMapSquarePos(sourceX, sourceY, false, false, isUncertain);
+            AddMapSquarePos(destX, destY, false, false, isUncertain);
 
             if (sourceX != destX || sourceY != destY)
             {
@@ -360,7 +360,7 @@ namespace WarpSearch
                         var left = actualX;
                         var top = actualY;
                         selectedPos = new Point(left, top);
-                        rom.FindWarpDestination(true);
+                        FindAndDrawWarpDestination(true);
                         pictureMap.Refresh();
                     }
                     break;
@@ -390,7 +390,7 @@ namespace WarpSearch
             {
                 currentSourceRoomInListIdList.Clear();
                 flagListForRoom.Clear();
-                rom.FindWarpSource(trackBarSearchOption.Value);
+                FindAndDrawWarpSource(trackBarSearchOption.Value);
             }
             pictureMap.Refresh();
         }
@@ -636,43 +636,6 @@ namespace WarpSearch
         {
             var brush = isBlack ? transparentBlackBrush : transparentWhiteBrush;
             RoomToDraw.Add(new RectangleToDraw(brush, room.Left, room.Top, room.Width, room.Height));
-        }
-
-        public void AddRoomPos(int x, int y, bool isBad, bool previewOnly = false, bool isUncertain = false)
-        {
-            var brush = transparentRedBrush;
-            if (!isBad)
-            {
-                if (GreenRooms.Exists(p => p.X == x + globalOffset && p.Y == y + globalOffset))
-                {
-                    brush = transparentBlueBrush;
-                }
-                else
-                {
-                    brush = transparentGreenBrush;
-                }
-            }
-
-            if (isUncertain)
-            {
-                brush = transparentOrangeBrush;
-            }
-            if (previewOnly)
-            {
-                PositionPreviewToDraw.Add(new RectangleToDraw(brush, x, y, 1, 1));
-            }
-            else
-            {
-                PositionToDraw.Add(new RectangleToDraw(brush, x, y, 1, 1));
-            }
-        }
-
-        public void AddLine(int startX, int startY, int endX, int endY, bool hasArrow)
-        {
-            if (hasArrow)
-                LinesToDraw.Add(new LineToDraw(redPen, redBrush2, startX, startY, endX, endY, true));
-            else
-                LinesToDraw.Add(new LineToDraw(orangePen, orangeBrush, startX, startY, endX, endY, false));
         }
 
         private void RadioButtonFindDest_CheckedChanged(object sender, EventArgs e)
@@ -1114,7 +1077,7 @@ namespace WarpSearch
             SourceRoomPointers.Clear();
             currentSourceRoomInListIdList.Clear();
             flagListForRoom.Clear();
-            rom.FindWarpSource(trackBarSearchOption.Value);
+            FindAndDrawWarpSource(trackBarSearchOption.Value);
             pictureMap.Refresh();
         }
 
@@ -1174,7 +1137,7 @@ namespace WarpSearch
                 selectedRoom = room;
                 currentSourceRoomInListIdList.Clear();
                 flagListForRoom.Clear();
-                rom.FindWarpSource(trackBarSearchOption.Value);
+                FindAndDrawWarpSource(trackBarSearchOption.Value);
                 foreach (RoomAndExit exits in listSourceRoom.Items)
                 {
                     sb.AppendLine($"{exits.Room.RoomPointer} {exits.Exit.SourceX} {exits.Exit.SourceY}=={room.RoomPointer} {exits.Exit.DestX} {exits.Exit.DestY}");

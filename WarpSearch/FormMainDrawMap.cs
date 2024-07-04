@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Net.NetworkInformation;
 using System.Text;
 using System.Threading.Tasks;
 using WarpSearch.Common;
@@ -125,6 +126,59 @@ namespace WarpSearch
             }
         }
 
+        public void AddMapSquarePos(int x, int y, bool isBad, bool previewOnly = false, bool isUncertain = false)
+        {
+            var brush = transparentRedBrush;
+            if (!isBad)
+            {
+                if (GreenRooms.Exists(p => p.X == x + globalOffset && p.Y == y + globalOffset))
+                {
+                    brush = transparentBlueBrush;
+                }
+                else
+                {
+                    brush = transparentGreenBrush;
+                }
+            }
+
+            if (isUncertain)
+            {
+                brush = transparentOrangeBrush;
+            }
+            if (previewOnly)
+            {
+                PositionPreviewToDraw.Add(new RectangleToDraw(brush, x, y, 1, 1));
+            }
+            else
+            {
+                PositionToDraw.Add(new RectangleToDraw(brush, x, y, 1, 1));
+            }
+        }
+
+        public void AddLine(int startX, int startY, int endX, int endY, bool hasArrow)
+        {
+            if (hasArrow)
+                LinesToDraw.Add(new LineToDraw(redPen, redBrush2, startX, startY, endX, endY, true));
+            else
+                LinesToDraw.Add(new LineToDraw(orangePen, orangeBrush, startX, startY, endX, endY, false));
+        }
+
+        //public void DrawWarpDisplayItems()
+        //{
+        //    if (rom != null)
+        //    {
+        //        var warpDisplayItems = rom.WarpDisplayItems;
+        //        foreach (var room in warpDisplayItems.Rooms)
+        //        {
+        //            AddRoomPos(room.X, room.Y, room.IsBad, room.IsPreview, room.IsUncertain);
+        //        }
+        //        foreach (var line in warpDisplayItems.Lines)
+        //        {
+        //            AddLine(line.StartX, line.StartY, line.EndX, line.EndY, line.HasArrow);
+        //        }
+        //    }
+        //}
+
     }
 
     public class MapRoomToDraw
@@ -153,8 +207,45 @@ namespace WarpSearch
 
     public class MapElementsToDraw
     {
-        public List<MapRoomToDraw> Rooms { get; set; }
-        public List<MapLineToDraw> Lines { get; set; }
-        public List<MapTextToDraw> Texts { get; set; }
+        public List<MapRoomToDraw> Rooms { get; set; } = new List<MapRoomToDraw>();
+        public List<MapLineToDraw> Lines { get; set; } = new List<MapLineToDraw>();
+        public List<MapTextToDraw> Texts { get; set; } = new List<MapTextToDraw>();
+    }
+
+    public class StartEndRoomToDraw
+    {
+        public int X { get; set; }
+        public int Y { get; set; }
+        public bool IsBad {  get; set; }
+        public bool IsPreview { get; set; }
+        public bool IsUncertain { get; set; }
+        public bool IsStartRoom { get; set; }
+    }
+
+    public class SourceRoomInfo
+    {
+        public RoomStruct Room { get; set; }
+        public ExitInfo Exit { get; set; }
+        public bool IsUncertain { get; set; }
+        public Dictionary<uint, byte> FlagList { get; set; }
+    }
+
+    public class WarpLineToDraw
+    {
+        public int StartX { get; set; }
+        public int StartY { get; set; }
+        public int EndX { get; set; }
+        public int EndY { get; set; }
+        public bool HasArrow { get; set; }
+    }
+
+    public class WarpsToDraw
+    {
+        public bool IsBadWarp {  get; set; }
+        public bool IsUncertainWarp { get; set; }
+        public bool IsDestOutside { get; set; }
+        public Dictionary<uint, byte> FlagList = new Dictionary<uint, byte>();
+        public RoomStruct DestRoom { get; set; }
+        public List<StartEndRoomToDraw> WarpRooms { get; set; } = new List<StartEndRoomToDraw>();
     }
 }

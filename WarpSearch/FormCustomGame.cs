@@ -188,32 +188,32 @@ namespace WarpSearch
             if (radioButtonHoDU.Checked)
             {
                 gameVersion = GameVersionEnum.USA;
-                game = new HoDCustom(data, formMain, _firstRoomPointer, _mapPointer, _mapLinePointer, gameVersion);
+                game = new HoDCustom(data, _firstRoomPointer, _mapPointer, _mapLinePointer, gameVersion);
             }
             else if (radioButtonHoDJ.Checked)
             {
                 gameVersion = GameVersionEnum.JPN;
-                game = new HoDCustom(data, formMain, _firstRoomPointer, _mapPointer, _mapLinePointer, gameVersion);
+                game = new HoDCustom(data, _firstRoomPointer, _mapPointer, _mapLinePointer, gameVersion);
             }
             else if (radioButtonHoDE.Checked)
             {
                 gameVersion = GameVersionEnum.EUR;
-                game = new HoDCustom(data, formMain, _firstRoomPointer, _mapPointer, _mapLinePointer, gameVersion);
+                game = new HoDCustom(data, _firstRoomPointer, _mapPointer, _mapLinePointer, gameVersion);
             }
             else if (radioButtonAoSU.Checked)
             {
                 gameVersion = GameVersionEnum.USA;
-                game = new AoSCustom(data, formMain, _firstRoomPointer, _mapPointer, _mapLinePointer, gameVersion);
+                game = new AoSCustom(data, _firstRoomPointer, _mapPointer, _mapLinePointer, gameVersion);
             }
             else if (radioButtonAoSJ.Checked)
             {
                 gameVersion = GameVersionEnum.JPN;
-                game = new AoSCustom(data, formMain, _firstRoomPointer, _mapPointer, _mapLinePointer, gameVersion);
+                game = new AoSCustom(data, _firstRoomPointer, _mapPointer, _mapLinePointer, gameVersion);
             }
             else if (radioButtonAoSE.Checked)
             {
                 gameVersion = GameVersionEnum.EUR;
-                game = new AoSCustom(data, formMain, _firstRoomPointer, _mapPointer, _mapLinePointer, gameVersion);
+                game = new AoSCustom(data, _firstRoomPointer, _mapPointer, _mapLinePointer, gameVersion);
             }
 
             if (game != null)

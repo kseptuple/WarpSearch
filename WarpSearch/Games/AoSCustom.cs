@@ -9,8 +9,8 @@ namespace WarpSearch.Games
 {
     public class AoSCustom : AoS
     {
-        public AoSCustom(byte[] fileData, FormMain formMain, RomPointer firstRoomPointer,
-            RomPointer mapPointer, RomPointer mapLinePointer, GameVersionEnum gameVersion) : base(fileData, formMain)
+        public AoSCustom(byte[] fileData, RomPointer firstRoomPointer,
+            RomPointer mapPointer, RomPointer mapLinePointer, GameVersionEnum gameVersion) : base(fileData)
         {
             //RoomRootPointer = null;
             FirstRoomPointer = firstRoomPointer;

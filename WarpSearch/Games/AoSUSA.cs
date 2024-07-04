@@ -13,7 +13,7 @@ namespace WarpSearch.Games
             0x8524a24, 0x8524abc, 0x8524b54, 0x8524bec, 0x8524ca4, 0x8524d3c, 0x8524dd4, 0x8524e5c, 0x8524020, 0x85240b8, 0x8524148, 0x85241e0, 
             0x8524278, 0x8524310, 0x85243a8, 0x8524440, 0x85244d8, 0x8524570, 0x8524608, 0x8524690 };
 
-        public AoSUSA(byte[] fileData, FormMain formMain) : base(fileData, formMain)
+        public AoSUSA(byte[] fileData) : base(fileData)
         {
             //RoomRootPointer = 0x8001990;
             FirstRoomPointer = 0x850EF08;

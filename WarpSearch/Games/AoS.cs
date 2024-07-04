@@ -36,11 +36,13 @@ namespace WarpSearch.Games
             }
         }
 
-        public AoS(byte[] fileData, FormMain formMain) : base(fileData, formMain)
+        public AoS(byte[] fileData) : base(fileData)
         {
             exitGroups = new List<List<RomPointer>>() { new List<RomPointer>(), new List<RomPointer>(), new List<RomPointer>(), new List<RomPointer>() };
             GameType = GameTypeEnum.Aos;
             exitLength = 16;
+            MapWidth = 64;
+            MapHeight = 56;
         }
 
         public override void LoadRooms()
@@ -99,7 +101,7 @@ namespace WarpSearch.Games
                 }
             }
 
-            specialRoomDataList = GbaCvLoader.getSpecialRooms(GameTypeEnum.Aos, UseHackSupport, specialRomPointers);
+            specialRoomDataList = GbaCvLoader.getSpecialRooms(GameTypeEnum.Aos, specialRomPointers);
 
             foreach (var specialRoomData in specialRoomDataList)
             {

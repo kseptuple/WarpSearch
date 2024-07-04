@@ -74,6 +74,9 @@
     <Compile Include="FormMainDrawMap.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="FormMainSearchLogic.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Games\AoSCustom.cs" />
     <Compile Include="Games\AoSEUR.cs" />
     <Compile Include="Games\HoDJPN.cs" />
