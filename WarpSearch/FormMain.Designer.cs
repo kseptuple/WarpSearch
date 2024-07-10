@@ -91,7 +91,6 @@
             this.panelFlag = new System.Windows.Forms.Panel();
             this.listFlag = new System.Windows.Forms.ListBox();
             this.labelRequiredFlag = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
             this.menuStripMain.SuspendLayout();
             this.panelMax.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
@@ -187,7 +186,7 @@
             // ToolStripMenuItemLanguage
             // 
             this.ToolStripMenuItemLanguage.Name = "ToolStripMenuItemLanguage";
-            this.ToolStripMenuItemLanguage.Size = new System.Drawing.Size(140, 26);
+            this.ToolStripMenuItemLanguage.Size = new System.Drawing.Size(224, 26);
             this.ToolStripMenuItemLanguage.Text = "语言(&L)";
             // 
             // panelMax
@@ -781,22 +780,11 @@
             this.labelRequiredFlag.Text = "需要的flag：";
             this.labelRequiredFlag.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(420, 794);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(116, 31);
-            this.button1.TabIndex = 28;
-            this.button1.Text = "button1";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
-            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1546, 854);
-            this.Controls.Add(this.button1);
             this.Controls.Add(this.panelFlag);
             this.Controls.Add(this.textBoxResize);
             this.Controls.Add(this.panelPicture);
@@ -897,7 +885,6 @@
         private System.Windows.Forms.Panel panelFlag;
         private System.Windows.Forms.ListBox listFlag;
         private System.Windows.Forms.Label labelRequiredFlag;
-        private System.Windows.Forms.Button button1;
         private System.Windows.Forms.TextBox textDestRoomPos;
         private System.Windows.Forms.TextBox textSrcRoomExit;
         private System.Windows.Forms.Label labelDestRoomPos;

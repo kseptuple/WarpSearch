@@ -35,8 +35,9 @@ namespace WarpSearch
 
         private Graphics bitmapGraphics = null;
 
-        private List<RectangleToDraw> RectanglesToDraw = new List<RectangleToDraw>();
         private List<uint> SourceRoomPointers = new List<uint>();
+
+        private List<RectangleToDraw> RectanglesToDraw = new List<RectangleToDraw>();
         private List<RectangleToDraw> SquaresToDraw = new List<RectangleToDraw>();
         private List<RectangleToDraw> SquarePreviewsToDraw = new List<RectangleToDraw>();
         private List<LineToDraw> LinesToDraw = new List<LineToDraw>();
@@ -82,9 +83,6 @@ namespace WarpSearch
             labelOptionSearches.Add(labelSearchOption4);
             labelOptionSearches.Add(labelSearchOption5);
             toolStripStatusRomType.Text = string.Empty;
-#if !DEBUG
-            Controls.Remove(button1);
-#endif
         }
 
         private void PictureMap_Click(object sender, EventArgs e)
@@ -445,13 +443,13 @@ namespace WarpSearch
             {
                 for (int i = 0; i < listSourceRoom.Items.Count; i++)
                 {
-                    var oldRoomAndExit = (RoomAndExit)listSourceRoom.Items[i];
-                    if (oldRoomAndExit.Room.RoomPointer > room.RoomPointer)
+                    var currentRoomAndExit = (RoomAndExit)listSourceRoom.Items[i];
+                    if (currentRoomAndExit.Room.RoomPointer > room.RoomPointer)
                     {
                         listSourceRoom.Items.Insert(i, roomAndExit);
                         break;
                     }
-                    if (oldRoomAndExit.Room.RoomPointer == room.RoomPointer && oldRoomAndExit.Exit.ExitPointer == exit.ExitPointer)
+                    if (currentRoomAndExit.Room.RoomPointer == room.RoomPointer && currentRoomAndExit.Exit.ExitPointer == exit.ExitPointer)
                     {
                         break;
                     }
@@ -1136,32 +1134,6 @@ namespace WarpSearch
         public RomSettings GetRomSettings(string romPath)
         {
             return romSettings.FirstOrDefault(r => r.RomPath == romPath);
-        }
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-#if DEBUG
-            if (rom == null) { return; }
-            StringBuilder sb = new StringBuilder();
-            List<RoomStruct> rooms = new List<RoomStruct>();
-            foreach (var item in rom.RoomsAtPositions.Keys)
-            {
-                var room = rom.RoomsAtPositions[item];
-                if (rooms.Exists(r => r.RoomPointer == room.RoomPointer))
-                {
-                    continue;
-                }
-                rooms.Add(room);
-                selectedRoom = room;
-                flagListForRoom.Clear();
-                FindAndDrawWarpSource(trackBarSearchOption.Value);
-                foreach (RoomAndExit exits in listSourceRoom.Items)
-                {
-                    sb.AppendLine($"{exits.Room.RoomPointer} {exits.Exit.SourceX} {exits.Exit.SourceY}=={room.RoomPointer} {exits.Exit.DestX} {exits.Exit.DestY}");
-                }
-            }
-            File.WriteAllText("E:\\test3.csv", sb.ToString());
-#endif
         }
     }
 
