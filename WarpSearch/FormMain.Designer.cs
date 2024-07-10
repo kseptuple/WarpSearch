@@ -37,8 +37,6 @@
             this.toolStripSeaprator1 = new System.Windows.Forms.ToolStripSeparator();
             this.ToolStripMenuItemExit = new System.Windows.Forms.ToolStripMenuItem();
             this.ToolStripMenuItemSetting = new System.Windows.Forms.ToolStripMenuItem();
-            this.ToolStripMenuItemHackSupport = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeaprator2 = new System.Windows.Forms.ToolStripSeparator();
             this.ToolStripMenuItemLanguage = new System.Windows.Forms.ToolStripMenuItem();
             this.panelMax = new System.Windows.Forms.Panel();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
@@ -81,6 +79,10 @@
             this.labelSourcePointerInfo = new System.Windows.Forms.Label();
             this.labelExitInfo = new System.Windows.Forms.Label();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.textDestRoomPos = new System.Windows.Forms.TextBox();
+            this.textSrcRoomExit = new System.Windows.Forms.TextBox();
+            this.labelDestRoomPos = new System.Windows.Forms.Label();
+            this.labelSourceRoomExit = new System.Windows.Forms.Label();
             this.statusStripMain = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusRomType = new System.Windows.Forms.ToolStripStatusLabel();
             this.panelPicture = new System.Windows.Forms.Panel();
@@ -127,7 +129,7 @@
             this.toolStripSeaprator1,
             this.ToolStripMenuItemExit});
             this.ToolStripMenuItemFile.Name = "ToolStripMenuItemFile";
-            this.ToolStripMenuItemFile.Size = new System.Drawing.Size(71, 26);
+            this.ToolStripMenuItemFile.Size = new System.Drawing.Size(71, 24);
             this.ToolStripMenuItemFile.Text = "文件(&F)";
             // 
             // toolStripMenuItemAosLast
@@ -176,32 +178,15 @@
             // ToolStripMenuItemSetting
             // 
             this.ToolStripMenuItemSetting.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.ToolStripMenuItemHackSupport,
-            this.toolStripSeaprator2,
             this.ToolStripMenuItemLanguage});
             this.ToolStripMenuItemSetting.Name = "ToolStripMenuItemSetting";
-            this.ToolStripMenuItemSetting.Size = new System.Drawing.Size(72, 26);
+            this.ToolStripMenuItemSetting.Size = new System.Drawing.Size(72, 24);
             this.ToolStripMenuItemSetting.Text = "设置(&S)";
-            // 
-            // ToolStripMenuItemHackSupport
-            // 
-            this.ToolStripMenuItemHackSupport.Checked = true;
-            this.ToolStripMenuItemHackSupport.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.ToolStripMenuItemHackSupport.Name = "ToolStripMenuItemHackSupport";
-            this.ToolStripMenuItemHackSupport.Size = new System.Drawing.Size(210, 26);
-            this.ToolStripMenuItemHackSupport.Text = "启用Hack支持(&H)";
-            this.ToolStripMenuItemHackSupport.Click += new System.EventHandler(this.ToolStripMenuItemHackSupport_Click);
-            // 
-            // toolStripSeaprator2
-            // 
-            this.toolStripSeaprator2.Name = "toolStripSeaprator2";
-            this.toolStripSeaprator2.Size = new System.Drawing.Size(207, 6);
-            this.toolStripSeaprator2.Visible = false;
             // 
             // ToolStripMenuItemLanguage
             // 
             this.ToolStripMenuItemLanguage.Name = "ToolStripMenuItemLanguage";
-            this.ToolStripMenuItemLanguage.Size = new System.Drawing.Size(210, 26);
+            this.ToolStripMenuItemLanguage.Size = new System.Drawing.Size(224, 26);
             this.ToolStripMenuItemLanguage.Text = "语言(&L)";
             // 
             // panelMax
@@ -401,11 +386,12 @@
             // listSourceRoom
             // 
             this.listSourceRoom.FormattingEnabled = true;
+            this.listSourceRoom.IntegralHeight = false;
             this.listSourceRoom.ItemHeight = 15;
             this.listSourceRoom.Location = new System.Drawing.Point(5, 2);
             this.listSourceRoom.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.listSourceRoom.Name = "listSourceRoom";
-            this.listSourceRoom.Size = new System.Drawing.Size(120, 244);
+            this.listSourceRoom.Size = new System.Drawing.Size(120, 264);
             this.listSourceRoom.TabIndex = 0;
             this.listSourceRoom.SelectedIndexChanged += new System.EventHandler(this.ListSourceRoom_SelectedIndexChanged);
             // 
@@ -555,7 +541,7 @@
             // 
             // textDestFlag
             // 
-            this.textDestFlag.Location = new System.Drawing.Point(138, 212);
+            this.textDestFlag.Location = new System.Drawing.Point(138, 242);
             this.textDestFlag.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.textDestFlag.Name = "textDestFlag";
             this.textDestFlag.ReadOnly = true;
@@ -566,9 +552,9 @@
             // 
             this.labelDestRoomFlag.AutoSize = true;
             this.labelDestRoomFlag.Dock = System.Windows.Forms.DockStyle.Left;
-            this.labelDestRoomFlag.Location = new System.Drawing.Point(3, 210);
+            this.labelDestRoomFlag.Location = new System.Drawing.Point(3, 240);
             this.labelDestRoomFlag.Name = "labelDestRoomFlag";
-            this.labelDestRoomFlag.Size = new System.Drawing.Size(129, 34);
+            this.labelDestRoomFlag.Size = new System.Drawing.Size(129, 30);
             this.labelDestRoomFlag.TabIndex = 20;
             this.labelDestRoomFlag.Text = "目标房间的flag：";
             this.labelDestRoomFlag.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -577,7 +563,7 @@
             // 
             this.labelDestPointerInfo.AutoSize = true;
             this.labelDestPointerInfo.Dock = System.Windows.Forms.DockStyle.Left;
-            this.labelDestPointerInfo.Location = new System.Drawing.Point(3, 180);
+            this.labelDestPointerInfo.Location = new System.Drawing.Point(3, 210);
             this.labelDestPointerInfo.Name = "labelDestPointerInfo";
             this.labelDestPointerInfo.Size = new System.Drawing.Size(112, 30);
             this.labelDestPointerInfo.TabIndex = 19;
@@ -586,7 +572,7 @@
             // 
             // textDestRoomPointer
             // 
-            this.textDestRoomPointer.Location = new System.Drawing.Point(138, 182);
+            this.textDestRoomPointer.Location = new System.Drawing.Point(138, 212);
             this.textDestRoomPointer.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.textDestRoomPointer.Name = "textDestRoomPointer";
             this.textDestRoomPointer.ReadOnly = true;
@@ -629,14 +615,18 @@
             this.tableLayoutPanel1.ColumnCount = 2;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel1.Controls.Add(this.textDestRoomPos, 1, 9);
+            this.tableLayoutPanel1.Controls.Add(this.textSrcRoomExit, 1, 6);
+            this.tableLayoutPanel1.Controls.Add(this.labelDestRoomPos, 0, 9);
+            this.tableLayoutPanel1.Controls.Add(this.labelSourceRoomExit, 0, 6);
             this.tableLayoutPanel1.Controls.Add(this.labelNumber, 0, 3);
             this.tableLayoutPanel1.Controls.Add(this.textSrcRoomPointer, 1, 5);
-            this.tableLayoutPanel1.Controls.Add(this.textDestRoomPointer, 1, 6);
-            this.tableLayoutPanel1.Controls.Add(this.textDestFlag, 1, 7);
+            this.tableLayoutPanel1.Controls.Add(this.textDestRoomPointer, 1, 7);
+            this.tableLayoutPanel1.Controls.Add(this.textDestFlag, 1, 8);
             this.tableLayoutPanel1.Controls.Add(this.textRoomId, 1, 3);
-            this.tableLayoutPanel1.Controls.Add(this.labelDestRoomFlag, 0, 7);
+            this.tableLayoutPanel1.Controls.Add(this.labelDestRoomFlag, 0, 8);
             this.tableLayoutPanel1.Controls.Add(this.textSector, 1, 2);
-            this.tableLayoutPanel1.Controls.Add(this.labelDestPointerInfo, 0, 6);
+            this.tableLayoutPanel1.Controls.Add(this.labelDestPointerInfo, 0, 7);
             this.tableLayoutPanel1.Controls.Add(this.textRoomPointer, 1, 1);
             this.tableLayoutPanel1.Controls.Add(this.labelSourcePointerInfo, 0, 5);
             this.tableLayoutPanel1.Controls.Add(this.labelSelectedRoom, 0, 0);
@@ -646,7 +636,7 @@
             this.tableLayoutPanel1.Location = new System.Drawing.Point(12, 472);
             this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-            this.tableLayoutPanel1.RowCount = 8;
+            this.tableLayoutPanel1.RowCount = 10;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
@@ -655,8 +645,51 @@
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(317, 244);
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(317, 304);
             this.tableLayoutPanel1.TabIndex = 22;
+            // 
+            // textDestRoomPos
+            // 
+            this.textDestRoomPos.Location = new System.Drawing.Point(138, 272);
+            this.textDestRoomPos.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.textDestRoomPos.Name = "textDestRoomPos";
+            this.textDestRoomPos.ReadOnly = true;
+            this.textDestRoomPos.Size = new System.Drawing.Size(100, 25);
+            this.textDestRoomPos.TabIndex = 27;
+            // 
+            // textSrcRoomExit
+            // 
+            this.textSrcRoomExit.Location = new System.Drawing.Point(138, 182);
+            this.textSrcRoomExit.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.textSrcRoomExit.Name = "textSrcRoomExit";
+            this.textSrcRoomExit.ReadOnly = true;
+            this.textSrcRoomExit.Size = new System.Drawing.Size(100, 25);
+            this.textSrcRoomExit.TabIndex = 26;
+            // 
+            // labelDestRoomPos
+            // 
+            this.labelDestRoomPos.AutoSize = true;
+            this.labelDestRoomPos.Dock = System.Windows.Forms.DockStyle.Left;
+            this.labelDestRoomPos.Location = new System.Drawing.Point(3, 270);
+            this.labelDestRoomPos.Name = "labelDestRoomPos";
+            this.labelDestRoomPos.Size = new System.Drawing.Size(112, 34);
+            this.labelDestRoomPos.TabIndex = 25;
+            this.labelDestRoomPos.Text = "目标房间位置：";
+            this.labelDestRoomPos.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // labelSourceRoomExit
+            // 
+            this.labelSourceRoomExit.AutoSize = true;
+            this.labelSourceRoomExit.Dock = System.Windows.Forms.DockStyle.Left;
+            this.labelSourceRoomExit.Location = new System.Drawing.Point(3, 180);
+            this.labelSourceRoomExit.Name = "labelSourceRoomExit";
+            this.labelSourceRoomExit.Size = new System.Drawing.Size(97, 30);
+            this.labelSourceRoomExit.TabIndex = 24;
+            this.labelSourceRoomExit.Text = "源房间出口：";
+            this.labelSourceRoomExit.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // statusStripMain
             // 
@@ -722,18 +755,19 @@
             this.panelFlag.Controls.Add(this.labelRequiredFlag);
             this.panelFlag.Location = new System.Drawing.Point(335, 472);
             this.panelFlag.Name = "panelFlag";
-            this.panelFlag.Size = new System.Drawing.Size(204, 250);
+            this.panelFlag.Size = new System.Drawing.Size(204, 304);
             this.panelFlag.TabIndex = 25;
             this.panelFlag.Visible = false;
             // 
             // listFlag
             // 
             this.listFlag.FormattingEnabled = true;
+            this.listFlag.IntegralHeight = false;
             this.listFlag.ItemHeight = 15;
             this.listFlag.Location = new System.Drawing.Point(3, 17);
             this.listFlag.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.listFlag.Name = "listFlag";
-            this.listFlag.Size = new System.Drawing.Size(198, 229);
+            this.listFlag.Size = new System.Drawing.Size(198, 285);
             this.listFlag.TabIndex = 26;
             // 
             // labelRequiredFlag
@@ -825,7 +859,6 @@
         private System.Windows.Forms.Label labelFindSourceTip;
         private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItemOpenRom;
         private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItemSetting;
-        private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItemHackSupport;
         private System.Windows.Forms.TrackBar trackBarSearchOption;
         private System.Windows.Forms.Label labelSearchLevel1;
         private System.Windows.Forms.Label labelSearchLevel3;
@@ -838,7 +871,6 @@
         private System.Windows.Forms.Label labelSearchOption5;
         private System.Windows.Forms.Label labelSearchLevel;
         private System.Windows.Forms.Label labelSearchLevel5;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeaprator2;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
         private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItemLanguage;
@@ -853,6 +885,10 @@
         private System.Windows.Forms.Panel panelFlag;
         private System.Windows.Forms.ListBox listFlag;
         private System.Windows.Forms.Label labelRequiredFlag;
+        private System.Windows.Forms.TextBox textDestRoomPos;
+        private System.Windows.Forms.TextBox textSrcRoomExit;
+        private System.Windows.Forms.Label labelDestRoomPos;
+        private System.Windows.Forms.Label labelSourceRoomExit;
     }
 }
 

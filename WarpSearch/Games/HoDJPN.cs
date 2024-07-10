@@ -3,14 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WarpSearch.Common;
 
 namespace WarpSearch.Games
 {
     public class HoDJPN : HoD
     {
-        public static List<ROMPointer> DefaultSpecialRomPointers = new List<ROMPointer>() { 0x84b041c, 0x84b0b64, 0x84b067c, 0x84b07e4, 0x84b0a90, 0x84b0bd8 };
+        public static List<RomPointer> DefaultSpecialRomPointers = new List<RomPointer>() { 0x84b041c, 0x84b0b64, 0x84b067c, 0x84b07e4, 0x84b0a90, 0x84b0bd8 };
 
-        public HoDJPN(byte[] fileData, FormMain formMain) : base(fileData, formMain)
+        public HoDJPN(byte[] fileData) : base(fileData)
         {
             //RoomRootPointer = 0x8001EC0;
             FirstRoomPointer = 0x848C3C8;

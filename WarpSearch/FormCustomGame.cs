@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using WarpSearch.Common;
 using WarpSearch.Games;
 using WarpSearch.Lang;
 
@@ -75,9 +76,9 @@ namespace WarpSearch
                     radioButtonAoSE.Checked = true;
                 }
             }
-            textBoxRoomPointer.Text = "0x" + game.GetFirstRoomPointer().Address.ToString("X");
-            textBoxMapPointer.Text = "0x" + game.GetMapPointer().Address.ToString("X");
-            textBoxLinePointer.Text = "0x" + game.GetMapLinePointer().Address.ToString("X");
+            textBoxRoomPointer.Text = "0x" + game.GetFirstRoomPointer().ToString();
+            textBoxMapPointer.Text = "0x" + game.GetMapPointer().ToString();
+            textBoxLinePointer.Text = "0x" + game.GetMapLinePointer().ToString();
         }
 
         private uint textBoxChangedCommon(TextBox textBox)
@@ -181,38 +182,38 @@ namespace WarpSearch
                 return;
             }
             GameVersionEnum gameVersion = GameVersionEnum.USA;
-            ROMPointer _firstRoomPointer = new ROMPointer(firstRoomPointer);
-            ROMPointer _mapPointer = new ROMPointer(mapPointer);
-            ROMPointer _mapLinePointer = new ROMPointer(mapLinePointer);
+            RomPointer _firstRoomPointer = new RomPointer(firstRoomPointer);
+            RomPointer _mapPointer = new RomPointer(mapPointer);
+            RomPointer _mapLinePointer = new RomPointer(mapLinePointer);
             if (radioButtonHoDU.Checked)
             {
                 gameVersion = GameVersionEnum.USA;
-                game = new HoDCustom(data, formMain, _firstRoomPointer, _mapPointer, _mapLinePointer, gameVersion);
+                game = new HoDCustom(data, _firstRoomPointer, _mapPointer, _mapLinePointer, gameVersion);
             }
             else if (radioButtonHoDJ.Checked)
             {
                 gameVersion = GameVersionEnum.JPN;
-                game = new HoDCustom(data, formMain, _firstRoomPointer, _mapPointer, _mapLinePointer, gameVersion);
+                game = new HoDCustom(data, _firstRoomPointer, _mapPointer, _mapLinePointer, gameVersion);
             }
             else if (radioButtonHoDE.Checked)
             {
                 gameVersion = GameVersionEnum.EUR;
-                game = new HoDCustom(data, formMain, _firstRoomPointer, _mapPointer, _mapLinePointer, gameVersion);
+                game = new HoDCustom(data, _firstRoomPointer, _mapPointer, _mapLinePointer, gameVersion);
             }
             else if (radioButtonAoSU.Checked)
             {
                 gameVersion = GameVersionEnum.USA;
-                game = new AoSCustom(data, formMain, _firstRoomPointer, _mapPointer, _mapLinePointer, gameVersion);
+                game = new AoSCustom(data, _firstRoomPointer, _mapPointer, _mapLinePointer, gameVersion);
             }
             else if (radioButtonAoSJ.Checked)
             {
                 gameVersion = GameVersionEnum.JPN;
-                game = new AoSCustom(data, formMain, _firstRoomPointer, _mapPointer, _mapLinePointer, gameVersion);
+                game = new AoSCustom(data, _firstRoomPointer, _mapPointer, _mapLinePointer, gameVersion);
             }
             else if (radioButtonAoSE.Checked)
             {
                 gameVersion = GameVersionEnum.EUR;
-                game = new AoSCustom(data, formMain, _firstRoomPointer, _mapPointer, _mapLinePointer, gameVersion);
+                game = new AoSCustom(data, _firstRoomPointer, _mapPointer, _mapLinePointer, gameVersion);
             }
 
             if (game != null)
@@ -228,9 +229,9 @@ namespace WarpSearch
                 romSettings.RomPath = game.FileName;
                 romSettings.GameVersion = game.GameVersion;
                 romSettings.GameType = game.GameType;
-                romSettings.RoomPointer = _firstRoomPointer + 0x8_00_00_00u;
-                romSettings.MapPointer = _mapPointer + 0x8_00_00_00u;
-                romSettings.MapLinePointer = _mapLinePointer + 0x8_00_00_00u;
+                romSettings.RoomPointer = _firstRoomPointer;
+                romSettings.MapPointer = _mapPointer;
+                romSettings.MapLinePointer = _mapLinePointer;
                 formMain.InsertOrUpdateRomSettings(romSettings);
             }
 
