@@ -1,0 +1,94 @@
+﻿<!Doctype html>
+<html>
+<head>
+    <link rel="stylesheet" href="../css/style.css" />
+    <script type="text/javascript" src="../js/main.js"></script>
+</head>
+<body>
+    <div class="title">
+        <h1>晓月/白夜出城搜索器</h1>
+        <div class="comboBox">
+            <select id="lang" onchange="changeLang();">
+                <optgroup label="语言">
+                    <option value="zh" selected>简体中文</option>
+                    <option value="en">English</option>
+                </optgroup>
+            </select>
+        </div>
+    </div>
+    <div class="content">
+        <p>一个搜索晓月圆舞曲和白夜协奏曲出城路线的工具。</p>
+        <p><a href="https://github.com/kseptuple/WarpSearch/releases/latest">下载地址</a></p>
+        <h1>主窗口</h1>
+        <p>点击 文件->打开ROM... 打开一个ROM。该工具目前支持日版、美版和欧版的晓月及白夜。</p>
+        <h2>搜索出城目标</h2>
+        <p>选择“从这里出城可以到哪里”，右键点击地图选择一个房间，移动鼠标可以看在某个地方是否可以出城。
+            绿色或蓝色的格子表示在这个地方可以正常出城，红色的格子表示这里出城会黑屏或者死机。
+            左键点击绿色或蓝色的格子，可以显示从这里出城会到达哪里。</p>
+        <div class="image"><image src="../images/zh/1.png" /></div>
+        <p>注意到有些房间内部的格子也是绿色的。如果你能在房间内部触发换版，那么也可以出城。</p>
+        <div class="image"><image src="../images/zh/2.png" /></div>
+        <p>橙色的格子表示程序无法判断这个出城是否成立。有两种情况：一种是出城的目标位置在目标房间的外面，
+            另一种是这个出城需要特定的flag才能成立（仅白夜）。这两种情况都非常少见。</p>
+        <h2>搜索出城起点</h2>
+        <p>选择“从哪里出城可以到这里”，右键点击地图选择一个房间后，某些房间会变成黑色。点击一个变成黑色的房间可以显示怎样从这个房间出城到目标房间。
+            你也可以从左侧的房间列表选择一个房间。</p>
+        <div class="image"><image src="../images/zh/3.png" /></div>
+        <p>可以通过改变搜索等级排除某些出城：</p>
+        <ul>
+            <li>搜索非正常房间内换版：即上面提到的在房间内部触发换版的情况。由于目前没有办法在房间内部触发换版，因此默认不搜索这类出口。</li>
+            <div class="image"><image src="../images/1.png" /></div>
+            <li>搜索远距离换版：搜索远离房间的出口。通常来说只要离开房间的范围就会换版，所以出口总是紧邻着房间的。
+                远距离换版通常用于晓月的0HP出城。</li>
+            <div class="image"><image src="../images/2.png" /></div>
+            <li>搜索一格宽房间右边第二格（仅白夜）：在白夜中，如果一个房间只有一格宽，在右侧超过16像素的地点换版，
+                会被视为在右边第二格换版。这种情况只在白夜出现，因为在晓月中，一格宽的房间无论向右多远，都会被视为在右侧第一格换版。</li>
+            <div class="image"><image src="../images/3.png" /></div>
+            <li>搜索斜角换版：搜索房间斜角的换版。斜角换版未必总是能成立。</li>
+            <div class="image"><image src="../images/4.png" /></div>
+            <li>搜索红门传送（仅白夜）：搜索白夜的红门传送。红门传送就是一格宽房间向右2格的换版，只是通过红门可以更加轻松地达成。</li>
+            <div class="image"><image src="../images/5.png" /></div>  
+        </ul>
+        <h1>自定义ROM窗口</h1>
+        <p>程序通常可以自行检测当前的ROM版本。但如果程序检测出的版本不正确，你也可以自己点击窗口左下角的文字来设置。
+            你也可以点击 文件->打开自定义ROM... 强制进行自定义设置。</p>
+        <div class="image"><image src="../images/zh/4.png" /></div>
+        <h2>自定义参数（高级）</h2>
+        <ul>
+            <li>房间列表的指针地址：指向房间指针列表的指针地址。</li>
+            <li>地图格子地址：地图格子数据的起始地址。</li>
+            <li>地图框线地址：地图框线数据的起始地址。</li>
+        </ul>
+        <h1>更新历史</h1>
+        <h2>1.2.0</h2>
+        <ul>
+            <li>重构了大部分代码，因此部分程序逻辑有所改变。</li>
+            <li>删除了“启用Hack支持”，因为默认支持Hack了。</li>
+            <li>修正部分bug。</li>
+        </ul>
+        <h2>1.1.3</h2>
+        <ul>
+            <li>修正自定义ROM未能保存的bug。</li>
+        </ul>
+        <h2>1.1.2</h2>
+        <ul>
+            <li>修正一些极端情况。</li>
+        </ul>
+        <h2>1.1.1</h2>
+        <ul>
+            <li>修正部分bug。</li>
+            <li>稍微修改了用户界面，提升用户体验。</li>
+        </ul>
+        <h2>1.1.0</h2>
+        <ul>
+            <li>支持了欧版的晓月和白夜。</li>
+            <li>支持了自定义ROM设置。</li>
+            <li>修正部分bug。</li>
+        </ul>
+        <h2>1.0.0</h2>
+        <ul>
+            <li>第一版。</li>
+        </ul>
+    </div>
+</body>
+</html>

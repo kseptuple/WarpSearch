@@ -47,7 +47,7 @@
     <labelMapGridAddr>Map Grids Address: </labelMapGridAddr>
     <labelMapLineAddr>Map Lines Address:</labelMapLineAddr>
     <checkBoxSaveSetting>Remember settings for this ROM</checkBoxSaveSetting>
-    <labelSaveSettingTip>Can remember up to 1000 settings of ROMs</labelSaveSettingTip>
+    <labelSaveSettingTip>Can remember up to 1000 ROM settings.</labelSaveSettingTip>
     <buttonOK>OK</buttonOK>
     <buttonCancel>Cancel</buttonCancel>
   </FormCustomGame>

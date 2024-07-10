@@ -1,27 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
-using System.Drawing.Drawing2D;
-using System.Drawing.Imaging;
 using WarpSearch.Games;
-using System.Threading;
-using System.Globalization;
 using System.Xml.Serialization;
-using System.Xml;
 using WarpSearch.Lang;
-using System.Collections.Specialized;
 using WarpSearch.Common;
-using System.Runtime.CompilerServices;
-using System.Diagnostics;
-using System.Runtime.InteropServices;
-using System.Security.Cryptography;
 
 namespace WarpSearch
 {
@@ -529,8 +516,8 @@ namespace WarpSearch
             if (openFileDialogMain.ShowDialog() == DialogResult.Cancel) return;
             if (OpenRom(openFileDialogMain.FileName))
             {
-                if (!rom.IsCustom)
-                {
+                //if (!rom.IsCustom)
+                //{
                     if (romType == GameTypeEnum.Aos)
                     {
                         defaultAosPath = openFileDialogMain.FileName;
@@ -541,7 +528,7 @@ namespace WarpSearch
                         defaultHodPath = openFileDialogMain.FileName;
                         toolStripMenuItemHodLast.Enabled = true;
                     }
-                }
+                //}
             }
         }
 
