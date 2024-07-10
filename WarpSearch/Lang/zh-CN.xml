@@ -8,7 +8,6 @@
     <toolStripMenuItemHodLast>打开上次的白夜ROM(&amp;H)</toolStripMenuItemHodLast>
     <ToolStripMenuItemExit>退出(&amp;X)</ToolStripMenuItemExit>
     <ToolStripMenuItemSetting>设置(&amp;S)</ToolStripMenuItemSetting>
-    <ToolStripMenuItemHackSupport>启用Hack支持(&amp;H)</ToolStripMenuItemHackSupport>
     <ToolStripMenuItemLanguage>语言(&amp;L)</ToolStripMenuItemLanguage>
     <labelRoomPointer>房间指针：</labelRoomPointer>
     <radioButtonFindDest>从这里出城可以到哪里</radioButtonFindDest>
@@ -28,8 +27,10 @@
     <labelNumber>序号：</labelNumber>
     <labelExitInfo>换版信息：</labelExitInfo>
     <labelSourcePointerInfo>源房间指针：</labelSourcePointerInfo>
+    <labelSourceRoomExit>源房间出口：</labelSourceRoomExit>
     <labelDestPointerInfo>目标房间指针：</labelDestPointerInfo>
     <labelDestRoomFlag>目标房间的flag：</labelDestRoomFlag>
+    <labelDestRoomPos>目标房间位置：</labelDestRoomPos>
     <labelRequiredFlag>需要的flag：</labelRequiredFlag>
   </FormMain>
   <FormCustomGame Text="打开自定义ROM">

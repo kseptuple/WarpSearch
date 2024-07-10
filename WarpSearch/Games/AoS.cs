@@ -12,29 +12,7 @@ namespace WarpSearch.Games
 {
     public class AoS : GbaCv
     {
-        //private Dictionary<Point, RoomStruct> roomPositions = new Dictionary<Point, RoomStruct>();
         protected List<RomPointer> specialRomPointers { get; set; }
-        public override bool UseHackSupport
-        {
-            get
-            {
-                return useHackSupport;
-            }
-            set
-            {
-                useHackSupport = value;
-                if (value)
-                {
-                    MapWidth = 64;
-                    MapHeight = 56;
-                }
-                else
-                {
-                    MapWidth = 52;
-                    MapHeight = 48;
-                }
-            }
-        }
 
         public AoS(byte[] fileData) : base(fileData)
         {
@@ -49,13 +27,12 @@ namespace WarpSearch.Games
         {
             RoomsAtPositions.Clear();
             RoomStructs.Clear();
-            //FlagRoomLists.Clear();
-            //roomPositions.Clear();
+
             foreach (var exitGroup in exitGroups)
             {
                 exitGroup.Clear();
             }
-            maxExitAddress = 0x8_00_00_00;
+            //maxExitAddress = 0x8_00_00_00;
             minExitAddress = 0xA_00_00_00;
             InitPointerAddress();
 
@@ -96,8 +73,8 @@ namespace WarpSearch.Games
                         {
                             RoomsAtPositions.Add(new Point(x, y), room);
                         }
-                        MapElements.Rooms.Add(new MapRoomToDraw { X = x, Y = y, SquareType = mapSquareType });
                     }
+                    MapElements.Rooms.Add(new MapRoomToDraw { X = x, Y = y, SquareType = mapSquareType });
                 }
             }
 
@@ -262,10 +239,10 @@ namespace WarpSearch.Games
                 int exitCount = getUShort(rs.RoomPointer, 28);
                 if (exitCount != 0)
                 {
-                    if (rs.ExitPointer > maxExitAddress)
-                    {
-                        maxExitAddress = rs.ExitPointer + (uint)((exitCount - 1) * exitLength);
-                    }
+                    //if (rs.ExitPointer > maxExitAddress)
+                    //{
+                    //    maxExitAddress = rs.ExitPointer + (uint)((exitCount - 1) * exitLength);
+                    //}
                     if (rs.ExitPointer < minExitAddress)
                     {
                         minExitAddress = rs.ExitPointer;
@@ -301,6 +278,8 @@ namespace WarpSearch.Games
 
         protected override ExitInfo CreateExitInfo(RomPointer pointer)
         {
+            if (ExitInfoCache.ContainsKey(pointer))
+                return ExitInfoCache[pointer];
             var exit = new ExitInfo();
             exit.ExitPointer = pointer;
             exit.ExitDestination = getRomPointer(pointer, 0);
@@ -310,6 +289,7 @@ namespace WarpSearch.Games
             exit.DestX = (sbyte)getByte(pointer, 11);
             exit.YOffset = getByte(pointer, 12);
             exit.DestY = (sbyte)getByte(pointer, 13);
+            ExitInfoCache.Add(pointer, exit);
             return exit;
         }
     }

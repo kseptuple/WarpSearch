@@ -8,7 +8,6 @@
     <toolStripMenuItemHodLast>Open Last &amp;HoD ROM</toolStripMenuItemHodLast>
     <ToolStripMenuItemExit>E&amp;xit</ToolStripMenuItemExit>
     <ToolStripMenuItemSetting>&amp;Setting</ToolStripMenuItemSetting>
-    <ToolStripMenuItemHackSupport>Use &amp;Hack Supporting</ToolStripMenuItemHackSupport>
     <ToolStripMenuItemLanguage>&amp;Language</ToolStripMenuItemLanguage>
     <labelRoomPointer>Room Pointer: </labelRoomPointer>
     <radioButtonFindDest>Where do I warp to from here</radioButtonFindDest>
@@ -28,8 +27,10 @@
     <labelNumber>No.: </labelNumber>
     <labelExitInfo>Exit Info: </labelExitInfo>
     <labelSourcePointerInfo>Source Room Pointer: </labelSourcePointerInfo>
+    <labelSourceRoomExit>Source Room Exit: </labelSourceRoomExit>
     <labelDestPointerInfo>Target Room Pointer: </labelDestPointerInfo>
     <labelDestRoomFlag>Target Room Flag: </labelDestRoomFlag>
+    <labelDestRoomPos>Target Room Position: </labelDestRoomPos>
     <labelRequiredFlag>Required Flag: </labelRequiredFlag>
   </FormMain>
   <FormCustomGame Text="Open Custom ROM">

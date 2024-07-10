@@ -27,11 +27,6 @@ namespace WarpSearch.Common
             return RoomPointer == (obj as RoomStruct).RoomPointer;
         }
 
-        //public static bool operator ==(RoomStruct room1, RoomStruct room2)
-        //{
-
-        //}
-
         public override int GetHashCode()
         {
             return RoomPointer;
@@ -90,18 +85,14 @@ namespace WarpSearch.Common
         public RoomStruct Room { get; set; }
         public ExitInfo Exit { get; set; }
         public bool IsUncertain { get; set; }
+        public bool IsDestOutside { get; set; }
 
-        public RoomAndExit(RoomStruct room, ExitInfo exit)
-        {
-            Room = room;
-            Exit = exit;
-            IsUncertain = false;
-        }
-        public RoomAndExit(RoomStruct room, ExitInfo exit, bool isUncertain)
+        public RoomAndExit(RoomStruct room, ExitInfo exit, bool isUncertain, bool isDestOutside)
         {
             Room = room;
             Exit = exit;
             IsUncertain = isUncertain;
+            IsDestOutside = isDestOutside;
         }
 
         public override string ToString()

@@ -11,6 +11,26 @@ namespace WarpSearch
 {
     public partial class FormMain
     {
+        private readonly Brush blueBrush = new SolidBrush(Color.FromArgb(0, 0, 224));
+        private readonly Brush blackBrush = new SolidBrush(Color.FromArgb(0, 0, 0));
+        private readonly Brush cyanBrush = new SolidBrush(Color.FromArgb(0, 200, 200));
+        private readonly Brush redBrush = new SolidBrush(Color.FromArgb(240, 0, 0));
+        private readonly Brush yellowBrush = new SolidBrush(Color.FromArgb(248, 248, 8));
+        private readonly Brush whiteBrush = new SolidBrush(Color.FromArgb(248, 248, 248));
+        private readonly Brush transparentWhiteBrush = new SolidBrush(Color.FromArgb(192, 255, 255, 255));
+        private readonly Brush transparentGreenBrush = new SolidBrush(Color.FromArgb(127, 0, 255, 0));
+        private readonly Brush transparentBlueBrush = new SolidBrush(Color.FromArgb(127, 0, 0, 255));
+        private readonly Brush transparentRedBrush = new SolidBrush(Color.FromArgb(127, 255, 0, 0));
+        private readonly Brush transparentOrangeBrush = new SolidBrush(Color.FromArgb(192, 255, 127, 0));
+        private readonly Brush transparentBlackBrush = new SolidBrush(Color.FromArgb(127, 0, 0, 0));
+        private readonly Brush trueWhiteBrush = new SolidBrush(Color.FromArgb(255, 255, 255));
+        private readonly Brush greenBrush = new SolidBrush(Color.FromArgb(0, 224, 0));
+
+        private readonly Pen redPen = new Pen(Color.FromArgb(192, 0, 0));
+        private readonly Brush redBrush2 = new SolidBrush(Color.FromArgb(192, 0, 0));
+        private readonly Pen orangePen = new Pen(Color.FromArgb(255, 127, 0));
+        private readonly Brush orangeBrush = new SolidBrush(Color.FromArgb(255, 127, 0));
+
         public void DrawRoom(int x, int y, MapSquareType type, bool isHodCastleB = false)
         {
             Brush currentBrush = null;
@@ -147,11 +167,11 @@ namespace WarpSearch
             }
             if (previewOnly)
             {
-                PositionPreviewToDraw.Add(new RectangleToDraw(brush, x, y, 1, 1));
+                SquarePreviewsToDraw.Add(new RectangleToDraw(brush, x, y, 1, 1));
             }
             else
             {
-                PositionToDraw.Add(new RectangleToDraw(brush, x, y, 1, 1));
+                SquaresToDraw.Add(new RectangleToDraw(brush, x, y, 1, 1));
             }
         }
 
@@ -163,22 +183,37 @@ namespace WarpSearch
                 LinesToDraw.Add(new LineToDraw(orangePen, orangeBrush, startX, startY, endX, endY, false));
         }
 
-        //public void DrawWarpDisplayItems()
-        //{
-        //    if (rom != null)
-        //    {
-        //        var warpDisplayItems = rom.WarpDisplayItems;
-        //        foreach (var room in warpDisplayItems.Rooms)
-        //        {
-        //            AddRoomPos(room.X, room.Y, room.IsBad, room.IsPreview, room.IsUncertain);
-        //        }
-        //        foreach (var line in warpDisplayItems.Lines)
-        //        {
-        //            AddLine(line.StartX, line.StartY, line.EndX, line.EndY, line.HasArrow);
-        //        }
-        //    }
-        //}
+        public void AddRoomRectangleToDraw(RoomStruct room, bool isBlack)
+        {
+            var brush = isBlack ? transparentBlackBrush : transparentWhiteBrush;
+            RectanglesToDraw.Add(new RectangleToDraw(brush, room.Left, room.Top, room.Width, room.Height));
+        }
 
+        public void ClearRooms()
+        {
+            RectanglesToDraw.Clear();
+        }
+        public void ClearPos(bool previewOnly = false)
+        {
+            SquarePreviewsToDraw.Clear();
+            if (!previewOnly)
+            {
+                SquaresToDraw.Clear();
+            }
+        }
+        public void ClearLine()
+        {
+            LinesToDraw.Clear();
+        }
+        public void ClearSourceRoomList()
+        {
+            listSourceRoom.Items.Clear();
+            SourceRoomPointers.Clear();
+            if (RectanglesToDraw.Count > 1)
+            {
+                RectanglesToDraw.RemoveRange(1, RectanglesToDraw.Count - 1);
+            }
+        }
     }
 
     public class MapRoomToDraw
@@ -216,7 +251,7 @@ namespace WarpSearch
     {
         public int X { get; set; }
         public int Y { get; set; }
-        public bool IsBad {  get; set; }
+        public bool IsBad { get; set; }
         public bool IsPreview { get; set; }
         public bool IsUncertain { get; set; }
         public bool IsStartRoom { get; set; }
@@ -227,6 +262,7 @@ namespace WarpSearch
         public RoomStruct Room { get; set; }
         public ExitInfo Exit { get; set; }
         public bool IsUncertain { get; set; }
+        public bool IsDestOutside { get; set; }
         public Dictionary<uint, byte> FlagList { get; set; }
     }
 
@@ -241,11 +277,124 @@ namespace WarpSearch
 
     public class WarpsToDraw
     {
-        public bool IsBadWarp {  get; set; }
+        public bool IsBadWarp { get; set; }
         public bool IsUncertainWarp { get; set; }
         public bool IsDestOutside { get; set; }
         public Dictionary<uint, byte> FlagList = new Dictionary<uint, byte>();
         public RoomStruct DestRoom { get; set; }
         public List<StartEndRoomToDraw> WarpRooms { get; set; } = new List<StartEndRoomToDraw>();
+    }
+
+    public class RectangleToDraw
+    {
+        public Brush Brush { get; set; }
+        public int Top { get; set; }
+        public int Left { get; set; }
+        public int Width { get; set; }
+        public int Height { get; set; }
+
+        public RectangleToDraw(Brush brush, int left, int top, int width, int height)
+        {
+            Brush = brush;
+            Top = top;
+            Left = left;
+            Width = width;
+            Height = height;
+        }
+
+        public void Draw(Graphics g, int offset, float gridSize)
+        {
+            g?.FillRectangle(Brush, (Left + offset) * gridSize, (Top + offset) * gridSize, Width * gridSize, Height * gridSize);
+        }
+    }
+
+    public class LineToDraw
+    {
+        public Pen Pen { get; set; }
+        public Brush Brush { get; set; }
+        public int StartX { get; set; }
+        public int StartY { get; set; }
+        public int EndX { get; set; }
+        public int EndY { get; set; }
+        public bool HasArrow { get; set; }
+
+        private static ArrowSize arrowSize1 = new ArrowSize() { Angle = Math.PI / 4, LengthFactor = (float)(1 / Math.Cos(Math.PI / 4)) };
+        private static ArrowSize arrowSize2 = new ArrowSize() { Angle = Math.PI / 6, LengthFactor = (float)(1 / Math.Cos(Math.PI / 6)) };
+        private static ArrowSize arrowSize3 = new ArrowSize() { Angle = Math.PI / 8, LengthFactor = (float)(1 / Math.Cos(Math.PI / 8)) };
+        private static ArrowSize arrowSize4 = new ArrowSize() { Angle = Math.PI / 12, LengthFactor = (float)(1 / Math.Cos(Math.PI / 12)) };
+
+        public LineToDraw(Pen pen, Brush brush, int startX, int startY, int endX, int endY, bool hasArrow)
+        {
+            Pen = pen;
+            Brush = brush;
+            StartX = startX;
+            StartY = startY;
+            EndX = endX;
+            EndY = endY;
+            HasArrow = hasArrow;
+        }
+
+        public void Draw(Graphics g, int offset, float gridSize)
+        {
+            var angle = Math.Atan2(EndY - StartY, EndX - StartX);
+            var xDiff = (float)(0.5f * Math.Cos(angle));
+            var yDiff = (float)(0.5f * Math.Sin(angle));
+            PointF pointStart = new PointF((StartX + offset + 0.5f) * gridSize, (StartY + offset + 0.5f) * gridSize);
+            PointF pointEnd = default;
+            if (HasArrow)
+            {
+                pointEnd = new PointF((EndX + offset + 0.5f - xDiff) * gridSize, (EndY + offset + 0.5f - yDiff) * gridSize);
+            }
+            else
+            {
+                pointEnd = new PointF((EndX + offset + 0.5f) * gridSize, (EndY + offset + 0.5f) * gridSize);
+            }
+
+            g?.DrawLine(Pen, pointStart, pointEnd);
+
+            if (HasArrow)
+            {
+                var pointEndCenter = new PointF((EndX + offset + 0.5f) * gridSize, (EndY + offset + 0.5f) * gridSize);
+                var maxLength = ((EndY - StartY) * (EndY - StartY) + (EndX - StartX) * (EndX - StartX)) / 4f;
+                //length: 箭头两边的长度
+                //maxLength: 箭头中轴允许的最大长度的平方
+                var length = 0f;
+                var angle1 = 0d;
+                var angle2 = 0d;
+                ArrowSize arrowSize = null;
+                length = (float)Math.Sqrt(maxLength);
+                if (maxLength < 0.5f)
+                {
+                    arrowSize = arrowSize1;
+                }
+                else if (maxLength < 2f)
+                {
+                    arrowSize = arrowSize2;
+                }
+                else if (maxLength < 3f)
+                {
+                    arrowSize = arrowSize3;
+                }
+                else
+                {
+                    arrowSize = arrowSize4;
+                }
+                length *= arrowSize.LengthFactor;
+                angle1 = angle + arrowSize.Angle;
+                angle2 = angle - arrowSize.Angle;
+                if (length > 2f)
+                    length = 2f;
+
+                var point1 = new PointF((EndX + offset + 0.5f - (float)Math.Cos(angle1) * length) * gridSize, (EndY + offset + 0.5f - (float)Math.Sin(angle1) * length) * gridSize);
+                var point2 = new PointF((EndX + offset + 0.5f - (float)Math.Cos(angle2) * length) * gridSize, (EndY + offset + 0.5f - (float)Math.Sin(angle2) * length) * gridSize);
+                g?.FillPolygon(Brush, new PointF[] { pointEndCenter, point1, point2 });
+            }
+        }
+
+        class ArrowSize
+        {
+            public float LengthFactor { get; set; }
+            public double Angle { get; set; }
+        }
     }
 }

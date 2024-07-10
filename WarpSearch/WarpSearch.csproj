@@ -74,9 +74,6 @@
     <Compile Include="FormMainDrawMap.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="FormMainSearchLogic.cs">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="Games\AoSCustom.cs" />
     <Compile Include="Games\AoSEUR.cs" />
     <Compile Include="Games\HoDJPN.cs" />
@@ -96,7 +93,6 @@
       <DependentUpon>FormMain.cs</DependentUpon>
     </Compile>
     <Compile Include="Games\GbaCv.cs" />
-    <Compile Include="Helper\ByteArrayToStructure.cs" />
     <Compile Include="Lang\L10N.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
