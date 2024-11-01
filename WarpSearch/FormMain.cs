@@ -20,6 +20,8 @@ namespace WarpSearch
         private Bitmap map = null;
         private GbaCv rom = null;
 
+        private string originalTitle = null;
+
         private Graphics bitmapGraphics = null;
 
         private List<uint> SourceRoomPointers = new List<uint>();
@@ -580,6 +582,7 @@ namespace WarpSearch
                 rom?.Dispose();
                 rom = newRom;
             }
+
             clearAll();
             GreenRooms.Clear();
             comboRoomList.Items.Clear();
@@ -621,6 +624,8 @@ namespace WarpSearch
             {
                 statusText += L10N.GetText("Custom");
             }
+
+            Text = $"{originalTitle} - {newRom.FileName}";
 
             toolStripStatusRomType.Text = statusText;
             if (rom.GameType == GameTypeEnum.Aos)
@@ -812,7 +817,15 @@ namespace WarpSearch
                 if (settings != null)
                 {
                     defaultAosPath = settings.AoSPath;
+                    if (!File.Exists(defaultAosPath))
+                    {
+                        defaultAosPath = string.Empty;
+                    }
                     defaultHodPath = settings.HodPath;
+                    if (!File.Exists(defaultHodPath))
+                    {
+                        defaultHodPath = string.Empty;
+                    }
                     toolStripMenuItemAosLast.Enabled = !string.IsNullOrEmpty(defaultAosPath);
                     toolStripMenuItemHodLast.Enabled = !string.IsNullOrEmpty(defaultHodPath);
                     Language = settings.Language;
@@ -896,6 +909,7 @@ namespace WarpSearch
             {
                 Language = actualLanguage;
                 L10N.SetLang(this, Language);
+                originalTitle = Text;
                 var languageMenuItems = ToolStripMenuItemLanguage.DropDownItems;
                 if (languageMenuItems != null)
                 {
@@ -928,6 +942,7 @@ namespace WarpSearch
                 target.Checked = true;
                 Language = target.Tag as string;
                 L10N.SetLang(this, Language);
+                originalTitle = Text;
                 if (rom != null)
                 {
                     LoadRom(rom);
