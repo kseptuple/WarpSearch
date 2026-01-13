@@ -239,15 +239,6 @@ namespace WarpSearch
             var destX = selectedRoom.Left + currentSourceRoomInList.Exit.DestX;
             var destY = selectedRoom.Top + currentSourceRoomInList.Exit.DestY;
 
-            //if (currentSourceRoomInList.Exit.DestX < 0 || currentSourceRoomInList.Exit.DestX > selectedRoom.Width - 1
-            //    || currentSourceRoomInList.Exit.DestY < 0 || currentSourceRoomInList.Exit.DestY > selectedRoom.Height - 1)
-            //{
-            //    Debug.Assert(currentSourceRoomInList.IsUncertain);
-            //    Debug.Assert(currentSourceRoomInList.IsDestOutside);
-            //    isOutsideDest = true;
-            //    isUncertain = true;
-            //}
-
             AddMapSquarePos(sourceX, sourceY, false, false, isUncertain);
             AddMapSquarePos(destX, destY, false, false, isUncertain);
 

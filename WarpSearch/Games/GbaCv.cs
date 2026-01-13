@@ -175,10 +175,6 @@ namespace WarpSearch.Games
                                 isFound = true;
                                 result.TechInfo.DestRooms.Add(new WarpTechInfoRooms() { Flag = flag, RoomPointer = destPointer });
                             }
-                            //else
-                            //{
-                            //    result.TechInfo.DestRooms.Add(new WarpTechInfoRooms() { Flag = flag, RoomPointer = destPointer, IsInvalidRoom = true });
-                            //}
                             break;
                         }
                         else
@@ -219,11 +215,6 @@ namespace WarpSearch.Games
                         }
                     }
 
-                    //if (destPointer < 0x8_00_00_00 || destPointer >= 0x8_00_00_00 + data.Length - minimumSpace)
-                    //{
-                    //    result.TechInfo.DestRooms.Add(new WarpTechInfoRooms() { Flag = 0xFFFF, RoomPointer = destPointer, IsInvalidRoom = true });
-                    //}
-
                     if (isFound)
                     {
 
@@ -231,7 +222,6 @@ namespace WarpSearch.Games
                         var destX = RoomStructs[destPointer].Left + exitX;
                         var destY = RoomStructs[destPointer].Top + exitY;
 
-                        //var newIsUncertain = false;
                         if (exitX < 0 || exitX > RoomStructs[destPointer].Width - 1 || exitY < 0 || exitY > RoomStructs[destPointer].Height - 1)
                         {
                             result.IsDestOutside = true;
