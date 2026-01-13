@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -100,7 +101,7 @@ namespace WarpSearch.Lang
                     LanguageModel languageModel = new LanguageModel();
                     doc.Load(langFile);
                     XmlNode root = doc.SelectSingleNode("Language");
-                    languageModel.Name = root.Attributes["Name"]?.Value?.Trim();
+                    languageModel.Name = root.Attributes?["Name"]?.Value?.Trim();
                     languageModel.AreaCode = Path.GetFileNameWithoutExtension(langFile);
                     languageModel.FormData = readNodes(root.ChildNodes);
 
@@ -122,7 +123,7 @@ namespace WarpSearch.Lang
                         if (langData.NodeType == XmlNodeType.Element)
                         {
                             var langName = langData.Name.Trim();
-                            var langValue = langData.Attributes["Text"]?.Value?.Trim();
+                            var langValue = langData.Attributes?["Text"]?.Value;
 
                             bool textNodeOnly = false;
                             if (langData.ChildNodes.Count == 1)
@@ -131,11 +132,18 @@ namespace WarpSearch.Lang
                                 {
                                     if (string.IsNullOrEmpty(langValue))
                                     {
-                                        langValue = langData.FirstChild.Value?.Trim();
+                                        langValue = langData.FirstChild.Value;
+
                                     }
                                     textNodeOnly = true;
                                 }
                             }
+
+                            if (langData.Attributes?["KeepSpace"] == null)
+                            {
+                                langValue = langValue?.Trim();
+                            }
+
                             controlLanguageModel.Name = langName;
                             controlLanguageModel.Text = langValue;
                             if (!textNodeOnly)
@@ -147,7 +155,7 @@ namespace WarpSearch.Lang
                     }
                     return controlLanguageModelList;
                 }
-                catch
+                catch (Exception ex)
                 {
                     return null;
                 }

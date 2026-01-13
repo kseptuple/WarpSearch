@@ -32,6 +32,7 @@
     <labelDestRoomFlag>目标房间的flag：</labelDestRoomFlag>
     <labelDestRoomPos>目标房间位置：</labelDestRoomPos>
     <labelRequiredFlag>需要的flag：</labelRequiredFlag>
+    <linkLabelTechInfo>技术信息窗口</linkLabelTechInfo>
   </FormMain>
   <FormCustomGame Text="打开自定义ROM">
     <labelRomIs>这个ROM是：</labelRomIs>
@@ -51,6 +52,8 @@
     <buttonOK>确定</buttonOK>
     <buttonCancel>取消</buttonCancel>
   </FormCustomGame>
+  <FormTechInfo Text="出口技术信息">
+  </FormTechInfo>
   <Text>
     <FileTooLarge>文件太大（>32M），不是GBA ROM。</FileTooLarge>
     <UnknownRom>无法识别该ROM的游戏，是否手动指定？</UnknownRom>
@@ -63,5 +66,20 @@
     <EUR>（欧版）</EUR>
     <Custom>（自定义）</Custom>
     <ChangeCustomRom>修改自定义ROM</ChangeCustomRom>
+    <TechInfoExitAddr>出口列表起始地址为{0}。</TechInfoExitAddr>
+    <TechInfoExitOoB>在ROM数据结束前没有找到出口。</TechInfoExitOoB>
+    <TechInfoExitFound>找到{0}：出口{1}，坐标：X={2}，Y={3}。</TechInfoExitFound>
+    <TechInfoRoomInfo>房间{0}（{1}）</TechInfoRoomInfo>
+    <TechInfoFlagInfo>Flag={0}（+{1}字节，bit {2}）。</TechInfoFlagInfo>
+    <TechInfoFlagHoD>当Flag被设置时跳转到下一房间。</TechInfoFlagHoD>
+    <TechInfoFlagAoS>跳转到下一房间。</TechInfoFlagAoS>
+    <TechInfoNoNextRoom>没有后续房间。</TechInfoNoNextRoom>
+    <TechInfoRoomLoop>检测到房间链表有循环。</TechInfoRoomLoop>
+    <TechInfoNormalExit>正常出口</TechInfoNormalExit>
+    <TechInfoOoBExit>出城出口</TechInfoOoBExit>
+    <TechInfoInvalidRoom>非法房间</TechInfoInvalidRoom>
+    <TechInfoValidRoom>合法房间</TechInfoValidRoom>
+    <TechInfoOoBRoom>房间地址位于ROM数据以外。</TechInfoOoBRoom>
+    <TechInfoSelectExit>请选择一个换版以查看相关技术信息。</TechInfoSelectExit>
   </Text>
 </Language>

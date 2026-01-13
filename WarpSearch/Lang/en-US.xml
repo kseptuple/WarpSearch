@@ -17,7 +17,7 @@
     <labelSearchLevel>Level: </labelSearchLevel>
     <labelSearchLevel5>Search for glitched inside-room exits</labelSearchLevel5>
     <labelSearchLevel4>Search for far-away exits</labelSearchLevel4>
-    <labelSearchLevel3>Search for exits 2 block away right to the 1-block-width room (HoD only)</labelSearchLevel3>
+    <labelSearchLevel3>Search for exits 2 squares away right to the 1-square-width room (HoD only)</labelSearchLevel3>
     <labelSearchLevel2>Search for diagonal exits</labelSearchLevel2>
     <labelSearchLevel1>Search for door warp (HoD only)</labelSearchLevel1>
     <labelScale>Zoom: </labelScale>
@@ -32,6 +32,7 @@
     <labelDestRoomFlag>Target Room Flag: </labelDestRoomFlag>
     <labelDestRoomPos>Target Room Position: </labelDestRoomPos>
     <labelRequiredFlag>Required Flag: </labelRequiredFlag>
+    <linkLabelTechInfo>Technical Info Window</linkLabelTechInfo>
   </FormMain>
   <FormCustomGame Text="Open Custom ROM">
     <labelRomIs>This ROM is: </labelRomIs>
@@ -51,8 +52,10 @@
     <buttonOK>OK</buttonOK>
     <buttonCancel>Cancel</buttonCancel>
   </FormCustomGame>
+  <FormTechInfo Text="Exit Technical Info">
+  </FormTechInfo>
   <Text>
-    <FileTooLarge>File is too large (>32M), does not seems to be a GBA ROM.</FileTooLarge>
+    <FileTooLarge>File is too large (>32M), does not seem to be a GBA ROM.</FileTooLarge>
     <UnknownRom>Can not detect game type, do you want to specify it manually?</UnknownRom>
     <NoMark>✖</NoMark>
     <YesMark>✔</YesMark>
@@ -63,5 +66,20 @@
     <EUR> (Europe)</EUR>
     <Custom> (Customized)</Custom>
     <ChangeCustomRom>Change Custom ROM</ChangeCustomRom>
+    <TechInfoExitAddr>The exit list starts at address {0}.</TechInfoExitAddr>
+    <TechInfoExitOoB>No exits were found before the end of rom data.</TechInfoExitOoB>
+    <TechInfoExitFound>Found {0}: Exit {1}, Position: X={2}, Y={3}.</TechInfoExitFound>
+    <TechInfoRoomInfo>Room {0} ({1})</TechInfoRoomInfo>
+    <TechInfoFlagInfo KeepSpace="">Flag={0} (+{1} byte(s), bit {2}). </TechInfoFlagInfo>
+    <TechInfoFlagHoD>Jump to the next room when flag is set.</TechInfoFlagHoD>
+    <TechInfoFlagAoS>Jump to the next room.</TechInfoFlagAoS>
+    <TechInfoNoNextRoom>No preceding rooms.</TechInfoNoNextRoom>
+    <TechInfoRoomLoop>Loop is detected in the linked table of rooms.</TechInfoRoomLoop>
+    <TechInfoNormalExit>a normal exit</TechInfoNormalExit>
+    <TechInfoOoBExit>an OOB exit</TechInfoOoBExit>
+    <TechInfoInvalidRoom>invalid room</TechInfoInvalidRoom>
+    <TechInfoValidRoom>valid room</TechInfoValidRoom>
+    <TechInfoOoBRoom KeepSpace="">The room address is out of bound. </TechInfoOoBRoom>
+    <TechInfoSelectExit>Please select a warp to view it's technical info.</TechInfoSelectExit>
   </Text>
 </Language>

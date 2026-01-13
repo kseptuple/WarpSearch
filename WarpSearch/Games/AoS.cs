@@ -251,6 +251,8 @@ namespace WarpSearch.Games
                 }
                 RoomStructs.Add(rs.RoomPointer, rs);
                 var flag = getUShort(rs.RoomPointer, 2);
+                rs.NextRoomFlag = flag;
+
                 if (flag != 0xFFFF)
                 {
                     var newPointer = getRomPointer(rs.RoomPointer, 4);

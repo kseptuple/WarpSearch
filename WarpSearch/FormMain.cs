@@ -61,6 +61,8 @@ namespace WarpSearch
         private bool isChangingNumericSize = false;
         private bool isAddingToRoomList = false;
 
+        public FormTechInfo TechInfoForm { get; set; }
+
         public FormMain()
         {
             InitializeComponent();
@@ -157,8 +159,7 @@ namespace WarpSearch
                                     currentSourceRoom = rom.RoomsAtPositions[point];
                                     if (currentSourceRoom != null)
                                     {
-                                        List<RoomStruct> currentRoomList = new List<RoomStruct>();
-                                        currentRoomList.Add(currentSourceRoom);
+                                        List<RoomStruct> currentRoomList = new List<RoomStruct> { currentSourceRoom };
                                         if (currentSourceRoom.OverlappingRooms.Count > 0)
                                         {
                                             foreach (var room in currentSourceRoom.OverlappingRooms)
@@ -175,6 +176,7 @@ namespace WarpSearch
                                         RoomAndExit currentSourceRoomInList = null;
                                         bool hasFlag = false;
                                         bool updateExitInfo = true;
+                                        TechInfoForm?.CleatText();
                                         for (int i = 0; i < listSourceRoom.Items.Count; i++)
                                         {
                                             foreach (var currentRoom in currentRoomList)
@@ -265,7 +267,7 @@ namespace WarpSearch
                 textSrcRoomExit.Text = getPositionFormattedString(currentSourceRoomInList.Exit.SourceX, currentSourceRoomInList.Exit.SourceY);
                 textDestRoomPos.Text = getPositionFormattedString(currentSourceRoomInList.Exit.DestX, currentSourceRoomInList.Exit.DestY);
             }
-            
+
             if (selectedRoom.EventFlag != -1)
             {
                 textDestFlag.Text = selectedRoom.EventFlag.ToString("X2");
@@ -310,6 +312,7 @@ namespace WarpSearch
                 textSrcRoomExit.Text = getPositionFormattedString(currentSourceRoomInList.Exit.SourceX, currentSourceRoomInList.Exit.SourceY);
                 textDestRoomPos.Text = getPositionFormattedString(currentSourceRoomInList.Exit.DestX, currentSourceRoomInList.Exit.DestY);
             }
+            TechInfoForm?.AppendText(currentSourceRoomInList.WarpTechInfo, romType, opMode);
         }
 
         public void SetFlagListForDestSearch(Dictionary<uint, byte> flagList)
@@ -353,7 +356,7 @@ namespace WarpSearch
             }
 
             int sourceX = 0, sourceY = 0;
-            DestX = 0; 
+            DestX = 0;
             DestY = 0;
             var warpResult = rom.FindWarpDestination(selectedRoom, selectedPos);
             if (warpResult?.WarpRooms?.Count > 0)
@@ -402,6 +405,7 @@ namespace WarpSearch
                             AddRoomRectangleToDraw(destRoom, false);
                         }
                     }
+                    TechInfoForm?.SetText(warpResult.TechInfo, romType, opMode);
                 }
             }
         }
@@ -417,13 +421,13 @@ namespace WarpSearch
             for (int i = 0; i < sourceRooms.Count; i++)
             {
                 var sourceRoom = sourceRooms[i];
-                AddSourceRoom(sourceRoom.Room, sourceRoom.Exit, sourceRoom.IsUncertain, sourceRoom.IsDestOutside, sourceRoom.FlagList);
+                AddSourceRoom(sourceRoom.Room, sourceRoom.Exit, sourceRoom.IsUncertain, sourceRoom.IsDestOutside, sourceRoom.TechInfo, sourceRoom.FlagList);
             }
         }
 
-        public void AddSourceRoom(RoomStruct room, ExitInfo exit, bool isUncertain, bool isDestOutside, Dictionary<uint, byte> flagList = null)
+        public void AddSourceRoom(RoomStruct room, ExitInfo exit, bool isUncertain, bool isDestOutside, WarpTechInfo warpTechInfo, Dictionary<uint, byte> flagList = null)
         {
-            var roomAndExit = new RoomAndExit(room, exit, isUncertain, isDestOutside);
+            var roomAndExit = new RoomAndExit(room, exit, isUncertain, isDestOutside, warpTechInfo);
             if (listSourceRoom.Items.Count == 0)
             {
                 listSourceRoom.Items.Add(roomAndExit);
@@ -520,16 +524,16 @@ namespace WarpSearch
             {
                 //if (!rom.IsCustom)
                 //{
-                    if (romType == GameTypeEnum.Aos)
-                    {
-                        defaultAosPath = openFileDialogMain.FileName;
-                        toolStripMenuItemAosLast.Enabled = true;
-                    }
-                    else if (romType == GameTypeEnum.Hod)
-                    {
-                        defaultHodPath = openFileDialogMain.FileName;
-                        toolStripMenuItemHodLast.Enabled = true;
-                    }
+                if (romType == GameTypeEnum.Aos)
+                {
+                    defaultAosPath = openFileDialogMain.FileName;
+                    toolStripMenuItemAosLast.Enabled = true;
+                }
+                else if (romType == GameTypeEnum.Hod)
+                {
+                    defaultHodPath = openFileDialogMain.FileName;
+                    toolStripMenuItemHodLast.Enabled = true;
+                }
                 //}
             }
         }
@@ -943,6 +947,7 @@ namespace WarpSearch
                 Language = target.Tag as string;
                 L10N.SetLang(this, Language);
                 originalTitle = Text;
+                TechInfoForm?.ChangeLang();
                 if (rom != null)
                 {
                     LoadRom(rom);
@@ -995,6 +1000,7 @@ namespace WarpSearch
             textSrcRoomExit.Text = "";
             textDestRoomPos.Text = "";
             textDestFlag.Text = "";
+            TechInfoForm?.SetInitText();
         }
 
         private void clearDest()
@@ -1010,6 +1016,7 @@ namespace WarpSearch
             textSrcRoomExit.Text = "";
             textDestRoomPos.Text = "";
             textDestFlag.Text = "";
+            TechInfoForm?.SetInitText();
         }
 
         //选择房间（两种模式通用）
@@ -1081,6 +1088,7 @@ namespace WarpSearch
             SquaresToDraw.Clear();
             LinesToDraw.Clear();
             var currentSourceRoomInList = (RoomAndExit)listSourceRoom.SelectedItem;
+            TechInfoForm?.CleatText();
             displaySourceRoom(currentSourceRoomInList, out _);
         }
 
@@ -1096,6 +1104,7 @@ namespace WarpSearch
             flagListForRoom.Clear();
             FindAndDrawWarpSource(trackBarSearchOption.Value);
             pictureMap.Refresh();
+            TechInfoForm?.SetInitText();
         }
 
         private void setSearchOptionText()
@@ -1136,6 +1145,19 @@ namespace WarpSearch
         public RomSettings GetRomSettings(string romPath)
         {
             return romSettings.FirstOrDefault(r => r.RomPath == romPath);
+        }
+
+        private void linkLabelTechInfo_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            if (TechInfoForm == null)
+            {
+                TechInfoForm = new FormTechInfo(this);
+                TechInfoForm.Show(this);
+            }
+            else
+            {
+                TechInfoForm.Activate();
+            }
         }
     }
 

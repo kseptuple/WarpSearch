@@ -91,6 +91,7 @@
             this.panelFlag = new System.Windows.Forms.Panel();
             this.listFlag = new System.Windows.Forms.ListBox();
             this.labelRequiredFlag = new System.Windows.Forms.Label();
+            this.linkLabelTechInfo = new System.Windows.Forms.LinkLabel();
             this.menuStripMain.SuspendLayout();
             this.panelMax.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
@@ -115,7 +116,7 @@
             this.menuStripMain.Location = new System.Drawing.Point(0, 0);
             this.menuStripMain.Name = "menuStripMain";
             this.menuStripMain.Padding = new System.Windows.Forms.Padding(5, 2, 0, 2);
-            this.menuStripMain.Size = new System.Drawing.Size(1546, 28);
+            this.menuStripMain.Size = new System.Drawing.Size(1546, 30);
             this.menuStripMain.TabIndex = 2;
             this.menuStripMain.Text = "menuStrip1";
             // 
@@ -186,7 +187,7 @@
             // ToolStripMenuItemLanguage
             // 
             this.ToolStripMenuItemLanguage.Name = "ToolStripMenuItemLanguage";
-            this.ToolStripMenuItemLanguage.Size = new System.Drawing.Size(224, 26);
+            this.ToolStripMenuItemLanguage.Size = new System.Drawing.Size(140, 26);
             this.ToolStripMenuItemLanguage.Text = "语言(&L)";
             // 
             // panelMax
@@ -780,11 +781,23 @@
             this.labelRequiredFlag.Text = "需要的flag：";
             this.labelRequiredFlag.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
+            // linkLabelTechInfo
+            // 
+            this.linkLabelTechInfo.AutoSize = true;
+            this.linkLabelTechInfo.Location = new System.Drawing.Point(9, 778);
+            this.linkLabelTechInfo.Name = "linkLabelTechInfo";
+            this.linkLabelTechInfo.Size = new System.Drawing.Size(97, 15);
+            this.linkLabelTechInfo.TabIndex = 29;
+            this.linkLabelTechInfo.TabStop = true;
+            this.linkLabelTechInfo.Text = "技术信息窗口";
+            this.linkLabelTechInfo.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabelTechInfo_LinkClicked);
+            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1546, 854);
+            this.Controls.Add(this.linkLabelTechInfo);
             this.Controls.Add(this.panelFlag);
             this.Controls.Add(this.textBoxResize);
             this.Controls.Add(this.panelPicture);
@@ -889,6 +902,7 @@
         private System.Windows.Forms.TextBox textSrcRoomExit;
         private System.Windows.Forms.Label labelDestRoomPos;
         private System.Windows.Forms.Label labelSourceRoomExit;
+        private System.Windows.Forms.LinkLabel linkLabelTechInfo;
     }
 }
 

@@ -74,6 +74,12 @@
     <Compile Include="FormMainDrawMap.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="FormTechInfo.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormTechInfo.Designer.cs">
+      <DependentUpon>FormTechInfo.cs</DependentUpon>
+    </Compile>
     <Compile Include="Games\AoSCustom.cs" />
     <Compile Include="Games\AoSEUR.cs" />
     <Compile Include="Games\HoDJPN.cs" />
@@ -102,6 +108,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FormMain.resx">
       <DependentUpon>FormMain.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormTechInfo.resx">
+      <DependentUpon>FormTechInfo.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

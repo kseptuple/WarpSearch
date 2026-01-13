@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq.Expressions;
 
 namespace WarpSearch.Common
 {
@@ -17,6 +18,7 @@ namespace WarpSearch.Common
         public int Left { get; set; }
         public List<ExitInfo> Exits { get; set; } = new List<ExitInfo>();
         public List<RoomStruct> OverlappingRooms { get; set; } = new List<RoomStruct>();
+        public ushort NextRoomFlag { get; set; }
         public override bool Equals(object obj)
         {
             if (obj is null || !(obj is RoomStruct)) return false;
@@ -82,13 +84,15 @@ namespace WarpSearch.Common
         public ExitInfo Exit { get; set; }
         public bool IsUncertain { get; set; }
         public bool IsDestOutside { get; set; }
+        public WarpTechInfo WarpTechInfo { get; set; }
 
-        public RoomAndExit(RoomStruct room, ExitInfo exit, bool isUncertain, bool isDestOutside)
+        public RoomAndExit(RoomStruct room, ExitInfo exit, bool isUncertain, bool isDestOutside, WarpTechInfo warpTechInfo)
         {
             Room = room;
             Exit = exit;
             IsUncertain = isUncertain;
             IsDestOutside = isDestOutside;
+            WarpTechInfo = warpTechInfo;
         }
 
         public override string ToString()

@@ -260,6 +260,7 @@ namespace WarpSearch
         public bool IsUncertain { get; set; }
         public bool IsDestOutside { get; set; }
         public Dictionary<uint, byte> FlagList { get; set; }
+        public WarpTechInfo TechInfo { get; set; }
     }
 
     public class WarpLineToDraw
@@ -279,6 +280,27 @@ namespace WarpSearch
         public Dictionary<uint, byte> FlagList = new Dictionary<uint, byte>();
         public RoomStruct DestRoom { get; set; }
         public List<StartEndRoomToDraw> WarpRooms { get; set; } = new List<StartEndRoomToDraw>();
+        public WarpTechInfo TechInfo { get; set; }
+    }
+
+    public class WarpTechInfo
+    {
+        public RomPointer ExitPointerStart { get; set; }
+        public int ExitIndex { get; set; }
+        public int StartX { get; set; }
+        public int StartY { get; set; }
+        public bool IsLoop { get; set; } = false;
+        public bool IsOutOfBound { get; set; } = false;
+        public bool IsNormalExit { get; set; }
+        public List<WarpTechInfoRooms> DestRooms { get; set; }
+    }
+
+    public class WarpTechInfoRooms
+    {
+        public RomPointer RoomPointer { get; set; }
+        public uint Flag { get; set; }
+        public bool IsInvalidRoom { get; set; } = false;
+        public bool IsOutOfBoundRoom { get; set; } = false;
     }
 
     public class RectangleToDraw

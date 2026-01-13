@@ -44,29 +44,35 @@
             <li>Search for far away exits: Search for exits that are far away from the room. Normally as soon as you leave a room, it will trigger a room change, 
                 so exits are always beside the room. Far away exits are usually used in death warp of AoS.</li>
             <div class="image"><image src="../images/2.png" /></div>
-            <li>Search for exits 2 blocks away right to the 1-block-width room (HoD only): In HoD, when a room is 1 block in width, 
-                leave the room at more than 16px in the right will be considered as exiting the room at 2 blocks instead of 1 block away from the right. 
-                This is HoD only beacause in AoS, no matter how far you leave the 1-block-width room from the right, 
-                it is always considered to be exiting the room 1 block away from the right.</li>
+            <li>Search for exits 2 squares away right to the 1-square-width room (HoD only): In HoD, when a room is 1 square in width, 
+                leave the room at more than 16px in the right will be considered as exiting the room at 2 squares instead of 1 square away from the right. 
+                This is HoD only beacause in AoS, no matter how far you leave the 1-square-width room from the right, 
+                it is always considered to be exiting the room 1 square away from the right.</li>
             <div class="image"><image src="../images/3.png" /></div>
             <li>Search for diagonal exits: Search for exits that are diagonal to the room. It is sometime not possible to do that warp.</li>
             <div class="image"><image src="../images/4.png" /></div>
             <li>Search for door warp (HoD only): Will include red door warp in HoD. 
-                These warps are just exiting a 1-block-width room at 2 blocks away from the right. Red doors are just making it easier.</li>
+                These warps are just exiting a 1-square-width room at 2 squares away from the right. Red doors are just making it easier.</li>
             <div class="image"><image src="../images/5.png" /></div>  
         </ul>
         <h1>Custom ROM Window</h1>
-        <p>The program can automatically detect the version of the game rom. However, if the programe failed to recognize it correctly, 
+        <p>The program can automatically detect the version of the game rom. However, if the program failed to recognize it correctly, 
             you can alse set the version of the game rom yourself, by clicking the text in the bottom left of the window. 
             You can also click on File -> Open Custom ROM... to forcibly load a rom with custom settings.</p>
         <div class="image"><image src="../images/en/4.png" /></div>
         <h2>Custom Parameters (Advanced)</h2>
         <ul>
             <li>Pointer to Room List: A pointer pointing to the room pointer list.</li>
-            <li>Map Grids Address: The begining address for map grid (blocks) data.</li>
-            <li>Map Lines Address: The begining address for map line data.</li>
+            <li>Map Grids Address: The begining address for map grids (squares) data.</li>
+            <li>Map Lines Address: The begining address for map lines data.</li>
         </ul>
+		<h1>Technical Info Window</h1>
+        <p>View technical info of warps. Can be useful to users who want to know what happens behind a warp.</p>
         <h1>Update History</h1>
+		<h2>1.2.2</h2>
+        <ul>
+            <li>Add technical window.</li>
+        </ul>
 		<h2>1.2.1</h2>
         <ul>
             <li>Fix minor bugs.</li>
