@@ -58,27 +58,29 @@ namespace WarpSearch.Common
 
         public static bool operator >(RomPointer pointer1, RomPointer pointer2)
         {
+            if (pointer1 is null || pointer2 is null) return false;
             if (ReferenceEquals(pointer1, pointer2)) return false;
             return pointer1.actualAddress > pointer2.actualAddress;
         }
 
         public static bool operator <(RomPointer pointer1, RomPointer pointer2)
         {
+            if (pointer1 is null || pointer2 is null) return false;
             if (ReferenceEquals(pointer1, pointer2)) return false;
             return pointer1.actualAddress < pointer2.actualAddress;
         }
 
         public static bool operator >=(RomPointer pointer1, RomPointer pointer2)
         {
-            if (ReferenceEquals(pointer1, pointer2)) return true;
             if (pointer1 is null || pointer2 is null) return false;
+            if (ReferenceEquals(pointer1, pointer2)) return true;
             return pointer1.actualAddress >= pointer2.actualAddress;
         }
 
         public static bool operator <=(RomPointer pointer1, RomPointer pointer2)
         {
-            if (ReferenceEquals(pointer1, pointer2)) return true;
             if (pointer1 is null || pointer2 is null) return false;
+            if (ReferenceEquals(pointer1, pointer2)) return true;
             return pointer1.actualAddress <= pointer2.actualAddress;
         }
 

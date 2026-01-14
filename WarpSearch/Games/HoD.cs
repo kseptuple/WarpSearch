@@ -326,7 +326,7 @@ namespace WarpSearch.Games
                 {
                     var exitAddress = getRomPointer(currentExit, 0);
                     if (exitAddress < 0x8_00_00_00 || exitAddress >= (uint)fileSize + 0x8_00_00_00) break;
-                    rs.Exits.Add(CreateExitInfo(currentExit));
+                    rs.Exits.Add(CreateExitInfo(currentExit, true));
                     currentExit = currentExit + (uint)exitLength;
                     exitCount++;
                 }
@@ -365,7 +365,7 @@ namespace WarpSearch.Games
             }
         }
 
-        protected override ExitInfo CreateExitInfo(RomPointer pointer)
+        protected override ExitInfo CreateExitInfo(RomPointer pointer, bool putInCache)
         {
             if (ExitInfoCache.ContainsKey(pointer))
                 return ExitInfoCache[pointer];
@@ -379,7 +379,14 @@ namespace WarpSearch.Games
             if (exit.XOffset > 0x80) exit.DestX += 1;
             exit.YOffset = getByte(pointer, 10);
             exit.DestY = (sbyte)getByte(pointer, 11);
-            ExitInfoCache.Add(pointer, exit);
+            exit.DestXInternal = (short)getUShort(pointer, 8);
+            exit.DestYInternal = (short)getUShort(pointer, 10);
+            exit.XOffsetInternal = (sbyte)getByte(pointer, 6);
+            exit.YOffsetInternal = (sbyte)getByte(pointer, 7);
+            if (putInCache)
+            {
+                ExitInfoCache.Add(pointer, exit);
+            }
             return exit;
         }
     }

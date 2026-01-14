@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Windows.Forms;
 using WarpSearch.Common;
 
 namespace WarpSearch.Games
@@ -146,6 +145,7 @@ namespace WarpSearch.Games
                 if (sourceXToRoom == (sbyte)getByte(currentPointer, 4) && sourceYToRoom == (sbyte)getByte(currentPointer, 5))
                 {
                     var destPointer = getUnalignedRomPointer(currentPointer, 0);
+                    var exitInfo = CreateExitInfo(currentPointer, false);
                     Dictionary<uint, byte> flagList = new Dictionary<uint, byte>();
                     uint flag = 0;
                     result.TechInfo.DestRooms = new List<WarpTechInfoRooms>();
@@ -215,10 +215,17 @@ namespace WarpSearch.Games
                         }
                     }
 
+
+                    var exitX = exitInfo.DestX;
+                    var exitY = exitInfo.DestY;
+                    //var (exitX, exitY) = getExitDestPos();
+                    result.TechInfo.EndX = exitInfo.DestXInternal;
+                    result.TechInfo.EndY = exitInfo.DestYInternal;
+                    result.TechInfo.XOffset = exitInfo.XOffsetInternal;
+                    result.TechInfo.YOffset = exitInfo.YOffsetInternal;
+
                     if (isFound)
                     {
-
-                        var (exitX, exitY) = getExitDestPos();
                         var destX = RoomStructs[destPointer].Left + exitX;
                         var destY = RoomStructs[destPointer].Top + exitY;
 
@@ -273,28 +280,12 @@ namespace WarpSearch.Games
                 IsStartRoom = true
             });
             return result;
-
-            (int, int) getExitDestPos()
-            {
-                if (GameType == GameTypeEnum.Aos)
-                {
-                    return ((sbyte)getByte(currentPointer, 11), (sbyte)getByte(currentPointer, 13));
-                }
-                else if (GameType == GameTypeEnum.Hod)
-                {
-                    var tmpX = 0;
-                    var XOffset = getByte(currentPointer, 8);
-                    if (XOffset > 0x80) tmpX = 1;
-                    return ((sbyte)getByte(currentPointer, 9) + tmpX, (sbyte)getByte(currentPointer, 11));
-                }
-                return (0, 0);
-            }
         }
 
         public virtual List<SourceRoomInfo> FindWarpSource(RoomStruct destRoom, int searchLevel)
         {
             List<SourceRoomInfo> result = new List<SourceRoomInfo>();
-            if (destRoom == null || destRoom == null) return result;
+            if (destRoom == null) return result;
             //找到通向当前房间的所有出口
 
             List<uint> addresses = new List<uint>();
@@ -323,9 +314,9 @@ namespace WarpSearch.Games
                     {
                         //var currentPointerActualAddress = currentPointerAddress - 0x8_00_00_00;
                         //可能性1：这个指针本身是个出口
-                        if (sourcePointerAddress >= minExitAddress)
+                        if (sourcePointerAddress >= minExitAddress && sourcePointerAddress % 4 == 0)
                         {
-                            getSourceRoomsByExit(CreateExitInfo(sourcePointerAddress), isUncertain, warpTechInfoRooms, flagList);
+                            getSourceRoomsByExit(CreateExitInfo(sourcePointerAddress, false), isUncertain, warpTechInfoRooms, flagList);
                         }
 
                         //可能性2：是其他地方跳转过来的
@@ -461,6 +452,10 @@ namespace WarpSearch.Games
                             warpTechInfo.ExitPointerStart = room.ExitPointer;
                             warpTechInfo.StartX = sourceXToRoom;
                             warpTechInfo.StartY = sourceYToRoom;
+                            warpTechInfo.EndX = exitInfo.DestXInternal;
+                            warpTechInfo.EndY = exitInfo.DestYInternal;
+                            warpTechInfo.XOffset = exitInfo.XOffsetInternal;
+                            warpTechInfo.YOffset = exitInfo.YOffsetInternal;
                             warpTechInfo.ExitIndex = num;
                             warpTechInfo.DestRooms = warpTechInfoRooms;
                             warpTechInfo.IsNormalExit = num < room.Exits.Count;
@@ -530,21 +525,21 @@ namespace WarpSearch.Games
             }
         }
 
-        public RomPointer getRomPointer(RomPointer start, int offset)
+        protected RomPointer getRomPointer(RomPointer start, int offset)
         {
             uint actualAddress = (uint)(start.RomOffset + offset);
             if (actualAddress >= data.Length) return null;
             return data[actualAddress] | (data[actualAddress + 1] << 8) | (data[actualAddress + 2] << 16) | (data[actualAddress + 3] << 24);
         }
 
-        public RomPointer getUnalignedRomPointer(RomPointer start, int offset)
+        protected RomPointer getUnalignedRomPointer(RomPointer start, int offset)
         {
             uint actualAddress = (uint)(start.RomOffset + offset);
             if (actualAddress >= data.Length) return null;
             return getUint(actualAddress);
         }
 
-        protected virtual ExitInfo CreateExitInfo(RomPointer pointer)
+        protected virtual ExitInfo CreateExitInfo(RomPointer pointer, bool putInCache)
         {
             throw new NotImplementedException();
         }

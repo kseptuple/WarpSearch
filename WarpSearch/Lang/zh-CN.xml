@@ -67,8 +67,10 @@
     <Custom>（自定义）</Custom>
     <ChangeCustomRom>修改自定义ROM</ChangeCustomRom>
     <TechInfoExitAddr>出口列表起始地址为{0}。</TechInfoExitAddr>
+    <TechInfoWarpPos>换版坐标：X={0}，Y={1}。</TechInfoWarpPos>
     <TechInfoExitOoB>在ROM数据结束前没有找到出口。</TechInfoExitOoB>
-    <TechInfoExitFound>找到{0}：出口{1}，坐标：X={2}，Y={3}。</TechInfoExitFound>
+    <TechInfoExitFound>找到{0}：出口#{1}，目标房间坐标：X={2}，Y={3}；偏移量：X={4}，Y={5}。</TechInfoExitFound>
+    <TechInfoExitRaw>（原始数据：X={0}, Y={1}, XOffset={2}, YOffset={3}）</TechInfoExitRaw>
     <TechInfoRoomInfo>房间{0}（{1}）</TechInfoRoomInfo>
     <TechInfoFlagInfo>Flag={0}（+{1}字节，bit {2}）。</TechInfoFlagInfo>
     <TechInfoFlagHoD>当Flag被设置时跳转到下一房间。</TechInfoFlagHoD>

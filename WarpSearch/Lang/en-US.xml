@@ -67,8 +67,10 @@
     <Custom> (Customized)</Custom>
     <ChangeCustomRom>Change Custom ROM</ChangeCustomRom>
     <TechInfoExitAddr>The exit list starts at address {0}.</TechInfoExitAddr>
+    <TechInfoWarpPos>Warp position: X={0}, Y={1}.</TechInfoWarpPos>
     <TechInfoExitOoB>No exits were found before the end of rom data.</TechInfoExitOoB>
-    <TechInfoExitFound>Found {0}: Exit {1}, Position: X={2}, Y={3}.</TechInfoExitFound>
+    <TechInfoExitFound>Found {0}: Exit #{1}, target position: X={2}, Y={3}; offset: X={4}, Y={5}.</TechInfoExitFound>
+    <TechInfoExitRaw>(Raw data: X={0}, Y={1}, XOffset={2}, YOffset={3})</TechInfoExitRaw>
     <TechInfoRoomInfo>Room {0} ({1})</TechInfoRoomInfo>
     <TechInfoFlagInfo KeepSpace="">Flag={0} (+{1} byte(s), bit {2}). </TechInfoFlagInfo>
     <TechInfoFlagHoD>Jump to the next room when flag is set.</TechInfoFlagHoD>

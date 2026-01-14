@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq.Expressions;
 
 namespace WarpSearch.Common
 {
@@ -41,6 +40,10 @@ namespace WarpSearch.Common
         public int DestY { get; set; }
         public int YOffset { get; set; }
         public RomPointer ExitPointer { get; set; }
+        public int DestXInternal { get; set; }
+        public int DestYInternal { get; set; }
+        public int XOffsetInternal { get; set; }
+        public int YOffsetInternal { get; set; }
     }
 
     public class SpecialRoomData

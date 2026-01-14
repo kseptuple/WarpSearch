@@ -289,6 +289,10 @@ namespace WarpSearch
         public int ExitIndex { get; set; }
         public int StartX { get; set; }
         public int StartY { get; set; }
+        public int EndX { get; set; }
+        public int EndY { get; set; }
+        public int XOffset { get; set; }
+        public int YOffset { get; set; }
         public bool IsLoop { get; set; } = false;
         public bool IsOutOfBound { get; set; } = false;
         public bool IsNormalExit { get; set; }

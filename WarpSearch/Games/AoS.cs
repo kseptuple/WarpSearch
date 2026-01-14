@@ -246,7 +246,7 @@ namespace WarpSearch.Games
                 var currentExit = rs.ExitPointer;
                 for (int j = 0; j < exitCount; j++)
                 {
-                    rs.Exits.Add(CreateExitInfo(currentExit));
+                    rs.Exits.Add(CreateExitInfo(currentExit, true));
                     currentExit = currentExit + (uint)exitLength;
                 }
                 RoomStructs.Add(rs.RoomPointer, rs);
@@ -272,7 +272,7 @@ namespace WarpSearch.Games
             }
         }
 
-        protected override ExitInfo CreateExitInfo(RomPointer pointer)
+        protected override ExitInfo CreateExitInfo(RomPointer pointer, bool putInCache)
         {
             if (ExitInfoCache.ContainsKey(pointer))
                 return ExitInfoCache[pointer];
@@ -285,7 +285,14 @@ namespace WarpSearch.Games
             exit.DestX = (sbyte)getByte(pointer, 11);
             exit.YOffset = getByte(pointer, 12);
             exit.DestY = (sbyte)getByte(pointer, 13);
-            ExitInfoCache.Add(pointer, exit);
+            exit.DestXInternal = (short)getUShort(pointer, 10);
+            exit.DestYInternal = (short)getUShort(pointer, 12);
+            exit.XOffsetInternal = (short)getUShort(pointer, 6);
+            exit.YOffsetInternal = (short)getUShort(pointer, 8);
+            if (putInCache)
+            {
+                ExitInfoCache.Add(pointer, exit);
+            }
             return exit;
         }
     }

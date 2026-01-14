@@ -1,11 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using WarpSearch.Common;
 using WarpSearch.Lang;
@@ -37,18 +31,40 @@ namespace WarpSearch
         public void AppendText(WarpTechInfo warpTechInfo, GameTypeEnum gameType, OperationMode operationMode)
         {
             StringBuilder techText = new StringBuilder();
-            techText.AppendLine(string.Format(L10N.GetText("TechInfoExitAddr"), warpTechInfo.ExitPointerStart.ToString()));
+            techText.AppendLine(string.Format(L10N.GetText("TechInfoExitAddr"),
+                warpTechInfo.ExitPointerStart.ToString()
+            ));
+            techText.AppendLine(string.Format(L10N.GetText("TechInfoWarpPos"),
+                warpTechInfo.StartX,
+                warpTechInfo.StartY
+            ));
+
             if (warpTechInfo.IsOutOfBound && operationMode == OperationMode.FindDestination)
             {
                 techText.AppendLine(L10N.GetText("TechInfoExitOoB"));
             }
             else
             {
+                int x = (warpTechInfo.EndX << 8) + warpTechInfo.XOffset;
+                int y = (warpTechInfo.EndY << 8) + warpTechInfo.YOffset;
+                int xPos = x >> 16;
+                int yPos = y >> 16;
+                int xOffset = (byte)((x >> 8) & 0xFF);
+                int yOffset = (byte)((y >> 8) & 0xFF);
                 techText.AppendLine(string.Format(L10N.GetText("TechInfoExitFound"),
                     warpTechInfo.IsNormalExit ? L10N.GetText("TechInfoNormalExit") : L10N.GetText("TechInfoOoBExit"),
                     warpTechInfo.ExitIndex,
-                    warpTechInfo.StartX,
-                    warpTechInfo.StartY
+                    xPos,
+                    yPos,
+                    xOffset,
+                    yOffset
+                ));
+
+                techText.AppendLine(string.Format(L10N.GetText("TechInfoExitRaw"),
+                    ((short)warpTechInfo.EndX).ToString("X4"),
+                    ((short)warpTechInfo.EndY).ToString("X4"),
+                    ((short)warpTechInfo.XOffset).ToString("X4"),
+                    ((short)warpTechInfo.YOffset).ToString("X4")
                 ));
 
                 foreach (var techInfoRoom in warpTechInfo.DestRooms)
